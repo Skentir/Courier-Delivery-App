@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class JohhyMoves {
+public class JohnnyMoves {
 
   public void modifyItems(itemList) {
 
@@ -9,6 +9,7 @@ public class JohhyMoves {
 
   }
   public void addItems(itemList) {
+  double length, width, height, weight;
 
   }
 
