@@ -5,8 +5,36 @@ public class JohnnyMoves {
   public void modifyItems(List itemList) {
 
   }
-  public void removeItems(List itemList) {
 
+  public void delDocument(List itemList)
+  {
+    itemList.displayItems();
+  }
+
+  public void removeItems(List itemList)
+  {
+    JohnnyMoves driver = new JohnnyMoves();
+    int choice = 0;
+    do
+    {
+      System.out.println("Which item are you removing?");
+      System.out.println("[1] Document");
+      System.out.println("[2] Regular");
+      System.out.println("[3] Irregular");
+      System.out.printf("Choice: ");
+      choice = driver.sc.nextInt();
+    } while(choice < 1 || choice > 3);
+    sc.nextLine();
+
+    switch(choice)
+    {
+      case 1: // Document
+          driver.delDocument(itemList); break;
+      case 2:
+          driver.delRegular(itemList); break;
+      case 3:
+          driver.delIrregular(itemList); break;
+    }
   }
 
   public void addIrregular(List itemList)
@@ -15,42 +43,29 @@ public class JohnnyMoves {
     double length, width, height, weight;
 
     do {
-      System.out.print("\nEnter length of document: ");
+      System.out.print("\nEnter length of document in inches: ");
       length = driver.sc.nextDouble();
-      System.out.print("\nEnter width of document: ");
+      System.out.print("\nEnter width of document in inches: ");
       width = driver.sc.nextDouble();
-    } while (length < 0 || width < 0);
-
-    do {
-      System.out.print("\nEnter height of document: ");
+      System.out.print("\nEnter height of document in inches: ");
       height = driver.sc.nextDouble();
-      System.out.print("\nEnter weight of document: ");
-      weight = driver.sc.nextDouble();
-    } while (height < 0 || weight < 0 || );
+    } while (length < 0 || width < 0 || height);
+    weight = length * width * height / 305;
 
-    itemList.add(new IrregularProduct(length, width, heigh, weight));
+    itemList.add(new IrregularProduct(length, width, height, weight));
   }
 
   public void addRegular(List itemList)
   {
     JohnnyMoves driver = new JohnnyMoves();
-    double length, width, height, weight;
+    double dimension, weight;
 
     do {
-      System.out.print("\nEnter length of document: ");
-      length = driver.sc.nextDouble();
-      System.out.print("\nEnter width of document: ");
-      width = driver.sc.nextDouble();
-    } while (length < 0 || width < 0);
-
-    do {
-      System.out.print("\nEnter height of document: ");
-      height = driver.sc.nextDouble();
-      System.out.print("\nEnter weight of document: ");
-      weight = driver.sc.nextDouble();
-    } while (height < 0 || weight < 0 || );
-
-    itemList.add(new RegularProduct(length, width, heigh, weight));
+      System.out.print("\nEnter dimension of product in inches: ");
+      dimension = driver.sc.nextDouble();
+    } while (dimension < 0);
+    weight = Math.pow(dimension, 3)/305;
+    itemList.add(new RegularProduct(dimension, dimension, dimension, weight));
   }
 
   public void addDocument(List itemList)
