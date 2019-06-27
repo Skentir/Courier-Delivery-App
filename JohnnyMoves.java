@@ -2,7 +2,7 @@ import java.util.*;
 
 public class JohnnyMoves {
 
-  public void modifyItems(List itemList) {
+  public void Compute(Parcel box) {
       // To be coded soon
   }
 
@@ -46,7 +46,8 @@ public class JohnnyMoves {
     JohnnyMoves driver = new JohnnyMoves();
     double length, width, height, weight;
 
-    do {
+    do
+    {
       System.out.print("\nEnter length of document in inches: ");
       length = driver.sc.nextDouble();
       System.out.print("\nEnter width of document in inches: ");
@@ -64,7 +65,8 @@ public class JohnnyMoves {
     JohnnyMoves driver = new JohnnyMoves();
     double dimension, weight;
 
-    do {
+    do
+    {
       System.out.print("\nEnter dimension of product in inches: ");
       dimension = driver.sc.nextDouble();
     } while (dimension < 0);
@@ -199,6 +201,7 @@ public class JohnnyMoves {
           System.out.println("Please select an option . . .");
           System.out.println("[Step 1] Add recipient");
           System.out.println("[Step 2] Add items");
+          System.out.println("[Step 3] Checkout");
           choice = driver.sc.nextInt();
           driver.sc.nextLine();
           if (choice < 1 || choice > 3)
