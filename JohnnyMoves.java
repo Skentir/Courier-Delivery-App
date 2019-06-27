@@ -2,19 +2,119 @@ import java.util.*;
 
 public class JohnnyMoves {
 
-  public void modifyItems(itemList) {
+  public void modifyItems(List itemList) {
 
   }
-  public void removeItems(itemList) {
 
+  public void delDocument(List itemList)
+  {
+    itemList.displayItems();
   }
-  public void addItems(itemList) {
-  double length, width, height, weight;
 
+  public void removeItems(List itemList)
+  {
+    JohnnyMoves driver = new JohnnyMoves();
+    int choice = 0;
+    do
+    {
+      System.out.println("Which item are you removing?");
+      System.out.println("[1] Document");
+      System.out.println("[2] Regular");
+      System.out.println("[3] Irregular");
+      System.out.printf("Choice: ");
+      choice = driver.sc.nextInt();
+    } while(choice < 1 || choice > 3);
+    sc.nextLine();
+
+    switch(choice)
+    {
+      case 1: // Document
+          driver.delDocument(itemList); break;
+      case 2:
+          driver.delRegular(itemList); break;
+      case 3:
+          driver.delIrregular(itemList); break;
+    }
+  }
+
+  public void addIrregular(List itemList)
+  {
+    JohnnyMoves driver = new JohnnyMoves();
+    double length, width, height, weight;
+
+    do {
+      System.out.print("\nEnter length of document in inches: ");
+      length = driver.sc.nextDouble();
+      System.out.print("\nEnter width of document in inches: ");
+      width = driver.sc.nextDouble();
+      System.out.print("\nEnter height of document in inches: ");
+      height = driver.sc.nextDouble();
+    } while (length < 0 || width < 0 || height);
+    weight = length * width * height / 305;
+
+    itemList.add(new IrregularProduct(length, width, height, weight));
+  }
+
+  public void addRegular(List itemList)
+  {
+    JohnnyMoves driver = new JohnnyMoves();
+    double dimension, weight;
+
+    do {
+      System.out.print("\nEnter dimension of product in inches: ");
+      dimension = driver.sc.nextDouble();
+    } while (dimension < 0);
+    weight = Math.pow(dimension, 3)/305;
+    itemList.add(new RegularProduct(dimension, dimension, dimension, weight));
+  }
+
+  public void addDocument(List itemList)
+  {
+    JohnnyMoves driver = new JohnnyMoves();
+    int pages = -1;
+    double length, width;
+    do
+    {
+      System.out.print("\nEnter number of pages: ");
+      pages = driver.sc.nextInt();
+    } while (pages < 0);
+
+    do {
+      System.out.print("\nEnter length of document: ");
+      length = driver.sc.nextDouble();
+      System.out.print("\nEnter width of document: ");
+      width = driver.sc.nextDouble();
+    } while (length < 0 || width < 0);
+    itemList.add(new Document(pages, length, width));
+  }
+
+  public void addItems(List itemList)
+  {
+    JohnnyMoves driver = new JohnnyMoves();
+    int choice = 0;
+    do
+    {
+      System.out.println("What type of item item are you gonna add?");
+      System.out.println("[1] Document");
+      System.out.println("[2] Regular");
+      System.out.println("[3] Irregular");
+      System.out.printf("Choice: ");
+      choice = driver.sc.nextInt();
+    } while(choice < 1 || choice > 3);
+    sc.nextLine();
+
+    switch(choice)
+    {
+      case 1: // Document
+          driver.addDocument(itemList); break;
+      case 2:
+          driver.addRegular(itemList); break;
+      case 3:
+          driver.addIrregular(itemList); break;
+    }
   }
 
   public void getInputs(List itemList) {
-    Scanner sc = new Scanner(System.in);
     JohnnyMoves driver = new JohnnyMoves();
     boolean running = true; int choice = 0; char menu;
     while (running) {
@@ -25,7 +125,7 @@ public class JohnnyMoves {
         System.out.println("[2] Remove an item");
         System.out.println("[3] Modify an item");
         choice = sc.nextInt();
-        sc.nextLine();
+        driver.sc.nextLine();
         if(choice < 1 || choice > 3)
           System.out.println("Invalid Action.");
       } while(running || choice < 1 || choice > 3)
@@ -40,7 +140,7 @@ public class JohnnyMoves {
       do
       {
         System.out.print("Stay in this menu? (y/n): ");
-        menu = sc.nextChar();
+        menu = driver.sc.nextChar();
         if (menu == 'y' || menu == 'Y')
           running = true;
         else if (menu == 'n' || menu == 'N')
@@ -55,7 +155,7 @@ public class JohnnyMoves {
     Scanner sc = new Scanner(System.in);
     List itemList = new ArrayList<>();
     JohnnyMoves driver = new JohnnyMoves();
-    boolean choice = false, main = true;
+    int choice = 0; boolean main = true;
 
 
     while(main) {
@@ -71,13 +171,8 @@ public class JohnnyMoves {
           System.out.println("Invalid Choice.");
       } while (choice != 1 || choice != 2);
 
-      while (choice == 1)
-        driver.getInputs(itemList);
-
-
-      while (choice == 2) {
-
-      }
-
+      choice == 1 ? driver.getInputs(itemList): driver.trackParcel();
     }
+
+    sc.close();
 }
