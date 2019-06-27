@@ -2,9 +2,9 @@ public class Document extends Item
 {
   private final int pages;
 
-  public Document(double length, double width, int pages)
+  public Document(String name, double length, double width, int pages)
   {
-    super(length, width);
+    super(name, length, width);
     if (pages <= 0)
       pages = 1;
 
