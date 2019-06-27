@@ -5,7 +5,7 @@ public class Parcel
   private final boolean insured;
   private final String recipient;
   private final String region;
-  private ArrayList<Item> items;
+  public ArrayList<Item> items;
 
   public Parcel(String recipient, String region)
   {
@@ -31,6 +31,15 @@ public class Parcel
 
   private void computeVolume()
   {
-    
+
+  }
+
+  public void displayItems()
+  {
+    for (int i = 0; i < items.size(); i++)
+    {
+      Item item = items.get(i);
+      System.out.printf("[%d] %s - %s", i + 1, item.getName(), item.getItemType());
+    }
   }
 }

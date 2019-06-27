@@ -6,15 +6,28 @@ public abstract class Item
   private final double length;
   private final double width;
 
-  protected Item(double length, double width)
+  private final String name;
+
+  protected Item(String name, double length, double width)
   {
     if (length <= 0.0)
       length = 1.0;
     if (width <= 0.0)
       width = 1.0;
 
+    this.name = name;
     this.length = length;
     this.width = width;
+  }
+
+  /**
+   * Returns the name given to the item.
+   *
+   * @return the name of the item
+   */
+  public String getName()
+  {
+    return name;
   }
 
   /**
@@ -36,6 +49,8 @@ public abstract class Item
   {
     return width;
   }
+
+  public abstract String getItemType();
 
   /**
    * Returns the height of the item.

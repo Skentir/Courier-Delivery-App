@@ -3,9 +3,9 @@ public class RegularProduct extends Item
   private final double height;
   private final double weight;
 
-  public RegularProduct(double length, double width, double height, double weight)
+  public RegularProduct(String name, double length, double width, double height, double weight)
   {
-    super(length, width);
+    super(name, length, width);
     if (height <= 0.0)
       height = 1.0;
     if (weight <= 0.0)
@@ -13,6 +13,12 @@ public class RegularProduct extends Item
 
     this.height = height;
     this.weight = weight;
+  }
+
+  @Override
+  public String getItemType()
+  {
+    return "Regular Product";
   }
 
   @Override
