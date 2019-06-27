@@ -10,16 +10,20 @@ public class JohnnyMoves {
   {
     JohnnyMoves driver = new JohnnyMoves();
     int choice = 0, numItems = box.items.size();
-    itemList.displayItems();
-    do
+    if (numItems != 0)
     {
-      System.out.println("\nWhich item are you removing?");
-      System.out.printf("Choice: ");
-      choice = driver.sc.nextInt();
-      choice--; // Indexing from 0 to n-1
-    } while(choice < 0 || choice >= numItems);
-    box.items.remove(choice);
-    driver.sc.nextLine();
+      itemList.displayItems();
+      do
+      {
+        System.out.println("\nWhich item are you removing?");
+        System.out.printf("Choice: ");
+        choice = driver.sc.nextInt();
+        choice--; // Indexing from 0 to n-1
+      } while(choice < 0 || choice >= numItems);
+      box.items.remove(choice);
+      driver.sc.nextLine();
+    } else
+      System.out.println("Box is empty. Add items first.");
   }
 
   public void addInsurance(Parcel box)
@@ -189,7 +193,7 @@ public class JohnnyMoves {
     List itemList = new ArrayList<>();
     JohnnyMoves driver = new JohnnyMoves();
     int choice = 0; boolean main = true;
-
+    Parcel box;
 
     while(main) {
       System.out.println("\n>>> Welcome to JohnnyMoves Services <<<\n");
@@ -197,20 +201,23 @@ public class JohnnyMoves {
       {
         System.out.println("Please select an option . . .");
         System.out.println("[1] Send parcel");
-        System.out.println("[2] Track a parcel");
+        System.out.println("[2] Modify current parcel");
+        System.out.println("[3] Track a parcel");
         choice = sc.nextInt();
         sc.nextLine();
-        if (choice < 1 || choice > 2)
+        if (choice < 1 || choice > 3)
           System.out.println("Invalid Choice.");
-      } while (choice != 1 || choice != 2);
+      } while (choice < 1 || choice > 3);
 
-      if (choice == 1)
-      {
-        Parcel box = driver.getRecipient();
-        driver.getInputs(itemList, box);
-      }
-      else
-        driver.trackParcel();
+      switch (choice)
+       {
+         case 1:  box = driver.getRecipient();
+                  driver.getInputs(itemList, box); break;
+         case 2: driver.getInputs(itemList, box); break;
+         case 3: driver.trackParcel(); break; // How to do this?
+
+       }
+
     }
 
     sc.close();
