@@ -44,7 +44,10 @@ public class JohnnyMoves {
   public void addIrregular(List itemList)
   {
     JohnnyMoves driver = new JohnnyMoves();
-    double length, width, height, weight;
+    double length, width, height, weight; String name;
+
+    System.out.print("Name of product: ");
+    name = driver.sc.nextLine();
 
     do
     {
@@ -57,13 +60,16 @@ public class JohnnyMoves {
     } while (length < 0 || width < 0 || height);
     weight = length * width * height / 305;
 
-    itemList.add(new IrregularProduct(length, width, height, weight));
+    itemList.add(new IrregularProduct(name, length, width, height, weight));
   }
 
   public void addRegular(List itemList)
   {
     JohnnyMoves driver = new JohnnyMoves();
-    double dimension, weight;
+    double dimension, weight; String name;
+
+    System.out.print("Name of product: ");
+    name = driver.sc.nextLine();
 
     do
     {
@@ -71,14 +77,18 @@ public class JohnnyMoves {
       dimension = driver.sc.nextDouble();
     } while (dimension < 0);
     weight = Math.pow(dimension, 3)/305;
-    itemList.add(new RegularProduct(dimension, dimension, dimension, weight));
+    itemList.add(new RegularProduct(name, dimension, dimension, dimension, weight));
   }
 
   public void addDocument(List itemList)
   {
     JohnnyMoves driver = new JohnnyMoves();
-    int pages = -1;
+    int pages = -1; String name;
     double length, width;
+
+    System.out.print("Name of document: ");
+    name = driver.sc.nextLine();
+
     do
     {
       System.out.print("\nEnter number of pages: ");
@@ -91,7 +101,7 @@ public class JohnnyMoves {
       System.out.print("\nEnter width of document: ");
       width = driver.sc.nextDouble();
     } while (length < 0 || width < 0);
-    itemList.add(new Document(pages, length, width));
+    itemList.add(new Document(name, pages, length, width));
   }
 
   public void addItems(List itemList)
