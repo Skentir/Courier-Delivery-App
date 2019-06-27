@@ -5,6 +5,9 @@ public class Document extends Item
   public Document(double length, double width, int pages)
   {
     super(length, width);
+    if (pages <= 0)
+      pages = 1;
+
     this.pages = pages;
   }
 
