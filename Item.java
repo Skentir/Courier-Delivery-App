@@ -50,6 +50,8 @@ public abstract class Item
     return width;
   }
 
+  public abstract String getItemType();
+
   /**
    * Returns the height of the item.
    *

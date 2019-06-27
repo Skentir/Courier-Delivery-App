@@ -17,6 +17,12 @@ public class Document extends Item
   }
 
   @Override
+  public String getItemType()
+  {
+    return "Document";
+  }
+
+  @Override
   public double getHeight()
   {
     return Math.ceil(pages / 25.0);

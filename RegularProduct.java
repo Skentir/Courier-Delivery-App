@@ -16,6 +16,12 @@ public class RegularProduct extends Item
   }
 
   @Override
+  public String getItemType()
+  {
+    return "Regular Product";
+  }
+
+  @Override
   public double getHeight()
   {
     return height;
