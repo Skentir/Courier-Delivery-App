@@ -187,13 +187,53 @@ public class JohnnyMoves {
     return box;
   }
 
+  public void sendMenu()
+  {
+      JohnnyMoves driver = new JohnnyMoves();
+      boolean running = true; int choice;
+      Parcel box; char menu;
+      while (running)
+      {
+        do
+        {
+          System.out.println("Please select an option . . .");
+          System.out.println("[Step 1] Add recipient");
+          System.out.println("[Step 2] Add items");
+          choice = driver.sc.nextInt();
+          driver.sc.nextLine();
+          if (choice < 1 || choice > 3)
+            System.out.println("Invalid Choice.");
+        } while (choice < 1 || choice > 3);
+        if (choice == 1)
+        {
+            box = driver.getRecipient();
+            System.out.println("Kindly place atleast 1 item.");
+            driver.getInputs(itemList, box);
+        } else if (choice == 2)
+            driver.getInputs(itemList, box);
+        else
+            driver.Checkout(box); // How to do this?
+
+        do
+        {
+          System.out.print("Stay in this menu? (y/n): ");
+          menu = driver.sc.nextChar();
+          if (menu == 'y' || menu == 'Y')
+              running = true;
+          else if (menu == 'n' || menu == 'N')
+              running = false;
+          else
+              System.out.println("Invalid Action.");
+        } while(menu != 'y' || menu != 'Y' || menu != 'n' || menu != 'N');
+
+      }
+  }
   public static void main(String[] args)
   {
     Scanner sc = new Scanner(System.in);
     List itemList = new ArrayList<>();
     JohnnyMoves driver = new JohnnyMoves();
-    int choice = 0; boolean main = true;
-    Parcel box;
+    int choice = 0; boolean main = true; char menu;
 
     while(main) {
       System.out.println("\n>>> Welcome to JohnnyMoves Services <<<\n");
@@ -201,23 +241,29 @@ public class JohnnyMoves {
       {
         System.out.println("Please select an option . . .");
         System.out.println("[1] Send parcel");
-        System.out.println("[2] Modify current parcel");
-        System.out.println("[3] Track a parcel");
+        System.out.println("[2] Track a parcel");
         choice = sc.nextInt();
         sc.nextLine();
-        if (choice < 1 || choice > 3)
+        if (choice < 1 || choice > 2)
           System.out.println("Invalid Choice.");
-      } while (choice < 1 || choice > 3);
+      } while (choice < 1 || choice > 2);
 
-      switch (choice)
-       {
-         case 1:  box = driver.getRecipient();
-                  driver.getInputs(itemList, box); break;
-         case 2: driver.getInputs(itemList, box); break;
-         case 3: driver.trackParcel(); break; // How to do this?
+      if (choice == 1)
+        driver.sendMenu();
+      else
+        driver.trackParcel();
 
-       }
-
+      do
+      {
+        System.out.print("Stay in this menu? (y/n): ");
+          menu = sc.nextChar();
+        if (menu == 'y' || menu == 'Y')
+          main = true;
+        else if (menu == 'n' || menu == 'N')
+          main = false;
+        else
+            System.out.println("Invalid Action.");
+        } while(menu != 'y' || menu != 'Y' || menu != 'n' || menu != 'N');
     }
 
     sc.close();
