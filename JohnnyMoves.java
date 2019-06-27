@@ -3,38 +3,38 @@ import java.util.*;
 public class JohnnyMoves {
 
   public void modifyItems(List itemList) {
-
+      // To be coded soon
   }
 
-  public void delDocument(List itemList)
-  {
-    itemList.displayItems();
-  }
-
-  public void removeItems(List itemList)
+  public void removeItems(List itemList, Parcel box)
   {
     JohnnyMoves driver = new JohnnyMoves();
-    int choice = 0;
+    int choice = 0, numItems = box.items.size();
+    itemList.displayItems();
     do
     {
-      System.out.println("Which item are you removing?");
-      System.out.println("[1] Document");
-      System.out.println("[2] Regular");
-      System.out.println("[3] Irregular");
+      System.out.println("\nWhich item are you removing?");
       System.out.printf("Choice: ");
       choice = driver.sc.nextInt();
-    } while(choice < 1 || choice > 3);
-    sc.nextLine();
+      choice--; // Indexing from 0 to n-1
+    } while(choice < 0 || choice >= numItems);
+    box.items.remove(choice);
+    driver.sc.nextLine();
+  }
 
-    switch(choice)
+  public void addInsurance(Parcel box)
+  {
+    JohnnyMoves driver = new JohnnyMoves();
+    boolean false; char reply;
+    do
     {
-      case 1: // Document
-          driver.delDocument(itemList); break;
-      case 2:
-          driver.delRegular(itemList); break;
-      case 3:
-          driver.delIrregular(itemList); break;
-    }
+      System.out.println("Do you want to insure your parcel? (y/n)");
+      reply = driver.sc.nextChar();
+    } while(reply != 'y' || reply != 'Y' || reply != 'n' || reply != 'N');
+    if (reply == 'y' || reply == 'Y')
+      box.setInsurance(true);
+    else
+      box.setInsurance(false);
   }
 
   public void addIrregular(List itemList)
@@ -114,7 +114,7 @@ public class JohnnyMoves {
     }
   }
 
-  public void getInputs(List itemList) {
+  public void getInputs(List itemList, Parcel box) {
     JohnnyMoves driver = new JohnnyMoves();
     boolean running = true; int choice = 0; char menu;
     while (running) {
@@ -124,9 +124,10 @@ public class JohnnyMoves {
         System.out.println("[1] Add an item");
         System.out.println("[2] Remove an item");
         System.out.println("[3] Modify an item");
+        System.out.println("[4] Add Insurance to Parcel");
         choice = sc.nextInt();
         driver.sc.nextLine();
-        if(choice < 1 || choice > 3)
+        if(choice < 1 || choice > 4)
           System.out.println("Invalid Action.");
       } while(running || choice < 1 || choice > 3)
 
@@ -135,6 +136,7 @@ public class JohnnyMoves {
         case 1: driver.addItems(itemList); break;
         case 2: driver.removeItems(itemList); break;
         case 3: driver.modifyItems(itemList); break;
+        case 4: driver.setInsurance(box); break;
       }
 
       do
@@ -151,7 +153,38 @@ public class JohnnyMoves {
     }
   }
 
-  public static void main(String[] args) {
+  public Parcel getRecipient()
+  {
+    JohnnyMoves driver = new JohnnyMoves();
+    String name; int region, i;
+    do
+    {
+      System.out.println("Enter name of recipient:");
+      name = driver.sc.nextLine();
+      if (name.length() < 4)
+        System.out.println("Name too short!");
+      else if (name.length() > 30)
+      System.out.println("Name too long!");
+    } while (name.length() < 4 || name.length() > 30);
+
+    for (i = 0; i < Parcel.region.size(); i++)
+      System.out.printf("[%d] "+ Parcel.region[i], i+1);
+
+    do
+    {
+      System.out.println("Enter region:");
+      region = driver.sc.nextInt();
+      if (region < 0 || region > 3)
+        System.out.println("Invalid Action.");
+    } while (region < 0 || region > 3);
+    driver.sc.nextLine();
+
+    Parcel box = new Parcel (name, region);
+    return box;
+  }
+
+  public static void main(String[] args)
+  {
     Scanner sc = new Scanner(System.in);
     List itemList = new ArrayList<>();
     JohnnyMoves driver = new JohnnyMoves();
@@ -171,7 +204,13 @@ public class JohnnyMoves {
           System.out.println("Invalid Choice.");
       } while (choice != 1 || choice != 2);
 
-      choice == 1 ? driver.getInputs(itemList): driver.trackParcel();
+      if (choice == 1)
+      {
+        Parcel box = driver.getRecipient();
+        driver.getInputs(itemList, box);
+      }
+      else
+        driver.trackParcel();
     }
 
     sc.close();
