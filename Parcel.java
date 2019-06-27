@@ -69,18 +69,19 @@ public class Parcel
 
   public void packItems()
   {
-    boolean fitsLStack, fitsWStack, fitsHStack, done = false;
+    boolean fitsLStack, fitsWStack, fitsHStack, start = true;
     int i = 0; /*  Start with flat box dimensions */
     sortByVolume(); /* Sort by dimensions/volume */
-    while (done == false)
+    while (start)
     {
     /* If it can stack ALL items in 1 orientation without consuming
     60 % of available space then use stack algorithm */
       fitsLStack = stackLeft(items);
       fitsWStack = stackWidth(items);
       fitsHStack = stackHeight(items);
+      // getWeight makes sure <= 3 kilos for flat
       if (itemList.size() < computeVolume(boxSize[i])* 0.40);
-        done = true;
+        start = stop;
       else {
     /* If it consumes more than 40% of the available space then
     use volume based algorithm (bin packaging algorithm) */
