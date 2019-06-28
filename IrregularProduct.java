@@ -3,7 +3,7 @@ public class IrregularProduct extends Item
   private final double height;
   private final double weight;
 
-  public RegularProduct(String name, double length, double width, double height, double weight)
+  public IrregularProduct(String name, double length, double width, double height, double weight)
   {
     super(name, length, width);
     if (height <= 0.0)

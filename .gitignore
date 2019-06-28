@@ -1,0 +1,2 @@
+# avoid committing class files
+*.class
