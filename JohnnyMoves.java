@@ -202,8 +202,8 @@ public class JohnnyMoves {
   public void sendMenu()
   {
       JohnnyMoves driver = new JohnnyMoves();
-      boolean running = true; int choice;
-      Parcel box; char menu;
+      boolean running = true; int choice; char menu;
+      ArrayList box = new ArrayList<Parcel>();
       while (running)
       {
         do
