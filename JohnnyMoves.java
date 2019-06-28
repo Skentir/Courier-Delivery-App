@@ -201,11 +201,18 @@ public class JohnnyMoves {
 
   public void sendMenu()
   {
+<<<<<<< HEAD
     boolean running = true; int choice;
     Parcel box; char menu;
     while (running)
     {
       do
+=======
+      JohnnyMoves driver = new JohnnyMoves();
+      boolean running = true; int choice; char menu;
+      ArrayList box = new ArrayList<Parcel>();
+      while (running)
+>>>>>>> master
       {
         System.out.println("Please select an option . . .");
         System.out.println("[Step 1] Add recipient");
