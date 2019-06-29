@@ -1,4 +1,5 @@
 import java.util.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class JohnnyMoves {
@@ -158,6 +159,48 @@ public class JohnnyMoves {
 
   }
 
+  public String regionCode(String region)
+  {
+    if (region.equalsIgnorecase("Metro Manila"))
+      return "MML";
+    else if (region.equalsIgnorecase("Visayas"))
+      return "VIS";
+    else if (region.equalsIgnorecase("Mindanao"))
+      return "MIN";
+    else if (region.equalsIgnorecase("Luzon"))
+      return "LUZ";
+  }
+
+  public String dateCode(Parcel parcel)
+  {
+    Date shipDate = parcel.getShipDate();
+    SimpleDateFormat fDate = new SimpleDateFormat ("MMDD");
+    return fDate.format(shipDate);
+  }
+
+  public String seqCode(ArrayList<Parcel> parcelList)
+  {
+    int i, count;
+    for (i = 0; i < parcelList.size(); i++)
+    {
+
+    }
+    // Just compare dates
+  }
+
+  public  void generateCode(ArrayList<Parcel> parcelList)
+  {
+    Parcel parcel = parcelList.get(parcelList.size()-1)
+    String code, dest, itemNum, pType;
+    dest = regionCode(parcel.getRegion()); /* Gets location code: MNL, VIS, MIN, or LUZ */
+    itemNum = parcel.items.size(); /* Gets number of items */
+    pType = parcel.getParcelType(); /* Get parcel Type: FLT or BOX */
+    date = dateCode(parcelList); /* Get date in string format of MMDD */
+    seq = seqCode(parcelList)/* TODO: number for da day */
+    code = "<"+pType+">"+"<"+date+">"+"<"+dest+">"+"<"+itemNum+">"+"<"+seq+">";
+    parcel.setTrackingCode(code);
+  }
+
   public Parcel sendMenu(ArrayList<Parcel> parcels)
   {
     String[] commands = new String[] {
@@ -193,6 +236,7 @@ public class JohnnyMoves {
           break;
         case 4:
           parcels.add(new Parcel(recipient, region, insured));
+          generateCode(parcels);
           running = false;
           break;
         case 5:
@@ -313,12 +357,11 @@ public class JohnnyMoves {
 
   public void trackParcel(ArrayList<Parcel> parcels)
   {
-    JohnnyMoves driver = new JohnnyMoves(sc);
     String code; int parcelIdx = -1;
     do
     {
       System.out.println("Please enter a tracking code: ");
-      code = driver.sc.nexLine();
+      code = sc.nexLine();
       parcelIdx = driver.codeExists(parcels, code);
       if (parcelIdx == -1)
         System.out.println("Woops! It seems this code doesn't exist. Try again.");
@@ -326,9 +369,16 @@ public class JohnnyMoves {
 
     System.out.println("----------------------------------");
     System.out.print("Tracking Code: ");
+<<<<<<< HEAD
     System.out.println (parcel.get(parcelIdx).getTrackingCode());
     System.out.printf("Recipient: %s\n", parcel.get(parcelIdx).getRecipient());
     System.out.printf("Region: %s\n", parcel.get(parcelIdx).getRegion());
+=======
+    System.out.println (parcels.get(parcelIdx).getTrackingCode());
+    System.out.printlf("Status: %s", parcels.get(parcelIdx).getStatus());
+    System.out.printf("Recipient: %s\n", parcels.get(parcelIdx).getRecipient());
+    System.out.printf("Region: %s\n", parcels.get(parcelIdx).getRegion());
+>>>>>>> origin/kirsten
     System.out.print("Items shipped:\n");
     parcel.get(i).displayItems();
     System.out.println("----------------------------------\n");
