@@ -310,7 +310,7 @@ public class JohnnyMoves {
 
     do
     {
-      System.out.println("Your choice: ");
+      System.out.print("Your choice: ");
       int answer = sc.nextInt();
       if (answer >= 1 && answer <= choices.length)
       {
