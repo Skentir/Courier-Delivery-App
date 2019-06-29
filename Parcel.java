@@ -20,6 +20,8 @@ public class Parcel
   private final String recipient;
   private final String region;
   private ArrayList<Item> items;
+  private String trackingCode;
+
   public static final String[] REGIONS =
   new String[]
   {
@@ -63,6 +65,12 @@ public class Parcel
     return region;
   }
 
+  public String getTrackingCode()
+  {
+    return trackingCode;
+  }
+
+
   public List<Item> getItems()
   {
     return items;
@@ -89,6 +97,21 @@ public class Parcel
     return volume;
   }
 
+  private boolean stackLeft(Integer[] boxSize)
+  {
+    int i;
+    for ()
+  }
+
+  public void addItem(Item item)
+  {
+    if (item != null) {
+      items.add(item);
+      System.out.println("Item added to parcel!");
+    } else
+      System.out.println("Item can't be added to parcel!");
+  }
+
   public void packItems()
   {
     boolean fitsLStack, fitsWStack, fitsHStack, start = true;
@@ -98,7 +121,7 @@ public class Parcel
     {
       /* If it can stack ALL items in 1 orientation without consuming
       60 % of available space then use stack algorithm */
-      //fitsLStack = stackLeft();
+      fitsLStack = stackLeft(boxSize[i]);
       //fitsWStack = stackWidth();
       //fitsHStack = stackHeight();
       // item.getWeight() makes sure <= 3 kilos for flat

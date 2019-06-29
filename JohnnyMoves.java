@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayList;
 
 public class JohnnyMoves {
   private Scanner sc;
@@ -11,7 +12,7 @@ public class JohnnyMoves {
       // To be coded soon
   }
 
-  public void removeItems(List itemList, Parcel box)
+  public void removeItems(Parcel box)
   {
     int choice = 0, numItems = box.getItems().size();
     if (numItems != 0)
@@ -30,21 +31,7 @@ public class JohnnyMoves {
       System.out.println("Box is empty. Add items first.");
   }
 
-  public void addInsurance(Parcel box)
-  {
-    /* boolean false; */char reply;
-    do
-    {
-      System.out.println("Do you want to insure your parcel? (y/n)");
-      reply = sc.nextLine().charAt(0);
-    } while(reply != 'y' || reply != 'Y' || reply != 'n' || reply != 'N');
-    if (reply == 'y' || reply == 'Y')
-      box.setInsurance(true);
-    else
-      box.setInsurance(false);
-  }
-
-  public void addIrregular(List itemList)
+  public void addIrregular()
   {
     double length, width, height, weight; String name;
 
@@ -62,10 +49,10 @@ public class JohnnyMoves {
     } while (length < 0 || width < 0 || height < 0);
     weight = length * width * height / 305;
 
-    itemList.add(new IrregularProduct(name, length, width, height, weight));
+    Parcel.add(new IrregularProduct(name, length, width, height, weight));
   }
 
-  public void addRegular(List itemList)
+  public void addRegular()
   {
     double dimension, weight; String name;
 
@@ -78,10 +65,10 @@ public class JohnnyMoves {
       dimension = sc.nextDouble();
     } while (dimension < 0);
     weight = Math.pow(dimension, 3)/305;
-    itemList.add(new RegularProduct(name, dimension, dimension, dimension, weight));
+    Parcel.add(new RegularProduct(name, dimension, dimension, dimension, weight));
   }
 
-  public void addDocument(List itemList)
+  public void addDocument()
   {
     int pages = -1; String name;
     double length, width;
@@ -102,7 +89,7 @@ public class JohnnyMoves {
       System.out.print("\nEnter width of document: ");
       width = sc.nextDouble();
     } while (length < 0 || width < 0);
-    itemList.add(new Document(name, length, width, pages));
+    Parcel.add(new Document(name, length, width, pages));
   }
 
   public void addItems(List itemList)
@@ -122,15 +109,15 @@ public class JohnnyMoves {
     switch(choice)
     {
       case 1: // Document
-          addDocument(itemList); break;
+          addDocument(); break;
       case 2:
-          addRegular(itemList); break;
+          addRegular(); break;
       case 3:
-          addIrregular(itemList); break;
+          addIrregular(); break;
     }
   }
 
-  public void getInputs(List itemList, Parcel box)
+  public void getInputs(Parcel box)
   {
     boolean running = true; int choice = 0; char menu;
     while (running)
@@ -141,20 +128,16 @@ public class JohnnyMoves {
         System.out.println("[1] Add an item");
         System.out.println("[2] Remove an item");
         /*System.out.println("[3] Modify an item");*/
-        System.out.println("[3] Add Insurance to Parcel");
         choice = sc.nextInt();
         sc.nextLine();
-        if(choice < 1 || choice > 4)
+        if(choice < 1 || choice > 2)
           System.out.println("Invalid Action.");
-      } while(running || choice < 1 || choice > 3);
+      } while(running || choice < 1 || choice > 2);
 
-      switch (choice)
-      {
-        case 1: addItems(itemList); break;
-        case 2: removeItems(itemList, box); break;
-        /*case 2: modifyItems(itemList); break;*/
-        case 3: addInsurance(box); break;
-      }
+      if (choice == 1)
+        addItems();
+      else
+        removeItems(box);
 
       do
       {
@@ -204,7 +187,7 @@ public class JohnnyMoves {
 
   }
 
-  public Parcel sendMenu()
+  public Parcel sendMenu(ArrayList<Parcel> parcels)
   {
     String[] commands = new String[] {
       "Set recipient",
@@ -217,12 +200,9 @@ public class JohnnyMoves {
     boolean running = true;
     int choice;
     char menu;
-
-    Parcel parcel = null;
     String recipient = null;
     String region = null;
     boolean insured = false;
-    ArrayList<Item> itemList = new ArrayList<>();
 
     while (running)
     {
@@ -241,9 +221,7 @@ public class JohnnyMoves {
           itemMenu(itemList);
           break;
         case 4:
-          parcel = new Parcel(recipient, region, insured);
-
-
+          parcels.add(new Parcel(recipient, region, insured));
           running = false;
           break;
         case 5:
@@ -350,9 +328,39 @@ public class JohnnyMoves {
     return choice;
   }
 
-  public void trackParcel()
+  public int codeExists(ArrayList<Parcel> parcels, String code)
   {
+    int i, found = -1;
+    for (i=0; i < parcels.size(); i++)
+    {
+      if (parcels.get(i) != null)
+        if (parcels.get(i).getTrackingCode().equalsIgnorecase(code));
+          return i;
+    }
+    return found;
+  }
 
+  public void trackParcel(ArrayList<Parcel> parcels)
+  {
+    JohnnyMoves driver = new JohnnyMoves(sc);
+    String code; int parcelIdx = -1;
+    do
+    {
+      System.out.println("Please enter a tracking code: ");
+      code = driver.sc.nexLine();
+      parcelIdx = driver.codeExists(parcels, code);
+      if (parcelIdx == -1)
+        System.out.println("Woops! It seems this code doesn't exist. Try again.");
+    } while (parcelIdx != -1);
+
+    System.out.println("----------------------------------");
+    System.out.print("Tracking Code: ")
+    System.out.println (parcel.get(parcelIdx).getTrackingCode());
+    System.out.printf("Recipient: %s\n", parcel.get(parcelIdx).getRecipient());
+    System.out.printf("Region: %s\n", parcel.get(parcelIdx).getRegion());
+    System.out.print("Items shipped:\n");
+    parcel.get(i).displayItems();
+    System.out.println("----------------------------------\n");
   }
 
   public static void main(String[] args)
@@ -362,9 +370,8 @@ public class JohnnyMoves {
       "Track parcel",
       "Exit app"
     };
-
+    ArrayList<Parcel> parcels = new ArrayList<>();
     Scanner sc = new Scanner(System.in);
-    List itemList = new ArrayList<>();
     JohnnyMoves driver = new JohnnyMoves(sc);
     boolean running = true;
 
@@ -374,9 +381,9 @@ public class JohnnyMoves {
       int choice = driver.optionIndex("Please select an option . . .", options);
 
       if (choice == 1)
-        driver.sendMenu();
+        driver.sendMenu(ArrayList<Parcel> parcels);
       else if (choice == 2)
-        driver.trackParcel();
+        driver.trackParcel(ArrayList<Parcel> parcels;
       else
         running = false;
     }
