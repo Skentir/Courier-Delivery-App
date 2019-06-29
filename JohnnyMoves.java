@@ -369,7 +369,7 @@ public class JohnnyMoves {
     while (running)
     {
       System.out.println("\n>>> Welcome to JohnnyMoves Services <<<\n");
-      int choice = optionIndex("Please select an option . . .", options);
+      int choice = driver.optionIndex("Please select an option . . .", options);
 
       if (choice == 1)
         driver.sendMenu();
