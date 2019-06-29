@@ -212,7 +212,7 @@ public class JohnnyMoves {
     int i, count;
     for (i = 0; i < parcelList.size(); i++)
     {
-      
+
     }
     // Just compare dates
   }
@@ -225,7 +225,7 @@ public class JohnnyMoves {
     itemNum = parcel.items.size(); /* Gets number of items */
     pType = parcel.getParcelType(); /* Get parcel Type: FLT or BOX */
     date = dateCode(parcelList); /* Get date in string format of MMDD */
-    seq = seqCode(parcelList)/* TO DO: number for da day */
+    seq = seqCode(parcelList)/* TODO: number for da day */
     code = "<"+pType+">"+"<"+date+">"+"<"+dest+">"+"<"+itemNum+">"+"<"+seq+">";
     parcel.setTrackingCode(code);
   }
