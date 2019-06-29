@@ -97,12 +97,6 @@ public class Parcel
     return volume;
   }
 
-  private boolean stackLeft(Integer[] boxSize)
-  {
-    int i;
-    for ()
-  }
-
   public void addItem(Item item)
   {
     if (item != null) {
@@ -121,7 +115,7 @@ public class Parcel
     {
       /* If it can stack ALL items in 1 orientation without consuming
       60 % of available space then use stack algorithm */
-      fitsLStack = stackLeft(boxSize[i]);
+      //fitsLStack = stackLeft(boxSize[i]);
       //fitsWStack = stackWidth();
       //fitsHStack = stackHeight();
       // item.getWeight() makes sure <= 3 kilos for flat
