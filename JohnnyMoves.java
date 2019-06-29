@@ -312,6 +312,7 @@ public class JohnnyMoves {
     {
       System.out.print("Your choice: ");
       int answer = sc.nextInt();
+      sc.nextLine();
       if (answer >= 1 && answer <= choices.length)
       {
         valid = true;
@@ -338,6 +339,7 @@ public class JohnnyMoves {
     {
       System.out.print("Your choice: ");
       int answer = sc.nextInt();
+      sc.nextLine();
       if (answer >= 1 && answer <= choices.length)
       {
         valid = true;
