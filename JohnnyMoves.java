@@ -336,7 +336,7 @@ public class JohnnyMoves {
 
     do
     {
-      System.out.println("Your choice: ");
+      System.out.print("Your choice: ");
       int answer = sc.nextInt();
       if (answer >= 1 && answer <= choices.length)
       {
@@ -355,6 +355,12 @@ public class JohnnyMoves {
 
   public static void main(String[] args)
   {
+    String[] options = new String[] {
+      "Send parcel",
+      "Track parcel",
+      "Exit app"
+    };
+
     Scanner sc = new Scanner(System.in);
     List itemList = new ArrayList<>();
     JohnnyMoves driver = new JohnnyMoves(sc);
@@ -363,17 +369,7 @@ public class JohnnyMoves {
     while (running)
     {
       System.out.println("\n>>> Welcome to JohnnyMoves Services <<<\n");
-      do
-      {
-        System.out.println("Please select an option . . .");
-        System.out.println("[1] Send parcel");
-        System.out.println("[2] Track a parcel");
-        System.out.println("[3] Exit app");
-        choice = sc.nextInt();
-        sc.nextLine();
-        if (choice < 1 || choice > 3)
-          System.out.println("Invalid Choice.");
-      } while (choice < 1 || choice > 3);
+      int choice = optionIndex("Please select an option . . .", options);
 
       if (choice == 1)
         driver.sendMenu();
