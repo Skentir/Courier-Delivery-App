@@ -153,35 +153,6 @@ public class JohnnyMoves {
     }
   }
 
-  public Parcel getRecipient()
-  {
-    String name; int region, i;
-    do
-    {
-      System.out.println("Enter name of recipient:");
-      name = sc.nextLine();
-      if (name.length() < 4)
-        System.out.println("Name too short!");
-      else if (name.length() > 30)
-      System.out.println("Name too long!");
-    } while (name.length() < 4 || name.length() > 30);
-
-    for (i = 0; i < Parcel.REGIONS.length; i++)
-      System.out.printf("[%d] "+ Parcel.REGIONS[i], i+1);
-
-    do
-    {
-      System.out.println("Enter region:");
-      region = sc.nextInt();
-      if (region < 0 || region > 3)
-        System.out.println("Invalid Action.");
-    } while (region < 0 || region > 3);
-    sc.nextLine();
-
-    Parcel box = new Parcel (name, Parcel.REGIONS[region]);
-    return box;
-  }
-
   public void itemMenu(List<Item> items)
   {
 
@@ -354,7 +325,7 @@ public class JohnnyMoves {
     } while (parcelIdx != -1);
 
     System.out.println("----------------------------------");
-    System.out.print("Tracking Code: ")
+    System.out.print("Tracking Code: ");
     System.out.println (parcel.get(parcelIdx).getTrackingCode());
     System.out.printf("Recipient: %s\n", parcel.get(parcelIdx).getRecipient());
     System.out.printf("Region: %s\n", parcel.get(parcelIdx).getRegion());
@@ -381,9 +352,9 @@ public class JohnnyMoves {
       int choice = driver.optionIndex("Please select an option . . .", options);
 
       if (choice == 1)
-        driver.sendMenu(ArrayList<Parcel> parcels);
+        driver.sendMenu(parcels);
       else if (choice == 2)
-        driver.trackParcel(ArrayList<Parcel> parcels;
+        driver.trackParcel(parcels);
       else
         running = false;
     }
