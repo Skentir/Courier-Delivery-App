@@ -364,7 +364,7 @@ public class JohnnyMoves {
     Scanner sc = new Scanner(System.in);
     List itemList = new ArrayList<>();
     JohnnyMoves driver = new JohnnyMoves(sc);
-    int choice = 0; boolean running = true;
+    boolean running = true;
 
     while (running)
     {
