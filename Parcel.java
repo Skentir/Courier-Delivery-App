@@ -3,6 +3,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.*;
 
 class ItemComparator implements Comparator<Item>
 {
@@ -19,9 +20,10 @@ public class Parcel
   private boolean insured;
   private final String recipient;
   private final String region;
+  private final Date shipDate;
   private ArrayList<Item> items;
   private String trackingCode;
-
+  private String parcelType;
   public static final String[] REGIONS =
   new String[]
   {
@@ -49,10 +51,36 @@ public class Parcel
 
   public Parcel(String recipient, String region, boolean insured)
   {
+    shipDate = new Date();
     this.recipient = recipient;
     this.region = region;
     this.insured = insured;
     this.items = new ArrayList<>();
+  }
+
+  public void setParcelType(Integer sizeIdx)
+  {
+    if (sizeIdx Idx <= 1)
+      parcelType = "FLT";
+    else
+      parcelType = "BOX";
+  }
+
+  public void setShipDate(Date currDate)
+  {
+    shipDate = currDate;
+  }
+  public void getShipDate(Date currDate)
+  {
+    shipDate = currDate;
+  }
+  public void getStatus(Date currDate)
+  {
+    shipDate = currDate;
+  }
+  public  String getParcelType()
+  {
+    return parcelType;
   }
 
   public String getRecipient()
