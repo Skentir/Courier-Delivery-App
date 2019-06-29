@@ -16,10 +16,11 @@ class ItemComparator implements Comparator<Item>
 
 public class Parcel
 {
-  private final boolean insured;
+  private boolean insured;
   private final String recipient;
+  private final String region;
   private ArrayList<Item> items;
-  public static final String[] region =
+  public static final String[] REGIONS =
   new String[]
   {
     "LUZON",
@@ -42,7 +43,6 @@ public class Parcel
   public Parcel(String recipient, String region)
   {
     this(recipient, region, false);
-    this.items  = new ArrayList<>();
   }
 
   public Parcel(String recipient, String region, boolean insured)
@@ -50,6 +50,7 @@ public class Parcel
     this.recipient = recipient;
     this.region = region;
     this.insured = insured;
+    this.items = new ArrayList<>();
   }
 
   public String getRecipient()
@@ -83,8 +84,8 @@ public class Parcel
   {
   /* Multiplies the length, width, height */
     int i; double volume = 1;
-    for (i=0; i<dimensions; i++)
-      volume *= dimensions[i];
+    //for (i=0; i<dimensions; i++)
+    //  volume *= dimensions[i];
     return volume;
   }
 
@@ -97,19 +98,19 @@ public class Parcel
     {
       /* If it can stack ALL items in 1 orientation without consuming
       60 % of available space then use stack algorithm */
-      fitsLStack = stackLeft();
-      fitsWStack = stackWidth();
-      fitsHStack = stackHeight();
+      //fitsLStack = stackLeft();
+      //fitsWStack = stackWidth();
+      //fitsHStack = stackHeight();
       // item.getWeight() makes sure <= 3 kilos for flat
-      if (itemList.size() < computeVolume(boxSize[i])* 0.40)
-        start = stop;
-      else
-      {
+      //if (itemList.size() < computeVolume(boxSize[i])* 0.40)
+      //  start = stop;
+    //  else
+    //  {
         /* If it consumes more than 40% of the available space then
         use volume based algorithm (bin packaging algorithm) */
-        done = binPackaging();
-        i++;
-      }
+    //    done = binPackaging();
+    //    i++;
+  //    }
     }
   }
 
