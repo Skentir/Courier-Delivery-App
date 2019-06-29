@@ -354,7 +354,7 @@ public class JohnnyMoves {
     } while (parcelIdx != -1);
 
     System.out.println("----------------------------------");
-    System.out.print("Tracking Code: ")
+    System.out.print("Tracking Code: ");
     System.out.println (parcel.get(parcelIdx).getTrackingCode());
     System.out.printf("Recipient: %s\n", parcel.get(parcelIdx).getRecipient());
     System.out.printf("Region: %s\n", parcel.get(parcelIdx).getRegion());
@@ -381,9 +381,9 @@ public class JohnnyMoves {
       int choice = driver.optionIndex("Please select an option . . .", options);
 
       if (choice == 1)
-        driver.sendMenu(ArrayList<Parcel> parcels);
+        driver.sendMenu(parcels);
       else if (choice == 2)
-        driver.trackParcel(ArrayList<Parcel> parcels;
+        driver.trackParcel(parcels);
       else
         running = false;
     }
