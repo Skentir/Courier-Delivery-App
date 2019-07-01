@@ -1,10 +1,10 @@
 package packer;
 
-public class Item {
+public class PackItem {
     private final Dimension dimensions;
     private final double weight;
 
-    public Item(Dimension dimensions, double weight) {
+    public PackItem(Dimension dimensions, double weight) {
         this.dimensions = dimensions;
         this.weight = weight;
     }

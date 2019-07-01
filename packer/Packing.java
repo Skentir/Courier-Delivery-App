@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Packing {
-    private List<Item> itemsPlaced;
+    private List<PackItem> itemsPlaced;
 
     private List<ItemPlacement> itemPlacements;
     private List<Space> freeSpaces;
@@ -34,7 +34,7 @@ public class Packing {
         freeSpaces.add(space);
     }
 
-    public boolean placeItem(Item item) {
+    public boolean placeItem(PackItem item) {
         // no need to place an item that was already placed
         if (itemsPlaced.contains(item)) {
             return false;
@@ -53,7 +53,7 @@ public class Packing {
             placement = place(item, space);
             if (placement != null) {
                 selected = space;
-                break; 
+                break;
             }
         }
 
@@ -68,7 +68,7 @@ public class Packing {
         return isPacked;
     }
 
-    private ItemPlacement place(Item item, Space space) {
+    private ItemPlacement place(PackItem item, Space space) {
         Dimension placement = item.getDimensions().rotateDecreasing();
 
         Dimension[] permutations = new Dimension[] {

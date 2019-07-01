@@ -4,13 +4,16 @@ import java.util.ArrayList;
 
 public class JohnnyMoves {
   private Scanner sc;
+  private List<Parcel> parcel;
 
-  public JohnnyMoves(Scanner sc) {
-    this.sc = sc;
+  public JohnnyMoves() {
+    this.sc = new Scanner(System.in);
+    this.parcel = new ArrayList<>();
   }
 
-  public void Compute(Parcel box) {
-      // To be coded soon
+  public boolean compute(Parcel parcel) {
+    ParcelPacker packer = new ParcelPacker();
+    return packer.pack(parcel, parcel.getItems());
   }
 
   public void removeItems(Parcel box)
@@ -53,7 +56,7 @@ public class JohnnyMoves {
     Parcel.add(new IrregularProduct(name, length, width, height, weight));
   }
 
-  public void addRegular()
+  public RegularProduct addRegular()
   {
     double dimension, weight; String name;
 
@@ -69,9 +72,10 @@ public class JohnnyMoves {
     Parcel.add(new RegularProduct(name, dimension, dimension, dimension, weight));
   }
 
-  public void addDocument()
+  public Document addDocument()
   {
-    int pages = -1; String name;
+    int pages = -1;
+    String name = null;
     double length, width;
 
     System.out.print("Name of document: ");
@@ -79,45 +83,46 @@ public class JohnnyMoves {
 
     do
     {
-      System.out.print("\nEnter number of pages: ");
+      System.out.print("Enter number of pages: ");
       pages = sc.nextInt();
-    } while (pages < 0);
+    } while (pages <= 0);
 
     do
     {
-      System.out.print("\nEnter length of document: ");
+      System.out.print("Enter length of document: ");
       length = sc.nextDouble();
-      System.out.print("\nEnter width of document: ");
+      System.out.print("Enter width of document: ");
       width = sc.nextDouble();
-    } while (length < 0 || width < 0);
-    Parcel.add(new Document(name, length, width, pages));
+    } while (length <= 0 || width <= 0);
+
+    return new Document(name, length, width, pages);
   }
 
-  public void addItems(List itemList)
+  public Item createItem()
   {
-    int choice = 0;
-    do
+    String[] choices = new String[]
     {
-      System.out.println("What type of item item are you gonna add?");
-      System.out.println("[1] Document");
-      System.out.println("[2] Regular");
-      System.out.println("[3] Irregular");
-      System.out.printf("Choice: ");
-      choice = sc.nextInt();
-    } while(choice < 1 || choice > 3);
-    sc.nextLine();
+      "Document",
+      "Regular product",
+      "Irregular product",
+      "Cancel"
+    };
 
-    switch(choice)
+    int choice = optionIndex("What type of item do you want to add?");
+    switch (choice)
     {
-      case 1: // Document
-          addDocument(); break;
+      case 1:
+        return addDocument();
       case 2:
-          addRegular(); break;
+        return addRegular();
       case 3:
-          addIrregular(); break;
+        return addIrregular();
+      case 4:
+      default:
+        return null;
     }
   }
-
+/*
   public void getInputs(Parcel box)
   {
     boolean running = true; int choice = 0; char menu;
@@ -128,7 +133,7 @@ public class JohnnyMoves {
         System.out.println("\nChooose an option:");
         System.out.println("[1] Add an item");
         System.out.println("[2] Remove an item");
-        /*System.out.println("[3] Modify an item");*/
+        System.out.println("[3] Modify an item");
         choice = sc.nextInt();
         sc.nextLine();
         if(choice < 1 || choice > 2)
@@ -153,10 +158,43 @@ public class JohnnyMoves {
       } while(menu != 'y' || menu != 'Y' || menu != 'n' || menu != 'N');
     }
   }
-
+*/
   public void itemMenu(List<Item> items)
   {
+    String[] commands = new String[] {
+      "Add a new item",
+      "View all items",
+      "Remove an item",
+      "Leave"
+    };
 
+    boolean running = true;
+
+    while (running)
+    {
+      int option = optionIndex("Please select an option...", commands);
+      switch (option)
+      {
+        case 1:
+          Item item = createItem();
+          items.add(item);
+          break;
+        case 2:
+          System.out.println("Items currently in parcel:");
+          for (int i = 0; i < items.size(); i++) {
+            System.out.println(items.get(i));
+          }
+          break;
+        case 3:
+          Item[] allItems = items.toArray(new Item[0]);
+          int index = optionIndex("Select an item to remove from the parcel:", allItems);
+          items.remove(index - 1);
+          break;
+        case 4:
+          running = false;
+          break;
+      }
+    }
   }
 
   public String regionCode(String region)
@@ -190,18 +228,21 @@ public class JohnnyMoves {
 
   public  void generateCode(ArrayList<Parcel> parcelList)
   {
-    Parcel parcel = parcelList.get(parcelList.size()-1)
+    Parcel parcel = parcelList.get(parcelList.size()-1);
     String code, dest, itemNum, pType;
     dest = regionCode(parcel.getRegion()); /* Gets location code: MNL, VIS, MIN, or LUZ */
     itemNum = parcel.items.size(); /* Gets number of items */
     pType = parcel.getParcelType(); /* Get parcel Type: FLT or BOX */
     date = dateCode(parcelList); /* Get date in string format of MMDD */
-    seq = seqCode(parcelList)/* TODO: number for da day */
+    seq = seqCode(parcelList);/* TODO: number for da day */
     code = "<"+pType+">"+"<"+date+">"+"<"+dest+">"+"<"+itemNum+">"+"<"+seq+">";
     parcel.setTrackingCode(code);
   }
 
-  public Parcel sendMenu(ArrayList<Parcel> parcels)
+  /**
+   * Runs the parcel sending menu.
+   */
+  public void sendMenu(List<Parcel> parcels)
   {
     String[] commands = new String[] {
       "Set recipient",
@@ -235,22 +276,35 @@ public class JohnnyMoves {
           itemMenu(itemList);
           break;
         case 4:
-          parcels.add(new Parcel(recipient, region, insured));
-          generateCode(parcels);
-          running = false;
+          Parcel parcel = new Parcel(recipient, region, insured);
+          // TODO: add items to parcel before computing
+          if (compute(parcel)) {
+            parcel.startTracking();
+            parcels.add(parcel);
+            running = false;
+          } else {
+            System.out.println("Your parcel cannot be made because not all items can fit inside.");
+          }
           break;
         case 5:
           running = false;
           break;
       }
-    };
-
-    return parcel;
+    }
   }
 
-  public boolean yesOrNo(String message)
+  /**
+   * Asks the user a question on the console and the user is expected to type
+   * Y for yes (true) and N for no (false). This method would keep running until
+   * the user types in a valid input.
+   *
+   * @param question the question to be displayed
+   *
+   * @return true if the user types y, false if the user types n
+   */
+  public boolean yesOrNo(String question)
   {
-    System.out.print(message);
+    System.out.print(question);
     System.out.print(" (y/n): ");
 
     boolean valid, result = false, empty;
@@ -281,7 +335,7 @@ public class JohnnyMoves {
 
       if (!valid && !empty)
       {
-        System.out.print(message);
+        System.out.print(question);
         System.out.print(" (y/n): ");
       }
     } while (!valid);
@@ -289,6 +343,15 @@ public class JohnnyMoves {
     return result;
   }
 
+  /**
+   * Provides the user with a list of choices and the user picks a choice by
+   * typing in the number corresponding to his/her choice.
+   *
+   * @param message the message to be displayed, telling the user what to do
+   * @param choices the choices avaiable to the user
+   *
+   * @return the number of the user's choice
+   */
   public <T> int optionIndex(String message, T[] choices)
   {
     boolean valid = false;
@@ -316,6 +379,15 @@ public class JohnnyMoves {
     return choice;
   }
 
+  /**
+   * Provides the user with a list of choices and the user picks a choice by
+   * typing in the number corresponding to his/her choice.
+   *
+   * @param message the message to be displayed, telling the user what to do
+   * @param choices the choices avaiable to the user
+   *
+   * @return the value of the user's choice
+   */
   public <T> T optionValue(String message, T[] choices)
   {
     boolean valid = false;
@@ -343,19 +415,21 @@ public class JohnnyMoves {
     return choice;
   }
 
-  public int codeExists(ArrayList<Parcel> parcels, String code)
+  public int findCode(String code)
   {
     int i, found = -1;
     for (i=0; i < parcels.size(); i++)
     {
-      if (parcels.get(i) != null)
-        if (parcels.get(i).getTrackingCode().equalsIgnorecase(code));
-          return i;
+      if (parcels.get(i).getTrackingCode().equalsIgnoreCase(code));
+        return i;
     }
     return found;
   }
 
-  public void trackParcel(ArrayList<Parcel> parcels)
+  /**
+   * Runs the parcel tracking menu.
+   */
+  public void trackMenu()
   {
     String code; int parcelIdx = -1;
     do
@@ -369,19 +443,21 @@ public class JohnnyMoves {
 
     System.out.println("----------------------------------");
     System.out.print("Tracking Code: ");
-<<<<<<< HEAD
-    System.out.println (parcel.get(parcelIdx).getTrackingCode());
-    System.out.printf("Recipient: %s\n", parcel.get(parcelIdx).getRecipient());
-    System.out.printf("Region: %s\n", parcel.get(parcelIdx).getRegion());
-=======
-    System.out.println (parcels.get(parcelIdx).getTrackingCode());
+    System.out.println(parcels.get(parcelIdx).getTrackingCode());
     System.out.printlf("Status: %s", parcels.get(parcelIdx).getStatus());
     System.out.printf("Recipient: %s\n", parcels.get(parcelIdx).getRecipient());
     System.out.printf("Region: %s\n", parcels.get(parcelIdx).getRegion());
->>>>>>> origin/kirsten
     System.out.print("Items shipped:\n");
     parcel.get(i).displayItems();
     System.out.println("----------------------------------\n");
+  }
+
+  /**
+   * Closes any resources used by the driver class.
+   */
+  public void close()
+  {
+    sc.close();
   }
 
   public static void main(String[] args)
@@ -389,26 +465,29 @@ public class JohnnyMoves {
     String[] options = new String[] {
       "Send parcel",
       "Track parcel",
+      "Change time",
       "Exit app"
     };
-    ArrayList<Parcel> parcels = new ArrayList<>();
-    Scanner sc = new Scanner(System.in);
-    JohnnyMoves driver = new JohnnyMoves(sc);
+    JohnnyMoves driver = new JohnnyMoves();
     boolean running = true;
 
     while (running)
     {
-      System.out.println("\n>>> Welcome to JohnnyMoves Services <<<\n");
-      int choice = driver.optionIndex("Please select an option . . .", options);
+      System.out.println(">>> Welcome to JohnnyMoves Services <<<");
+
+
+      int choice = driver.optionIndex("Please select an option...", options);
 
       if (choice == 1)
-        driver.sendMenu(parcels);
+        driver.sendMenu();
       else if (choice == 2)
-        driver.trackParcel(parcels);
+        driver.trackMenu();
+      else if (choice == 3)
+        driver.timeMenu();
       else
         running = false;
     }
 
-    sc.close();
+    driver.close();
   }
 }

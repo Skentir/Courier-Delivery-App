@@ -21,10 +21,7 @@ public class Parcel
   private final String recipient;
   private final String region;
   private final Date shipDate;
-<<<<<<< HEAD
-=======
   private final Date recieveDate;
->>>>>>> origin/kirsten
   private ArrayList<Item> items;
   private String trackingCode;
   private String parcelType;
@@ -64,7 +61,7 @@ public class Parcel
 
   public void setParcelType(Integer sizeIdx)
   {
-    if (sizeIdx Idx <= 1)
+    if (sizeIdx <= 1)
       parcelType = "FLT";
     else
       parcelType = "BOX";

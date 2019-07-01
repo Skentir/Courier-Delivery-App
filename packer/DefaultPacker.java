@@ -6,7 +6,7 @@ import java.util.List;
 
 public class DefaultPacker implements Packer {
     @Override
-    public Collection<Packing> pack(Container container, Item... items) {
+    public Collection<Packing> pack(Container container, PackItem[] items) {
         List<Packing> packings = new ArrayList<>();
 
         for (int i = 0; i < items.length; i++) {

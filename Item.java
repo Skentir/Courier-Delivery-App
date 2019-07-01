@@ -65,4 +65,16 @@ public abstract class Item
    * @return the weight, in kilograms, of the item.
    */
   public abstract double getWeight();
+
+  /**
+   * Returns a string that represents this item.
+   *
+   * @return a descriptive string that describes the item, including its name,
+   *         type, dimensions and weight
+   */
+  @Override
+  public String toString()
+  {
+    return String.format("%s - %s (%f' x %f' x %f; @ %f kg)", name, getItemType(), width, getHeight(), length, getWeight());
+  }
 }

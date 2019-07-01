@@ -1,17 +1,17 @@
 package packer;
 
 public class ItemPlacement {
-    private final Item item;
+    private final PackItem item;
     private final Space placement;
     private final double weight;
 
-    public ItemPlacement(Item item, Space placement) {
+    public ItemPlacement(PackItem item, Space placement) {
         this.item = item;
         this.placement = placement;
         this.weight = item.getWeight();
     }
 
-    public Item getItem() {
+    public PackItem getItem() {
         return item;
     }
 
