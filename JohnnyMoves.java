@@ -5,6 +5,7 @@ import java.util.Date;
 import packer.Container;
 
 public class JohnnyMoves {
+
   private Scanner sc;
   private List<Parcel> parcels;
 
@@ -445,9 +446,6 @@ public class JohnnyMoves {
       if (code.length() == 0)
         break;
 
-      //parcelIdx = codeExists(parcels, code);
-      //if (parcelIdx == -1)
-      //  System.out.println("Woops! It seems this code doesn't exist. Try again.");
       for (int i = 0; i < parcels.size(); i++)
       {
         Parcel p = parcels.get(i);
