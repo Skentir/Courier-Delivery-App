@@ -1,3 +1,7 @@
+/**
+ * Represents a regular, cuboid (3d figure with a width, length and height)
+ * object.
+ */
 public class RegularProduct extends Item
 {
   private final double height;

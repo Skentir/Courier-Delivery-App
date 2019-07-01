@@ -1,3 +1,7 @@
+/**
+ * Represents an irregularly shaped product whose dimensions are its maximum
+ * extents.
+ */
 public class IrregularProduct extends Item
 {
   private final double height;

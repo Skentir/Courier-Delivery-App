@@ -6,16 +6,42 @@ public class Container
   private final double maxWeight;
   private final String type;
 
-  public Container(double width, double height, double length, double maxWeight, String type, int index)
+  /**
+   * Constructs a container.
+   *
+   * @param width the width of the container
+   * @param height the height of the container
+   * @param length the length of the container
+   * @param maxWeight the maximum weight that the container can accommodate
+   * @param type the type name used by the container
+   * @param id the unique identifier
+   */
+  public Container(double width, double height, double length, double maxWeight, String type, int id)
   {
-    this(new Dimension(width, height, length), maxWeight, type + index);
+    this(new Dimension(width, height, length), maxWeight, type + id);
   }
 
+  /**
+   * Constructs a container.
+   *
+   * @param width the width of the container
+   * @param height the height of the container
+   * @param length the length of the container
+   * @param maxWeight the maximum weight that the container can accommodate
+   * @param type the type name used by the container
+   */
   public Container(double width, double height, double length, double maxWeight, String type)
   {
     this(new Dimension(width, height, length), maxWeight, type);
   }
 
+  /**
+   * Constructs a container.
+   *
+   * @param dimensions the dimensions of the container
+   * @param maxWeight the maximum weight that the container can accommodate
+   * @param type the type name used by the container
+   */
   public Container(Dimension dimensions, double maxWeight, String type)
   {
     this.dimensions = dimensions;
@@ -38,6 +64,9 @@ public class Container
     return type;
   }
 
+  /**
+   * Formats the container into a string.
+   */
   @Override
   public String toString()
   {

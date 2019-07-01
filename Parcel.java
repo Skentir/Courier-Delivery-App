@@ -3,6 +3,10 @@ import java.time.*;
 import java.util.*;
 import packer.Dimension;
 
+/**
+ * The Parcel class represents a parcel to be sent to a person or entity, or the
+ * recipient, located in any available region.
+ */
 public class Parcel
 {
   /**
@@ -19,8 +23,8 @@ public class Parcel
   private final String recipient;
   private final String region;
   private final Date shipDate;
-  private String status;
   private ArrayList<Item> items;
+
   private String trackingCode;
   private String parcelType;
   private Dimension dimensions;
@@ -76,6 +80,7 @@ public class Parcel
     long diff = (currentDate.getTime() - shipDate.getTime())/(24*60*60*1000);
     System.out.printf("\nIt has been %d days since parcel was shipped\n", diff);
 
+    String status = null;
     if (region.equalsIgnoreCase("METRO MANILA"))
     {
       if (diff <= 0)
@@ -155,6 +160,11 @@ public class Parcel
     }
   }
 
+  /**
+   * Gets the total weight of all the items in the parcel.
+   *
+   * @return the total sum of the weights of all items in the parcel
+   */
   private double getWeight()
   {
     double weight = 0.0;
@@ -222,16 +232,32 @@ public class Parcel
     this.parcelType = type;
   }
 
+  /**
+   * Gets the name of the recipient of the parcel.
+   *
+   * @return the name of the recipient
+   */
   public String getRecipient()
   {
     return recipient;
   }
 
+  /**
+   * Gets the destination region of the parcel where the recipient is located or
+   * currently resides.
+   *
+   * @return the destination region
+   */
   public String getRegion()
   {
     return region;
   }
 
+  /**
+   * Gets a code representing the destination region.
+   *
+   * @return the region code
+   */
   public String getRegionCode()
   {
     if (region.equalsIgnoreCase("METRO MANILA"))  return "MML";
@@ -241,41 +267,84 @@ public class Parcel
     else                                          return null;
   }
 
+  /**
+   * Gets the shipping date (date when the parcel is first entered into the
+   * system).
+   *
+   * @return the ship date
+   */
   public Date getShipDate()
   {
     return shipDate;
   }
 
+  /**
+   * Gets the tracking code used so the customer can track the parcel.
+   *
+   * @return a tracking code
+   */
   public String getTrackingCode()
   {
     return trackingCode;
   }
 
+  /**
+   * Sets the tracking code for the parcel. The method has no effect if a
+   * tracking code has been previously assigned.
+   *
+   * @param code the new tracking code
+   */
   public void setTrackingCode(String code)
   {
+    if (trackingCode != null)
+      return;
+
     trackingCode = code;
   }
 
+  /**
+   * Gets the dimensions of the parcel.
+   *
+   * @return the dimensions
+   */
   public Dimension getDimensions()
   {
     return this.dimensions;
   }
 
+  /**
+   * Sets the dimensions of the parcel.
+   *
+   * @param dimension the new dimensions of the parcel
+   */
   public void setDimensions(Dimension dimension)
   {
     this.dimensions = dimension;
   }
 
+  /**
+   * Adds all the given items to the parcel. If there is at least one item, this
+   * method would have no effect.
+   */
   public void addItems(Collection<Item> items)
   {
-    this.items.addAll(items);
+    if (this.items.size() == 0)
+      this.items.addAll(items);
   }
 
+  /**
+   * Retrieves all the items in the parcel.
+   *
+   * @return all the items
+   */
   public List<Item> getItems()
   {
     return items;
   }
 
+  /**
+   * Displays all the items in the parcel to the console or terminal.
+   */
   public void displayItems()
   {
     for (int i = 0; i < items.size(); i++)
@@ -286,6 +355,11 @@ public class Parcel
     }
   }
 
+  /**
+   * Returns the string representation of the parcel.
+   *
+   * @return a string to identify the parcel and its recipient
+   */
   @Override
   public String toString()
   {

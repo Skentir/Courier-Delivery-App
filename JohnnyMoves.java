@@ -4,18 +4,33 @@ import java.util.ArrayList;
 import java.util.Date;
 import packer.Container;
 
+/**
+ * Driver class for the Johnny Moves app.
+ */
 public class JohnnyMoves
 {
   private Scanner sc;
   private List<Parcel> parcels;
   private int daysOffset = 0;
 
+  /**
+   * Constructs the driver class.
+   */
   public JohnnyMoves()
   {
     this.sc = new Scanner(System.in);
     this.parcels = new ArrayList<>();
   }
 
+  /**
+   * Gets a list of all the containers that would fit all the items. One of
+   * these containers would end up being the size of the parcel.
+   *
+   * @param parcel the parcel
+   * @param items all the items to be packed
+   *
+   * @return an array of all the containers that can fit the items
+   */
   public Container[] compute(Parcel parcel, List<Item> items)
   {
     ParcelPacker packer = new ParcelPacker();
@@ -116,6 +131,11 @@ public class JohnnyMoves
     return new Document(name, length, width, pages);
   }
 
+  /**
+   * Runs the interface for creating any item.
+   *
+   * @return a new document
+   */
   public Item createItem()
   {
     String[] choices = new String[]
@@ -141,14 +161,29 @@ public class JohnnyMoves
     }
   }
 
-  public String dateCode(Parcel parcel)
+  /**
+   * Returns a date code of the form MMDD, representing the shipping date of
+   * the parcel.
+   *
+   * @param parcel the parcel
+   *
+   * @return a date code
+   */
+  private String dateCode(Parcel parcel)
   {
     Date shipDate = parcel.getShipDate();
     SimpleDateFormat fDate = new SimpleDateFormat("MMdd");
     return fDate.format(shipDate);
   }
 
-  public int seqCode(Parcel parcel)
+  /**
+   * Returns an incremental sequence code for the day.
+   *
+   * @param parcel the parcel
+   *
+   * @return the sequence code starting from 1
+   */
+  private int seqCode(Parcel parcel)
   {
     Date target = parcel.getShipDate();
     //Collections.sort(parcels, new ParcelComparator());
@@ -177,6 +212,13 @@ public class JohnnyMoves
     return seq;
   }
 
+  /**
+   * Generates a tracking code for the parcel.
+   *
+   * @param parcel the parcel whose tracking code is to be generated.
+   *
+   * @return the tracking code for the parcel.
+   */
   public String generateCode(Parcel parcel)
   {
     String code, dest, itemNum, pType, seq, date;
@@ -427,17 +469,6 @@ public class JohnnyMoves
     return choice;
   }
 
-  public int findCode(String code)
-  {
-    int i, found = -1;
-    for (i=0; i < parcels.size(); i++)
-    {
-      if (parcels.get(i).getTrackingCode().equalsIgnoreCase(code));
-        return i;
-    }
-    return found;
-  }
-
   /**
    * Runs the parcel tracking menu.
    */
@@ -480,6 +511,9 @@ public class JohnnyMoves
     System.out.println("----------------------------------\n");
   }
 
+  /**
+   * Runs the time menu where the system date can be simulated.
+   */
   public void timeMenu()
   {
     String[] commands = new String[]
@@ -518,12 +552,21 @@ public class JohnnyMoves
     sc.close();
   }
 
+  /**
+   * Returns the (simulated) date for the driver.
+   *
+   * @return the current date and time plus a day offset configurable in the
+   *         time menu
+   */
   public Date getDate()
   {
     Date now = new Date();
     return new Date(now.getTime() + daysOffset * 86400L * 1000L);
   }
 
+  /**
+   * Entry point of the app.
+   */
   public static void main(String[] args)
   {
     String[] options = new String[]

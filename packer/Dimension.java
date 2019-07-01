@@ -3,49 +3,104 @@ package packer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Dimension {
-    private final double width;
-    private final double height;
-    private final double length;
+/**
+ * Represents the volume occupied by a cuboid.
+ */
+public class Dimension
+{
+  private final double width;
+  private final double height;
+  private final double length;
 
-    public Dimension(double width, double height, double length) {
-        this.width = width;
-        this.height = height;
-        this.length = length;
-    }
+  /**
+   * Constructs a new dimension.
+   *
+   * @param width the width in inches
+   * @param height the height in inches
+   * @param length the length in inches
+   */
+  public Dimension(double width, double height, double length)
+  {
+    this.width = width;
+    this.height = height;
+    this.length = length;
+  }
 
-    public Dimension rotateDecreasing() {
-        List<Double> dimensions = new ArrayList<>();
-        dimensions.add(width);
-        dimensions.add(height);
-        dimensions.add(length);
+  /**
+   * Returns a new dimension such that the width has the largest measure,
+   * followed by the height and the length.
+   *
+   * @return a reoriented dimension
+   */
+  public Dimension rotateDecreasing()
+  {
+    List<Double> dimensions = new ArrayList<>();
+    dimensions.add(width);
+    dimensions.add(height);
+    dimensions.add(length);
 
-        dimensions.sort(Double::compare);
-        return new Dimension(dimensions.get(2), dimensions.get(1), dimensions.get(0));
-    }
+    dimensions.sort(Double::compare);
+    return new Dimension(dimensions.get(2), dimensions.get(1), dimensions.get(0));
+  }
 
-    public double getWidth() {
-        return width;
-    }
+  /**
+   * Gets the width of the volume.
+   *
+   * @return the width, in inches
+   */
+  public double getWidth()
+  {
+    return width;
+  }
 
-    public double getHeight() {
-        return height;
-    }
+  /**
+   * Gets the height of the volume.
+   *
+   * @return the height, in inches
+   */
+  public double getHeight()
+  {
+    return height;
+  }
 
-    public double getLength() {
-        return length;
-    }
+  /**
+   * Gets the length of the volume.
+   *
+   * @return the length, in inches
+   */
+  public double getLength()
+  {
+    return length;
+  }
 
-    public double getVolume() {
-        return width * height * length;
-    }
+  /**
+   * Gets the volume of the cuboid.
+   *
+   * @return the volume in cubic inches (in^3)
+   */
+  public double getVolume()
+  {
+    return width * height * length;
+  }
 
-    public boolean isEmpty() {
-        return getVolume() == 0.0;
-    }
+  /**
+   * Checks if the dimension has zero volume.
+   *
+   * @return true if the volume is zero, false otherwise
+   */
+  public boolean isEmpty()
+  {
+    return getVolume() == 0.0;
+  }
 
-    @Override
-    public String toString() {
-        return String.format("Dimension(%f, %f, %f)", width, height, length);
-    }
+  /**
+   * Returns a string that represents the volume.
+   *
+   * @return a string
+   */
+  @Override
+  public String toString()
+  {
+    return String.format("[%.2f, %.2f, %.2f]", width, height, length);
+  }
 }
