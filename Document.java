@@ -1,3 +1,6 @@
+/**
+ * Represents a document of any size and of any number of pages.
+ */
 public class Document extends Item
 {
   private final int pages;

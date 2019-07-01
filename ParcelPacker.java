@@ -7,8 +7,14 @@ import packer.Dimension;
 import packer.Packing;
 import packer.PackItem;
 
+/**
+ * Packer class that is specialized for interacting with parcels.
+ */
 public class ParcelPacker extends DefaultPacker
 {
+  /**
+   * All the parcel sizes available.
+   */
   private static final Container[] CONTAINERS = new Container[]
   {
     new Container(9, 1, 14, 3, Parcel.FLAT, 0),
@@ -19,6 +25,13 @@ public class ParcelPacker extends DefaultPacker
     new Container(20, 16, 12, 1000, Parcel.BOX, 3)
   };
 
+  /**
+   * Gets a list of containers that can fit all the items.
+   *
+   * @param items the items to be packed
+   *
+   * @return a list of containers that can fit items
+   */
   public List<Container> pack(Parcel parcel, Item[] items)
   {
     ArrayList<Container> candidates = new ArrayList<>();

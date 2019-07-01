@@ -4,17 +4,40 @@ import java.util.ArrayList;
 import java.util.Date;
 import packer.Container;
 
+<<<<<<< HEAD
 public class JohnnyMoves {
 
+=======
+/**
+ * Driver class for the Johnny Moves app.
+ */
+public class JohnnyMoves
+{
+>>>>>>> 802f89679ab5becae662d4986110d8ce0c4ece80
   private Scanner sc;
   private List<Parcel> parcels;
+  private int daysOffset = 0;
 
-  public JohnnyMoves() {
+  /**
+   * Constructs the driver class.
+   */
+  public JohnnyMoves()
+  {
     this.sc = new Scanner(System.in);
     this.parcels = new ArrayList<>();
   }
 
-  public Container[] compute(Parcel parcel, List<Item> items) {
+  /**
+   * Gets a list of all the containers that would fit all the items. One of
+   * these containers would end up being the size of the parcel.
+   *
+   * @param parcel the parcel
+   * @param items all the items to be packed
+   *
+   * @return an array of all the containers that can fit the items
+   */
+  public Container[] compute(Parcel parcel, List<Item> items)
+  {
     ParcelPacker packer = new ParcelPacker();
     Item[] itemsArr = items.toArray(new Item[0]);
     return packer.pack(parcel, itemsArr).toArray(new Container[0]);
@@ -113,6 +136,11 @@ public class JohnnyMoves {
     return new Document(name, length, width, pages);
   }
 
+  /**
+   * Runs the interface for creating any item.
+   *
+   * @return a new document
+   */
   public Item createItem()
   {
     String[] choices = new String[]
@@ -138,14 +166,29 @@ public class JohnnyMoves {
     }
   }
 
-  public String dateCode(Parcel parcel)
+  /**
+   * Returns a date code of the form MMDD, representing the shipping date of
+   * the parcel.
+   *
+   * @param parcel the parcel
+   *
+   * @return a date code
+   */
+  private String dateCode(Parcel parcel)
   {
     Date shipDate = parcel.getShipDate();
     SimpleDateFormat fDate = new SimpleDateFormat("MMdd");
     return fDate.format(shipDate);
   }
 
-  public int seqCode(Parcel parcel)
+  /**
+   * Returns an incremental sequence code for the day.
+   *
+   * @param parcel the parcel
+   *
+   * @return the sequence code starting from 1
+   */
+  private int seqCode(Parcel parcel)
   {
     Date target = parcel.getShipDate();
     //Collections.sort(parcels, new ParcelComparator());
@@ -174,6 +217,13 @@ public class JohnnyMoves {
     return seq;
   }
 
+  /**
+   * Generates a tracking code for the parcel.
+   *
+   * @param parcel the parcel whose tracking code is to be generated.
+   *
+   * @return the tracking code for the parcel.
+   */
   public String generateCode(Parcel parcel)
   {
     String code, dest, itemNum, pType, seq, date;
@@ -182,9 +232,7 @@ public class JohnnyMoves {
     pType = parcel.getParcelType(); /* Get parcel Type: FLT or BOX */
     date = dateCode(parcel); /* Set date in string format of MMDD */
     seq = String.format("%03d", seqCode(parcel)); /* Number for the day */
-    //code = "<"+pType+">"+"<"+date+">"+"<"+dest+">"+"<"+itemNum+">"+"<"+seq+">";
     code = pType + date + dest + itemNum + seq;
-    //parcel.setTrackingCode(code);
     return code;
   }
 
@@ -195,7 +243,8 @@ public class JohnnyMoves {
    */
   public void itemMenu(List<Item> items)
   {
-    String[] commands = new String[] {
+    String[] commands = new String[]
+    {
       "Add a new item",
       "View all items",
       "Remove an item",
@@ -236,7 +285,8 @@ public class JohnnyMoves {
    */
   public void sendMenu()
   {
-    String[] commands = new String[] {
+    String[] commands = new String[]
+    {
       "Set recipient",
       "Set insurance",
       "Add, remove or view items",
@@ -271,7 +321,8 @@ public class JohnnyMoves {
         case 4:
           Parcel parcel = new Parcel(recipient, region, insured);
           Container[] validContainers = compute(parcel, items);
-          if (validContainers.length != 0) {
+          if (validContainers.length != 0)
+          {
             Container preferred = optionValue("Choose your parcel size", validContainers);
             selectContainer(parcel, preferred);
 
@@ -282,7 +333,9 @@ public class JohnnyMoves {
             System.out.println("Your tracking code is " + parcel.getTrackingCode());
             parcels.add(parcel);
             running = false;
-          } else {
+          }
+          else
+          {
             System.out.println("Your parcel cannot be made because not all items can fit inside.");
           }
           break;
@@ -421,17 +474,6 @@ public class JohnnyMoves {
     return choice;
   }
 
-  public int findCode(String code)
-  {
-    int i, found = -1;
-    for (i=0; i < parcels.size(); i++)
-    {
-      if (parcels.get(i).getTrackingCode().equalsIgnoreCase(code));
-        return i;
-    }
-    return found;
-  }
-
   /**
    * Runs the parcel tracking menu.
    */
@@ -474,9 +516,37 @@ public class JohnnyMoves {
     System.out.println("----------------------------------\n");
   }
 
+  /**
+   * Runs the time menu where the system date can be simulated.
+   */
   public void timeMenu()
   {
-    // TODO: change simulated time
+    String[] commands = new String[]
+    {
+      "Add number of days",
+      "Get number of days",
+      "Back"
+    };
+
+    boolean running = true;
+
+    while (running)
+    {
+      int option = optionIndex("Please select an option...", commands);
+      switch (option)
+      {
+        case 1:
+          System.out.print("How many days to move forward? ");
+          daysOffset += sc.nextInt();
+          break;
+        case 2:
+          System.out.println("Simulated days elapsed: " + daysOffset);
+          break;
+        case 3:
+          running = false;
+          break;
+      }
+    }
   }
 
   /**
@@ -487,14 +557,25 @@ public class JohnnyMoves {
     sc.close();
   }
 
+  /**
+   * Returns the (simulated) date for the driver.
+   *
+   * @return the current date and time plus a day offset configurable in the
+   *         time menu
+   */
   public Date getDate()
   {
-    return new Date();
+    Date now = new Date();
+    return new Date(now.getTime() + daysOffset * 86400L * 1000L);
   }
 
+  /**
+   * Entry point of the app.
+   */
   public static void main(String[] args)
   {
-    String[] options = new String[] {
+    String[] options = new String[]
+    {
       "Send parcel",
       "Track parcel",
       "Change time",
