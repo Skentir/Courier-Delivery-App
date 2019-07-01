@@ -45,6 +45,9 @@ public class DefaultPacker implements Packer
       }
     }
 
+    if (packings.size() == 0)
+      packings.add(new Packing(container));
+
     return packings;
   }
 }
