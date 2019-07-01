@@ -13,10 +13,10 @@ public class JohnnyMoves {
     this.parcels = new ArrayList<>();
   }
 
-  public boolean compute(Parcel parcel, List<Item> items) {
+  public Container[] compute(Parcel parcel, List<Item> items) {
     ParcelPacker packer = new ParcelPacker();
     Item[] itemsArr = items.toArray(new Item[0]);
-    return packer.pack(parcel, itemsArr);
+    return packer.pack(parcel, itemsArr).toArray(new Container[0]);
   }
 
   /**
@@ -269,9 +269,15 @@ public class JohnnyMoves {
           break;
         case 4:
           Parcel parcel = new Parcel(recipient, region, insured);
-          Collection<Container>
-          if (compute(parcel, items)) {
+          Container[] validContainers = compute(parcel, items);
+          if (validContainers.length != 0) {
+            Container preferred = optionValue("Choose your parcel size", validContainers);
+            selectContainer(parcel, preferred);
+
             parcel.addItems(items);
+            parcel.setTrackingCode(generateCode(parcel));
+
+            System.out.printf("The price of your parcel is P%.2f\n", parcel.getPrice());
             System.out.println("Your tracking code is " + parcel.getTrackingCode());
             parcels.add(parcel);
             running = false;
@@ -284,6 +290,12 @@ public class JohnnyMoves {
           break;
       }
     }
+  }
+
+  private void selectContainer(Parcel parcel, Container container)
+  {
+    parcel.setDimensions(container.getDimensions());
+    parcel.setParcelType(container.getType());
   }
 
   /**
@@ -424,28 +436,43 @@ public class JohnnyMoves {
    */
   public void trackMenu()
   {
-    String code; int parcelIdx = -1;
+    String code;
+    Parcel parcel = null;
     do
     {
-      System.out.println("Please enter a tracking code: ");
+      System.out.print("Please enter a tracking code (leave blank to exit): ");
       code = sc.nextLine();
+      if (code.length() == 0)
+        break;
+
       //parcelIdx = codeExists(parcels, code);
       //if (parcelIdx == -1)
       //  System.out.println("Woops! It seems this code doesn't exist. Try again.");
-    } while (parcelIdx != -1);
+      for (int i = 0; i < parcels.size(); i++)
+      {
+        Parcel p = parcels.get(i);
+        if (p.getTrackingCode().equalsIgnoreCase(code))
+        {
+          parcel = p;
+          break;
+        }
+      }
 
-    if (parcelIdx == -1)
+      if (parcel == null)
+        System.out.println("Woops! It seems this code doesn't exist. Try again.");
+    } while (parcel == null);
+
+    if (parcel == null)
       return;
 
     System.out.println("----------------------------------");
     System.out.print("Tracking Code: ");
-    System.out.println (parcels.get(parcelIdx).getTrackingCode());
-    System.out.printf("Recipient: %s\n", parcels.get(parcelIdx).getRecipient());
-    System.out.printf("Region: %s\n", parcels.get(parcelIdx).getRegion());
-    System.out.println (parcels.get(parcelIdx).getTrackingCode());
-    System.out.printf("Status: %s\n", parcels.get(parcelIdx).getStatus(getDate()));
+    System.out.println (parcel.getTrackingCode());
+    System.out.printf("Recipient: %s\n", parcel.getRecipient());
+    System.out.printf("Region: %s\n", parcel.getRegion());
+    System.out.printf("Status: %s\n", parcel.getStatus(getDate()));
     System.out.print("Items shipped:\n");
-    parcels.get(parcelIdx).displayItems();
+    parcel.displayItems();
     System.out.println("----------------------------------\n");
   }
 

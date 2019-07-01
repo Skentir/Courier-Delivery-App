@@ -37,4 +37,21 @@ public class Container
   {
     return type;
   }
+
+  @Override
+  public String toString()
+  {
+    String type;
+    switch (this.type.substring(0, 3))
+    {
+      case "FLT": type = "Flat"; break;
+      case "BOX": type = "Box"; break;
+      default: type = "Unknown"; break;
+    }
+
+    return String.format("%s, %.2f' x %.2f' x %.2f'", type,
+      dimensions.getWidth(),
+      dimensions.getHeight(),
+      dimensions.getLength());
+  }
 }

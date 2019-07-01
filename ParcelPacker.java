@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import packer.Container;
 import packer.DefaultPacker;
 import packer.Dimension;
@@ -19,7 +21,7 @@ public class ParcelPacker extends DefaultPacker
 
   public List<Container> pack(Parcel parcel, Item[] items)
   {
-    Container candidate = null;
+    ArrayList<Container> candidates = new ArrayList<>();
     for (Container container : CONTAINERS)
     {
       PackItem[] packItems = new PackItem[items.length];
@@ -36,19 +38,9 @@ public class ParcelPacker extends DefaultPacker
         continue;
 
       if (packings.size() == 1)
-      {
-        candidate = container;
-        break;
-      }
+        candidates.add(container);
     }
 
-    if (candidate != null)
-    {
-      parcel.setDimensions(candidate.getDimensions());
-      parcel.setParcelType(candidate.getType());
-      return true;
-    }
-
-    return false;
+    return candidates;
   }
 }
