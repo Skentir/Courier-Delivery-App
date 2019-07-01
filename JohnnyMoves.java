@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import packer.Container;
 
-public class JohnnyMoves {
+public class JohnnyMoves
+{
   private Scanner sc;
   private List<Parcel> parcels;
+  private int daysOffset = 0;
 
-  public JohnnyMoves() {
+  public JohnnyMoves()
+  {
     this.sc = new Scanner(System.in);
     this.parcels = new ArrayList<>();
   }
 
-  public Container[] compute(Parcel parcel, List<Item> items) {
+  public Container[] compute(Parcel parcel, List<Item> items)
+  {
     ParcelPacker packer = new ParcelPacker();
     Item[] itemsArr = items.toArray(new Item[0]);
     return packer.pack(parcel, itemsArr).toArray(new Container[0]);
@@ -181,9 +185,7 @@ public class JohnnyMoves {
     pType = parcel.getParcelType(); /* Get parcel Type: FLT or BOX */
     date = dateCode(parcel); /* Set date in string format of MMDD */
     seq = String.format("%03d", seqCode(parcel)); /* Number for the day */
-    //code = "<"+pType+">"+"<"+date+">"+"<"+dest+">"+"<"+itemNum+">"+"<"+seq+">";
     code = pType + date + dest + itemNum + seq;
-    //parcel.setTrackingCode(code);
     return code;
   }
 
@@ -194,7 +196,8 @@ public class JohnnyMoves {
    */
   public void itemMenu(List<Item> items)
   {
-    String[] commands = new String[] {
+    String[] commands = new String[]
+    {
       "Add a new item",
       "View all items",
       "Remove an item",
@@ -235,7 +238,8 @@ public class JohnnyMoves {
    */
   public void sendMenu()
   {
-    String[] commands = new String[] {
+    String[] commands = new String[]
+    {
       "Set recipient",
       "Set insurance",
       "Add, remove or view items",
@@ -270,7 +274,8 @@ public class JohnnyMoves {
         case 4:
           Parcel parcel = new Parcel(recipient, region, insured);
           Container[] validContainers = compute(parcel, items);
-          if (validContainers.length != 0) {
+          if (validContainers.length != 0)
+          {
             Container preferred = optionValue("Choose your parcel size", validContainers);
             selectContainer(parcel, preferred);
 
@@ -281,7 +286,9 @@ public class JohnnyMoves {
             System.out.println("Your tracking code is " + parcel.getTrackingCode());
             parcels.add(parcel);
             running = false;
-          } else {
+          }
+          else
+          {
             System.out.println("Your parcel cannot be made because not all items can fit inside.");
           }
           break;
@@ -445,9 +452,6 @@ public class JohnnyMoves {
       if (code.length() == 0)
         break;
 
-      //parcelIdx = codeExists(parcels, code);
-      //if (parcelIdx == -1)
-      //  System.out.println("Woops! It seems this code doesn't exist. Try again.");
       for (int i = 0; i < parcels.size(); i++)
       {
         Parcel p = parcels.get(i);
@@ -478,7 +482,32 @@ public class JohnnyMoves {
 
   public void timeMenu()
   {
-    // TODO: change simulated time
+    String[] commands = new String[]
+    {
+      "Add number of days",
+      "Get number of days",
+      "Back"
+    };
+
+    boolean running = true;
+
+    while (running)
+    {
+      int option = optionIndex("Please select an option...", commands);
+      switch (option)
+      {
+        case 1:
+          System.out.print("How many days to move forward? ");
+          daysOffset += sc.nextInt();
+          break;
+        case 2:
+          System.out.println("Simulated days elapsed: " + daysOffset);
+          break;
+        case 3:
+          running = false;
+          break;
+      }
+    }
   }
 
   /**
@@ -491,12 +520,14 @@ public class JohnnyMoves {
 
   public Date getDate()
   {
-    return new Date();
+    Date now = new Date();
+    return new Date(now.getTime() + daysOffset * 86400L * 1000L);
   }
 
   public static void main(String[] args)
   {
-    String[] options = new String[] {
+    String[] options = new String[]
+    {
       "Send parcel",
       "Track parcel",
       "Change time",
