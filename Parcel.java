@@ -85,7 +85,7 @@ public class Parcel
     {
       if (diff <= 0)
         status = "Processing";
-      else if (diff > 0 && diff < 2)
+      else if (diff > 0 && diff < 1)
         status = "Shipping";
       else
         status = "Delivered";
@@ -94,7 +94,7 @@ public class Parcel
     {
       if (diff <= 0)
         status = "Processing";
-      else if (diff > 0 && diff < 3)
+      else if (diff > 0 && diff < 2)
         status = "Shipping";
       else
         status = "Delivered";
@@ -103,7 +103,7 @@ public class Parcel
     {
       if (diff <= 0)
         status = "Processing";
-      else if (diff > 0 && diff < 5)
+      else if (diff > 0 && diff < 4)
         status = "Shipping";
       else
         status = "Delivered";
@@ -112,7 +112,7 @@ public class Parcel
     {
       if (diff <= 0)
         status = "Processing";
-      else if (diff > 0 && diff < 8)
+      else if (diff > 0 && diff < 7)
         status = "Shipping";
       else
         status = "Delivered";
