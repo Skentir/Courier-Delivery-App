@@ -5,6 +5,14 @@ public class Document extends Item
 {
   private final int pages;
 
+  /**
+   * Constructs a document.
+   *
+   * @param name the name of the document
+   * @param length the length of the document
+   * @param width the width of the document
+   * @param pages the number of pages in the document
+   */
   public Document(String name, double length, double width, int pages)
   {
     super(name, length, width);
@@ -14,6 +22,11 @@ public class Document extends Item
     this.pages = pages;
   }
 
+  /**
+   * Gets the number of pages in the document.
+   *
+   * @return the number of pages
+   */
   public int getPages()
   {
     return pages;
