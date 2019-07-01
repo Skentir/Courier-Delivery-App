@@ -77,28 +77,20 @@ public class Parcel
 
     this.parcelType = type;
   }
-/*
-  public void setShipDate(Date currDate)
-  {
-    shipDate = currDate;
-  }
-  private void getStatus(Date shipDate)
-  {
-    Date rDate = new Date();
-    Date fr = new SimpleDateFormat("dd-M-yyyy").parse((String)request.getParameter(rDate);
-    Date sD = new SimpleDateFormat("dd-M-yyyy").parse((String)request.getParameter(shipDate));
 
-    long diff = (sD.getTime() - fr.getTime())/(24*60*60*10000);
+  public String getStatus(Date currentDate)
+  {
+    long diff = (currentDate.getTime() - shipDate.getTime())/(24*60*60*10000);
     System.out.printf("\nIt has been %d days since parcel was shipped\n", diff);
 
-    if (region.equalsIgnorecase("METRO MANILA"))
+    if (region.equalsIgnoreCase("METRO MANILA"))
     {
       if (diff <= 0)
         status = "Processing";
-      else if (diff > 0 && dif < 3)
+      else if (diff > 0 && diff < 3)
         status = "Delivered";
     }
-    else if (region.equalsIgnorecase("LUZON"))
+    else if (region.equalsIgnoreCase("LUZON"))
     {
       if (diff == 0)
         status = "Processing";
@@ -107,7 +99,7 @@ public class Parcel
       else
         status = "Delivered";
     }
-    else if (region.equalsIgnorecase("VISAYAS"))
+    else if (region.equalsIgnoreCase("VISAYAS"))
     {
       if (diff <= 0)
         status = "Processing";
@@ -116,7 +108,7 @@ public class Parcel
       else
         status = "Delivered";
     }
-    else if (region.equalsIgnorecase("MINDANAO"))
+    else if (region.equalsIgnoreCase("MINDANAO"))
     {
       if (diff <= 0)
         status = "Processing";
@@ -125,12 +117,14 @@ public class Parcel
       else
         status = "Delivered";
     }
+
+    return status;
   }
 
-  public void getShipDate(Date currDate)
+  public Date getShipDate()
   {
-    shipDate = currDate;
-  }*/
+    return shipDate;
+  }
   public  String getParcelType()
   {
     return parcelType;
@@ -201,30 +195,7 @@ public class Parcel
     items.addAll(items);
   }
 
-  public void packItems()
-  {
-    boolean fitsLStack, fitsWStack, fitsHStack, start = true;
-    int i = 0; /*  Start with flat box dimensions */
-    sortByVolume(); /* Sort by dimensions/volume */
-    while (start)
-    {
-      /* If it can stack ALL items in 1 orientation without consuming
-      60 % of available space then use stack algorithm */
-      //fitsLStack = stackLeft(boxSize[i]);
-      //fitsWStack = stackWidth();
-      //fitsHStack = stackHeight();
-      // item.getWeight() makes sure <= 3 kilos for flat
-      //if (itemList.size() < computeVolume(boxSize[i])* 0.40)
-      //  start = stop;
-    //  else
-    //  {
-        /* If it consumes more than 40% of the available space then
-        use volume based algorithm (bin packaging algorithm) */
-    //    done = binPackaging();
-    //    i++;
-  //    }
-    }
-  }
+
 
   private void sortByVolume()
   {
