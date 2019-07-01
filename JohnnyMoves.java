@@ -206,7 +206,8 @@ public class JohnnyMoves {
     pType = parcel.getParcelType(); /* Get parcel Type: FLT or BOX */
     date = dateCode(parcel); /* Set date in string format of MMDD */
     seq = Integer.toString(seqCode()); /* Number for the day */
-    code = "<"+pType+">"+"<"+date+">"+"<"+dest+">"+"<"+itemNum+">"+"<"+seq+">";
+    //code = "<"+pType+">"+"<"+date+">"+"<"+dest+">"+"<"+itemNum+">"+"<"+seq+">";
+    code = pType + date + dest + itemNum + seq;
     //parcel.setTrackingCode(code);
   }
 
