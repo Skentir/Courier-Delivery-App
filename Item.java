@@ -57,6 +57,16 @@ public abstract class Item
     return width;
   }
 
+  /**
+   * Returns the volume of the item.
+   *
+   * @return the volume, in cubic inches, of the item.
+   */
+  public double getVolume()
+  {
+    return getWidth() * getHeight() * getLength();
+  }
+
   public abstract String getItemType();
 
   /**

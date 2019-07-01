@@ -1,31 +1,21 @@
-import java.util.ArrayList;
-import java.util.Collection;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.time.*;
 import java.util.*;
 import packer.Dimension;
 
-class ItemComparator implements Comparator<Item>
-{
-  @Override
-  public int compare(Item a, Item b)
-  {
-    // TODO: implement this function
-    return 0;
-  }
-}
-
 public class Parcel
 {
+  /**
+   * Code for a flat parcel.
+   */
   public static final String FLAT = "FLT";
+
+  /**
+   * Code for a box parcel.
+   */
   public static final String BOX = "BOX";
 
-  private boolean insured;
+  private final boolean insured;
   private final String recipient;
   private final String region;
   private final Date shipDate;
@@ -35,8 +25,10 @@ public class Parcel
   private String parcelType;
   private Dimension dimensions;
 
-  public static final String[] REGIONS =
-  new String[]
+  /**
+   * Contains all the valid regions.
+   */
+  public static final String[] REGIONS = new String[]
   {
     "LUZON",
     "METRO MANILA",
@@ -44,22 +36,24 @@ public class Parcel
     "MINDANAO"
   };
 
-  public final static Integer[][] boxSize =
-  new Integer[][]
-  { /* In the order of length, width, height in inches*/
-    {9,14,1},   /* Flat parcel has max of 3 kilos weight */
-    {12,18,3},  /* Flat parcel has max of 3 kilos weight */
-    {12,10,15},
-    {14,11,7},
-    {18,12,9},
-    {20,16,12}
-  };
-
+  /**
+   * Constructs a new parcel that is not insured.
+   *
+   * @param recipient who will receive the parcel
+   * @param region in what region is the recipient located
+   */
   public Parcel(String recipient, String region)
   {
     this(recipient, region, false);
   }
 
+  /**
+   * Constructs a new parcel.
+   *
+   * @param recipient who will receive the parcel
+   * @param region in what region is the recipient located
+   * @param insured is the parcel insured?
+   */
   public Parcel(String recipient, String region, boolean insured)
   {
     shipDate = new Date();
@@ -69,25 +63,24 @@ public class Parcel
     this.items = new ArrayList<>();
   }
 
-  public void setParcelType(String type)
-  {
-    // accept only either BOX or FLAT
-    if (!type.equals(BOX) && !type.equals(FLAT))
-      return;
-
-    this.parcelType = type;
-  }
-
+  /**
+   * Gets the status of the package. The parcels have a status of Processing
+   * when it is sent within the first day.
+   *
+   * @param currentDate the current date
+   *
+   * @return the status of the package
+   */
   public String getStatus(Date currentDate)
   {
-    long diff = (currentDate.getTime() - shipDate.getTime())/(24*60*60*10000);
+    long diff = (currentDate.getTime() - shipDate.getTime())/(24*60*60*1000);
     System.out.printf("\nIt has been %d days since parcel was shipped\n", diff);
 
     if (region.equalsIgnoreCase("METRO MANILA"))
     {
       if (diff <= 0)
         status = "Processing";
-      else if (diff > 0 && diff < 3)
+      else if (diff > 0)
         status = "Delivered";
     }
     else if (region.equalsIgnoreCase("LUZON"))
@@ -121,13 +114,112 @@ public class Parcel
     return status;
   }
 
-  public Date getShipDate()
+  /**
+   * Gets the base price of the parcel, which is determined by the type of the
+   * parcel and/or all the items inside.
+   *
+   * @return the base price of the parcel
+   */
+  public double getBasePrice()
   {
-    return shipDate;
+    int sizeType = parcelType.charAt(3) - '0';
+    String type = parcelType.substring(0, 3);
+    switch (type)
+    {
+      case BOX:
+        double irregular = 0.0;
+        double regular = 0.0;
+        for (Item item : items)
+        {
+          if (item instanceof IrregularProduct)
+          {
+            double volumeBasedPrice = item.getVolume() / 305.0 * 30.0;
+            double realBasedPrice = item.getWeight() * 40.0;
+            irregular += Math.max(volumeBasedPrice, realBasedPrice);
+          }
+          else
+          {
+            regular += item.getWeight() * 40.0;
+          }
+        }
+        return Math.max(irregular, regular);
+      case FLAT:
+        if (sizeType == 0)
+          return 30.0;
+        else if (sizeType == 1)
+          return 50.0;
+        else
+          return 0.0;
+      default:
+        return 0.0;
+    }
   }
-  public  String getParcelType()
+
+  private double getWeight()
   {
-    return parcelType;
+    double weight = 0.0;
+    for (Item item : items)
+      weight += item.getWeight();
+
+    return weight;
+  }
+
+  /**
+   * Gets the total price of the parcel when insurance and service fees are
+   * accounted for.
+   *
+   * @return the price of the parcel
+   */
+  public double getPrice()
+  {
+    double basePrice = getBasePrice();
+
+    double insurance = this.insured ? items.size() * 5.0 : 0.0;
+    double service = 0.0;
+
+    double weight = getWeight();
+
+    if (region.equalsIgnoreCase("METRO MANILA"))
+      service = 50.0;
+    else if (region.equalsIgnoreCase("LUZON"))
+      service = 100.0;
+    else if (region.equalsIgnoreCase("VISAYAS"))
+      service = Math.max(1000.0, Math.max(0.1 * weight, 0.1 * dimensions.getVolume()));
+    else if (region.equalsIgnoreCase("MINDANAO"))
+      service = Math.max(3000.0, Math.max(0.25 * weight, 0.25 * dimensions.getVolume()));
+
+    return basePrice + insurance + service;
+  }
+
+  /**
+   * Gets the type of the parcel.
+   *
+   * @return either FLT or BOX
+   */
+  public String getParcelType()
+  {
+    return parcelType.substring(0, 3);
+  }
+
+  /**
+   * Sets the type of the parcel.
+   *
+   * @param type the type of the parcel. Accepted values are FLTn and BOXn,
+   *             where n refers to the size of the parcel
+   */
+  public void setParcelType(String type)
+  {
+    // accept only either BOX or FLT
+    if (!type.startsWith(BOX) && !type.startsWith(FLAT))
+      return;
+
+    if (type.length() != 4)
+      return;
+
+    if (!Character.isDigit(type.charAt(3)))
+      return;
+
+    this.parcelType = type;
   }
 
   public String getRecipient()
@@ -140,14 +232,28 @@ public class Parcel
     return region;
   }
 
+  public String getRegionCode()
+  {
+    if (region.equalsIgnoreCase("METRO MANILA"))  return "MML";
+    else if (region.equalsIgnoreCase("LUZON"))    return "LUZ";
+    else if (region.equalsIgnoreCase("VISAYAS"))  return "VIS";
+    else if (region.equalsIgnoreCase("MINDANAO")) return "MIN";
+    else                                          return null;
+  }
+
+  public Date getShipDate()
+  {
+    return shipDate;
+  }
+
   public String getTrackingCode()
   {
     return trackingCode;
   }
 
-  public List<Item> getItems()
+  public void setTrackingCode(String code)
   {
-    return items;
+    trackingCode = code;
   }
 
   public Dimension getDimensions()
@@ -160,46 +266,14 @@ public class Parcel
     this.dimensions = dimension;
   }
 
-  public void removeItem(Item item)
-  {
-    items.remove(item);
-  }
-
-  public void setInsurance(boolean insured)
-  {
-    this.insured = insured;
-  }
-
-  // Add stackLeft, stackWidth, stackHeight
-  // added packItems
-  private double computeVolume(Integer[] dimensions)
-  {
-  /* Multiplies the length, width, height */
-    int i; double volume = 1;
-    //for (i=0; i<dimensions; i++)
-    //  volume *= dimensions[i];
-    return volume;
-  }
-
-  public void addItem(Item item)
-  {
-    if (item != null) {
-      items.add(item);
-      System.out.println("Item added to parcel!");
-    } else
-      System.out.println("Item can't be added to parcel!");
-  }
-
   public void addItems(Collection<Item> items)
   {
     items.addAll(items);
   }
 
-
-
-  private void sortByVolume()
+  public List<Item> getItems()
   {
-    Collections.sort(items, new ItemComparator());
+    return items;
   }
 
   public void displayItems()

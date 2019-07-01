@@ -150,7 +150,7 @@ public class JohnnyMoves {
 
   public String dateCode(Parcel parcel)
   {
-    Date shipDate = new Date(); // TODO: get ship date from parcel
+    Date shipDate = parcel.getShipDate();
     SimpleDateFormat fDate = new SimpleDateFormat ("MMDD");
     return fDate.format(shipDate);
   }
@@ -172,43 +172,40 @@ public class JohnnyMoves {
     }
   }
 
-  public int seqCode()
+  public int seqCode(Parcel parcel)
   {
-    Parcel p = parcels.get(parcels.size()-1);
-    Date target = p.getShipDate();
-    Collections.sort(parcels, new ParcelComparator());
-    int found = -1, i=0, seq = 0; boolean exit = true;
+    Date target = parcel.getShipDate();
+    //Collections.sort(parcels, new ParcelComparator());
+    int seq = 0, i = 0;
+    boolean found = false;
     /* Find the index where the first occurance of the Month and Day of the parcel sent */
-    while (found == -1)
-    {
-      if (parcels.get(i).getShipDate().equals(target.getMonth()))
-        if (parcels.get(i).getShipDate().equals(target.getDay()))
-          found = i;
-      i++;
-    }
 
-    while (exit)
+    do
     {
-      if (parcels.get(found).getShipDate().equals(p.getShipDate()))
-        return seq;
-      found++;
       seq++;
-    }
+      for (int j = 0; j < parcels.size(); j++)
+      {
+        String trackingCode = parcels.get(j).getTrackingCode();
+        String dateCode = trackingCode.
+      }
+
+    } while (!found);
+
     return seq;
   }
 
-  public void generateCode()
+  public String generateCode(Parcel parcel)
   {
-    Parcel parcel = parcels.get(parcels.size()-1);
     String code, dest, itemNum, pType, seq, date;
-    dest = regionCode(parcel.getRegion()); /* Gets location code: MNL, VIS, MIN, or LUZ */
-    itemNum = Integer.toString(parcel.getItems().size()); /* Gets number of items */
+    dest = parcel.getRegionCode(); /* Gets location code: MNL, VIS, MIN, or LUZ */
+    itemNum = String.format("%02d", parcel.getItems().size()); /* Gets number of items */
     pType = parcel.getParcelType(); /* Get parcel Type: FLT or BOX */
     date = dateCode(parcel); /* Set date in string format of MMDD */
-    seq = Integer.toString(seqCode()); /* Number for the day */
+    seq = String.format("%03d", seqCode()); /* Number for the day */
     //code = "<"+pType+">"+"<"+date+">"+"<"+dest+">"+"<"+itemNum+">"+"<"+seq+">";
     code = pType + date + dest + itemNum + seq;
     //parcel.setTrackingCode(code);
+    return code;
   }
 
   /**

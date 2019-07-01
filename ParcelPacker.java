@@ -5,8 +5,10 @@ import packer.Dimension;
 import packer.Packing;
 import packer.PackItem;
 
-public class ParcelPacker extends DefaultPacker {
-  private static final Container[] CONTAINERS = new Container[] {
+public class ParcelPacker extends DefaultPacker
+{
+  private static final Container[] CONTAINERS = new Container[]
+  {
     new Container(9, 1, 14, 3, Parcel.FLAT),
     new Container(12, 3, 18, 3, Parcel.FLAT),
     new Container(12, 10, 5, 1000, Parcel.BOX),
@@ -15,11 +17,14 @@ public class ParcelPacker extends DefaultPacker {
     new Container(20, 16, 12, 1000, Parcel.BOX)
   };
 
-  public boolean pack(Parcel parcel, Item[] items) {
+  public boolean pack(Parcel parcel, Item[] items)
+  {
     Container candidate = null;
-    for (Container container : CONTAINERS) {
+    for (Container container : CONTAINERS)
+    {
       PackItem[] packItems = new PackItem[items.length];
-      for (int i = 0; i < items.length; i++) {
+      for (int i = 0; i < items.length; i++)
+      {
         Item item = items[i];
         Dimension dim = new Dimension(item.getWidth(), item.getHeight(), item.getLength());
         double weight = item.getWeight();
@@ -30,13 +35,15 @@ public class ParcelPacker extends DefaultPacker {
       if (packings == null)
         continue;
 
-      if (packings.size() == 1) {
+      if (packings.size() == 1)
+      {
         candidate = container;
         break;
       }
     }
 
-    if (candidate != null) {
+    if (candidate != null)
+    {
       parcel.setDimensions(candidate.getDimensions());
       parcel.setParcelType(candidate.getType());
       return true;

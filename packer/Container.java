@@ -1,29 +1,40 @@
 package packer;
 
-public class Container {
-    private final Dimension dimensions;
-    private final double maxWeight;
-    private final String type;
+public class Container
+{
+  private final Dimension dimensions;
+  private final double maxWeight;
+  private final String type;
 
-    public Container(double width, double height, double length, double maxWeight, String type) {
-      this(new Dimension(width, height, length), maxWeight, type);
-    }
+  public Container(double width, double height, double length, double maxWeight, String type, int index)
+  {
+    this(new Dimension(width, height, length), maxWeight, type + index);
+  }
 
-    public Container(Dimension dimensions, double maxWeight, String type) {
-        this.dimensions = dimensions;
-        this.maxWeight = maxWeight;
-        this.type = type;
-    }
+  public Container(double width, double height, double length, double maxWeight, String type)
+  {
+    this(new Dimension(width, height, length), maxWeight, type);
+  }
 
-    public Dimension getDimensions() {
-        return dimensions;
-    }
+  public Container(Dimension dimensions, double maxWeight, String type)
+  {
+    this.dimensions = dimensions;
+    this.maxWeight = maxWeight;
+    this.type = type;
+  }
 
-    public double getMaxWeight() {
-        return maxWeight;
-    }
+  public Dimension getDimensions()
+  {
+    return dimensions;
+  }
 
-    public String getType() {
-        return type;
-    }
+  public double getMaxWeight()
+  {
+    return maxWeight;
+  }
+
+  public String getType()
+  {
+    return type;
+  }
 }
