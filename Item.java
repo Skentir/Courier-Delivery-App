@@ -8,6 +8,13 @@ public abstract class Item
 
   private final String name;
 
+  /**
+   * Constructs an item with the given attributes.
+   *
+   * @param name the name of the item
+   * @param length the length of the item
+   * @param width the width of the item
+   */
   protected Item(String name, double length, double width)
   {
     if (length <= 0.0)

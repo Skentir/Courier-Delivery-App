@@ -19,7 +19,7 @@ public class Dimension {
         dimensions.add(width);
         dimensions.add(height);
         dimensions.add(length);
-        
+
         dimensions.sort(Double::compare);
         return new Dimension(dimensions.get(2), dimensions.get(1), dimensions.get(0));
     }
@@ -46,6 +46,6 @@ public class Dimension {
 
     @Override
     public String toString() {
-        return String.format("Dimension[%f, %f, %f]", width, height, length);
+        return String.format("Dimension(%f, %f, %f)", width, height, length);
     }
 }

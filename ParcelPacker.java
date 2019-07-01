@@ -7,12 +7,12 @@ import packer.PackItem;
 
 public class ParcelPacker extends DefaultPacker {
   private static final Container[] CONTAINERS = new Container[] {
-    new Container(9, 1, 14, 3),
-    new Container(12, 3, 18, 3),
-    new Container(12, 10, 5, 1000),
-    new Container(14, 11, 7, 1000),
-    new Container(18, 12, 9, 1000),
-    new Container(20, 16, 12, 1000)
+    new Container(9, 1, 14, 3, Parcel.FLAT),
+    new Container(12, 3, 18, 3, Parcel.FLAT),
+    new Container(12, 10, 5, 1000, Parcel.BOX),
+    new Container(14, 11, 7, 1000, Parcel.BOX),
+    new Container(18, 12, 9, 1000, Parcel.BOX),
+    new Container(20, 16, 12, 1000, Parcel.BOX)
   };
 
   public boolean pack(Parcel parcel, Item[] items) {
@@ -27,6 +27,9 @@ public class ParcelPacker extends DefaultPacker {
       }
 
       Collection<Packing> packings = pack(container, packItems);
+      if (packings == null)
+        continue;
+
       if (packings.size() == 1) {
         candidate = container;
         break;
@@ -34,7 +37,8 @@ public class ParcelPacker extends DefaultPacker {
     }
 
     if (candidate != null) {
-
+      parcel.setDimensions(candidate.getDimensions());
+      parcel.setParcelType(candidate.getType());
       return true;
     }
 

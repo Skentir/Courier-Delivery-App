@@ -4,38 +4,25 @@ import java.util.ArrayList;
 
 public class JohnnyMoves {
   private Scanner sc;
-  private List<Parcel> parcel;
+  private List<Parcel> parcels;
 
   public JohnnyMoves() {
     this.sc = new Scanner(System.in);
-    this.parcel = new ArrayList<>();
+    this.parcels = new ArrayList<>();
   }
 
-  public boolean compute(Parcel parcel) {
+  public boolean compute(Parcel parcel, List<Item> items) {
     ParcelPacker packer = new ParcelPacker();
-    return packer.pack(parcel, parcel.getItems());
+    Item[] itemsArr = items.toArray(new Item[0]);
+    return packer.pack(parcel, itemsArr);
   }
 
-  public void removeItems(Parcel box)
-  {
-    int choice = 0, numItems = box.getItems().size();
-    if (numItems != 0)
-    {
-      box.displayItems();
-      do
-      {
-        System.out.println("\nWhich item are you removing?");
-        System.out.printf("Choice: ");
-        choice = sc.nextInt();
-        choice--; // Indexing from 0 to n-1
-      } while(choice < 0 || choice >= numItems);
-      box.getItems().remove(choice);
-      sc.nextLine();
-    } else
-      System.out.println("Box is empty. Add items first.");
-  }
-
-  public void addIrregular()
+  /**
+   * Runs the interface for creating an irregular product.
+   *
+   * @return a new irregularly shaped product
+   */
+  public IrregularProduct addIrregular()
   {
     double length, width, height, weight; String name;
 
@@ -44,34 +31,59 @@ public class JohnnyMoves {
 
     do
     {
-      System.out.print("\nEnter length of document in inches: ");
+      System.out.print("Enter length of product: ");
       length = sc.nextDouble();
-      System.out.print("\nEnter width of document in inches: ");
+      System.out.print("Enter width of product: ");
       width = sc.nextDouble();
-      System.out.print("\nEnter height of document in inches: ");
+      System.out.print("Enter height of product: ");
       height = sc.nextDouble();
-    } while (length < 0 || width < 0 || height < 0);
-    weight = length * width * height / 305;
+    } while (length <= 0 || width <= 0 || height <= 0);
 
-    Parcel.add(new IrregularProduct(name, length, width, height, weight));
+    do
+    {
+      System.out.print("Enter weight of product: ");
+      weight = sc.nextDouble();
+    } while (weight <= 0);
+
+    return new IrregularProduct(name, length, width, height, weight);
   }
 
+  /**
+   * Runs the interface for creating a regular product.
+   *
+   * @return a new regular, box-shaped product
+   */
   public RegularProduct addRegular()
   {
-    double dimension, weight; String name;
+    double length, width, height, weight; String name;
 
     System.out.print("Name of product: ");
     name = sc.nextLine();
 
     do
     {
-      System.out.print("\nEnter dimension of product in inches: ");
-      dimension = sc.nextDouble();
-    } while (dimension < 0);
-    weight = Math.pow(dimension, 3)/305;
-    Parcel.add(new RegularProduct(name, dimension, dimension, dimension, weight));
+      System.out.print("Enter length of product: ");
+      length = sc.nextDouble();
+      System.out.print("Enter width of product: ");
+      width = sc.nextDouble();
+      System.out.print("Enter height of product: ");
+      height = sc.nextDouble();
+    } while (length <= 0 || width <= 0 || height <= 0);
+
+    do
+    {
+      System.out.print("Enter weight of product: ");
+      weight = sc.nextDouble();
+    } while (weight <= 0);
+
+    return new RegularProduct(name, length, width, height, weight);
   }
 
+  /**
+   * Runs the interface for creating a document.
+   *
+   * @return a new document
+   */
   public Document addDocument()
   {
     int pages = -1;
@@ -108,7 +120,7 @@ public class JohnnyMoves {
       "Cancel"
     };
 
-    int choice = optionIndex("What type of item do you want to add?");
+    int choice = optionIndex("What type of item do you want to add?", choices);
     switch (choice)
     {
       case 1:
@@ -122,43 +134,55 @@ public class JohnnyMoves {
         return null;
     }
   }
-/*
-  public void getInputs(Parcel box)
+
+  public String regionCode(String region)
   {
-    boolean running = true; int choice = 0; char menu;
-    while (running)
+    switch (region.toLowerCase())
     {
-      do
-      {
-        System.out.println("\nChooose an option:");
-        System.out.println("[1] Add an item");
-        System.out.println("[2] Remove an item");
-        System.out.println("[3] Modify an item");
-        choice = sc.nextInt();
-        sc.nextLine();
-        if(choice < 1 || choice > 2)
-          System.out.println("Invalid Action.");
-      } while(running || choice < 1 || choice > 2);
-
-      if (choice == 1)
-        addItems();
-      else
-        removeItems(box);
-
-      do
-      {
-        System.out.print("Stay in this menu? (y/n): ");
-        menu = sc.nextLine().charAt(0);
-        if (menu == 'y' || menu == 'Y')
-          running = true;
-        else if (menu == 'n' || menu == 'N')
-          running = false;
-        else
-          System.out.println("Invalid Action.");
-      } while(menu != 'y' || menu != 'Y' || menu != 'n' || menu != 'N');
+      case "metro manila": return "MML";
+      case "visayas": return "VIS";
+      case "mindanao": return "MIN";
+      case "luzon": return "LUZ";
+      default: return null;
     }
   }
-*/
+
+  public String dateCode(Parcel parcel)
+  {
+    Date shipDate = new Date(); // TODO: get ship date from parcel
+    SimpleDateFormat fDate = new SimpleDateFormat ("MMDD");
+    return fDate.format(shipDate);
+  }
+
+  public String seqCode()
+  {
+    int i, count;
+    for (i = 0; i < parcels.size(); i++)
+    {
+
+    }
+    // Just compare dates
+    return Integer.toString(i);
+  }
+
+  public void generateCode()
+  {
+    Parcel parcel = parcels.get(parcels.size()-1);
+    String code, dest, itemNum, pType, seq, date;
+    dest = regionCode(parcel.getRegion()); /* Gets location code: MNL, VIS, MIN, or LUZ */
+    itemNum = Integer.toString(parcel.getItems().size()); /* Gets number of items */
+    pType = parcel.getParcelType(); /* Get parcel Type: FLT or BOX */
+    date = dateCode(parcel); /* Get date in string format of MMDD */
+    seq = seqCode();/* TODO: number for da day */
+    code = "<"+pType+">"+"<"+date+">"+"<"+dest+">"+"<"+itemNum+">"+"<"+seq+">";
+    //parcel.setTrackingCode(code);
+  }
+
+  /**
+   * Runs the item menu.
+   *
+   * @param items the list of items to be worked on
+   */
   public void itemMenu(List<Item> items)
   {
     String[] commands = new String[] {
@@ -197,52 +221,10 @@ public class JohnnyMoves {
     }
   }
 
-  public String regionCode(String region)
-  {
-    if (region.equalsIgnorecase("Metro Manila"))
-      return "MML";
-    else if (region.equalsIgnorecase("Visayas"))
-      return "VIS";
-    else if (region.equalsIgnorecase("Mindanao"))
-      return "MIN";
-    else if (region.equalsIgnorecase("Luzon"))
-      return "LUZ";
-  }
-
-  public String dateCode(Parcel parcel)
-  {
-    Date shipDate = parcel.getShipDate();
-    SimpleDateFormat fDate = new SimpleDateFormat ("MMDD");
-    return fDate.format(shipDate);
-  }
-
-  public String seqCode(ArrayList<Parcel> parcelList)
-  {
-    int i, count;
-    for (i = 0; i < parcelList.size(); i++)
-    {
-
-    }
-    // Just compare dates
-  }
-
-  public  void generateCode(ArrayList<Parcel> parcelList)
-  {
-    Parcel parcel = parcelList.get(parcelList.size()-1);
-    String code, dest, itemNum, pType;
-    dest = regionCode(parcel.getRegion()); /* Gets location code: MNL, VIS, MIN, or LUZ */
-    itemNum = parcel.items.size(); /* Gets number of items */
-    pType = parcel.getParcelType(); /* Get parcel Type: FLT or BOX */
-    date = dateCode(parcelList); /* Get date in string format of MMDD */
-    seq = seqCode(parcelList);/* TODO: number for da day */
-    code = "<"+pType+">"+"<"+date+">"+"<"+dest+">"+"<"+itemNum+">"+"<"+seq+">";
-    parcel.setTrackingCode(code);
-  }
-
   /**
    * Runs the parcel sending menu.
    */
-  public void sendMenu(List<Parcel> parcels)
+  public void sendMenu()
   {
     String[] commands = new String[] {
       "Set recipient",
@@ -258,6 +240,7 @@ public class JohnnyMoves {
     String recipient = null;
     String region = null;
     boolean insured = false;
+    ArrayList<Item> items = new ArrayList<>();
 
     while (running)
     {
@@ -265,7 +248,7 @@ public class JohnnyMoves {
       switch (option)
       {
         case 1:
-          System.out.println("Who will receive the parcel: ");
+          System.out.print("Who will receive the parcel: ");
           recipient = sc.nextLine();
           region = optionValue("Which region is the recipient located?", Parcel.REGIONS);
           break;
@@ -273,13 +256,17 @@ public class JohnnyMoves {
           insured = yesOrNo("Should the parcel be insured?");
           break;
         case 3:
-          itemMenu(itemList);
+          itemMenu(items);
           break;
         case 4:
           Parcel parcel = new Parcel(recipient, region, insured);
           // TODO: add items to parcel before computing
-          if (compute(parcel)) {
-            parcel.startTracking();
+          if (compute(parcel, items)) {
+            parcel.addItems(items);
+            // TODO parcel.startTracking();
+            System.out.println(parcel);
+            parcel.displayItems();
+            System.out.println(parcel.getDimensions());
             parcels.add(parcel);
             running = false;
           } else {
@@ -435,21 +422,29 @@ public class JohnnyMoves {
     do
     {
       System.out.println("Please enter a tracking code: ");
-      code = sc.nexLine();
-      parcelIdx = driver.codeExists(parcels, code);
-      if (parcelIdx == -1)
-        System.out.println("Woops! It seems this code doesn't exist. Try again.");
+      code = sc.nextLine();
+      //parcelIdx = codeExists(parcels, code);
+      //if (parcelIdx == -1)
+      //  System.out.println("Woops! It seems this code doesn't exist. Try again.");
     } while (parcelIdx != -1);
+
+    if (parcelIdx == -1)
+      return;
 
     System.out.println("----------------------------------");
     System.out.print("Tracking Code: ");
     System.out.println(parcels.get(parcelIdx).getTrackingCode());
-    System.out.printlf("Status: %s", parcels.get(parcelIdx).getStatus());
+    // TODO System.out.println("Status: %s", parcels.get(parcelIdx).getStatus());
     System.out.printf("Recipient: %s\n", parcels.get(parcelIdx).getRecipient());
     System.out.printf("Region: %s\n", parcels.get(parcelIdx).getRegion());
     System.out.print("Items shipped:\n");
-    parcel.get(i).displayItems();
+    parcels.get(parcelIdx).displayItems();
     System.out.println("----------------------------------\n");
+  }
+
+  public void timeMenu()
+  {
+    // TODO: change simulated time
   }
 
   /**
@@ -458,6 +453,11 @@ public class JohnnyMoves {
   public void close()
   {
     sc.close();
+  }
+
+  public Date getDate()
+  {
+    return new Date();
   }
 
   public static void main(String[] args)
@@ -474,8 +474,7 @@ public class JohnnyMoves {
     while (running)
     {
       System.out.println(">>> Welcome to JohnnyMoves Services <<<");
-
-
+      System.out.println("The time now is " + driver.getDate());
       int choice = driver.optionIndex("Please select an option...", options);
 
       if (choice == 1)

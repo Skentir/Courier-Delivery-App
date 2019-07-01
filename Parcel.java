@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.*;
+import packer.Dimension;
 
 class ItemComparator implements Comparator<Item>
 {
@@ -17,14 +19,18 @@ class ItemComparator implements Comparator<Item>
 
 public class Parcel
 {
+  public static final String FLAT = "FLT";
+  public static final String BOX = "BOX";
+
   private boolean insured;
   private final String recipient;
   private final String region;
   private final Date shipDate;
-  private final Date recieveDate;
   private ArrayList<Item> items;
   private String trackingCode;
   private String parcelType;
+  private Dimension dimensions;
+
   public static final String[] REGIONS =
   new String[]
   {
@@ -59,14 +65,15 @@ public class Parcel
     this.items = new ArrayList<>();
   }
 
-  public void setParcelType(Integer sizeIdx)
+  public void setParcelType(String type)
   {
-    if (sizeIdx <= 1)
-      parcelType = "FLT";
-    else
-      parcelType = "BOX";
-  }
+    // accept only either BOX or FLAT
+    if (!type.equals(BOX) && !type.equals(FLAT))
+      return;
 
+    this.parcelType = type;
+  }
+/*
   public void setShipDate(Date currDate)
   {
     shipDate = currDate;
@@ -78,7 +85,7 @@ public class Parcel
   public void getStatus(Date currDate)
   {
     shipDate = currDate;
-  }
+  }*/
   public  String getParcelType()
   {
     return parcelType;
@@ -99,10 +106,19 @@ public class Parcel
     return trackingCode;
   }
 
-
   public List<Item> getItems()
   {
     return items;
+  }
+
+  public Dimension getDimensions()
+  {
+    return this.dimensions;
+  }
+
+  public void setDimensions(Dimension dimension)
+  {
+    this.dimensions = dimension;
   }
 
   public void removeItem(Item item)
@@ -133,6 +149,11 @@ public class Parcel
       System.out.println("Item added to parcel!");
     } else
       System.out.println("Item can't be added to parcel!");
+  }
+
+  public void addItems(Collection<Item> items)
+  {
+    items.addAll(items);
   }
 
   public void packItems()
@@ -171,6 +192,13 @@ public class Parcel
     {
       Item item = items.get(i);
       System.out.printf("[%d] %s - %s", i + 1, item.getName(), item.getItemType());
+      System.out.println();
     }
+  }
+
+  @Override
+  public String toString()
+  {
+    return String.format("%s (for %s, %s)", trackingCode, recipient, region);
   }
 }

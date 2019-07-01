@@ -3,14 +3,16 @@ package packer;
 public class Container {
     private final Dimension dimensions;
     private final double maxWeight;
+    private final String type;
 
-    public Container(double width, double height, double length, double maxWeight) {
-      this(new Dimension(width, height, length), maxWeight);
+    public Container(double width, double height, double length, double maxWeight, String type) {
+      this(new Dimension(width, height, length), maxWeight, type);
     }
 
-    public Container(Dimension dimensions, double maxWeight) {
+    public Container(Dimension dimensions, double maxWeight, String type) {
         this.dimensions = dimensions;
         this.maxWeight = maxWeight;
+        this.type = type;
     }
 
     public Dimension getDimensions() {
@@ -19,5 +21,9 @@ public class Container {
 
     public double getMaxWeight() {
         return maxWeight;
+    }
+
+    public String getType() {
+        return type;
     }
 }

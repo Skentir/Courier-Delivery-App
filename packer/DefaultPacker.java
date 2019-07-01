@@ -25,7 +25,8 @@ public class DefaultPacker implements Packer {
             if (!isPlaced) {
                 Packing packing = new Packing(container);
                 if (!packing.placeItem(items[i])) {
-                    throw new RuntimeException("Item cannot be packed");
+                    //throw new RuntimeException("Item cannot be packed");
+                    return null;
                 }
 
                 packings.add(packing);
