@@ -1,2 +1,3 @@
 # avoid committing class files
 *.class
+*.zip

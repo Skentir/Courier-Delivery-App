@@ -4,16 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import packer.Container;
 
-<<<<<<< HEAD
-public class JohnnyMoves {
-
-=======
 /**
  * Driver class for the Johnny Moves app.
  */
 public class JohnnyMoves
 {
->>>>>>> 802f89679ab5becae662d4986110d8ce0c4ece80
   private Scanner sc;
   private List<Parcel> parcels;
   private int daysOffset = 0;
