@@ -1,6 +1,8 @@
 import java.util.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.sql.Date;
 
 public class JohnnyMoves {
   private Scanner sc;
@@ -147,22 +149,53 @@ public class JohnnyMoves {
     }
   }
 
-  public String dateCode(Parcel parcel)
+  public String dateCode(Parcel parcel);
   {
     Date shipDate = new Date(); // TODO: get ship date from parcel
     SimpleDateFormat fDate = new SimpleDateFormat ("MMDD");
     return fDate.format(shipDate);
   }
 
-  public String seqCode()
+  public static class Parcel implements Comparator<Parcel>
   {
-    int i, count;
-    for (i = 0; i < parcels.size(); i++)
+    @Override
+    public int compare(Parcel p1, Parcel p2)
     {
+      Date d1 = p1.getShipDate();
+      Date d2 = p2.getShipDate;
 
+      if(d1.before(d2))
+        return -1;
+      else if (d2.befor(d1))
+        return 1;
+      else
+        return 0;
     }
-    // Just compare dates
-    return Integer.toString(i);
+  }
+
+  public int seqCode()
+  {
+    Parcel p = parcels.get(parcels.size()-1);
+    Date target p.getShipDate();
+    Collections.sortByDate(parcelList, new Comparator<Parcel>);
+    int found = -1, i=0, seq = 0; boolean exit = true;
+    /* Find the index where the first occurance of the Month and Day of the parcel sent */
+    while (found == -1)
+    {
+      if (parcels.get(i).getShipDate().equals(target.getMonth())
+        if (parcels.get(i).getShipDate().equals(target.getDay())
+          found = i;
+      i++;
+    }
+
+    while (exit)
+    {
+      if (parcels.get(found).getShipDate().equals(target.getShipDate))
+        return seq;
+      found++;
+      seq++;
+    }
+    return seq;
   }
 
   public void generateCode()
@@ -172,8 +205,8 @@ public class JohnnyMoves {
     dest = regionCode(parcel.getRegion()); /* Gets location code: MNL, VIS, MIN, or LUZ */
     itemNum = Integer.toString(parcel.getItems().size()); /* Gets number of items */
     pType = parcel.getParcelType(); /* Get parcel Type: FLT or BOX */
-    date = dateCode(parcel); /* Get date in string format of MMDD */
-    seq = seqCode();/* TODO: number for da day */
+    date = dateCode(parcel); /* Set date in string format of MMDD */
+    seq = seqCode(parcelList);/* Number for the day */
     code = "<"+pType+">"+"<"+date+">"+"<"+dest+">"+"<"+itemNum+">"+"<"+seq+">";
     //parcel.setTrackingCode(code);
   }
@@ -433,10 +466,11 @@ public class JohnnyMoves {
 
     System.out.println("----------------------------------");
     System.out.print("Tracking Code: ");
-    System.out.println(parcels.get(parcelIdx).getTrackingCode());
-    // TODO System.out.println("Status: %s", parcels.get(parcelIdx).getStatus());
-    System.out.printf("Recipient: %s\n", parcels.get(parcelIdx).getRecipient());
-    System.out.printf("Region: %s\n", parcels.get(parcelIdx).getRegion());
+    System.out.println (parcel.get(parcelIdx).getTrackingCode());
+    System.out.printf("Recipient: %s\n", parcel.get(parcelIdx).getRecipient());
+    System.out.printf("Region: %s\n", parcel.get(parcelIdx).getRegion());
+    System.out.println (parcels.get(parcelIdx).getTrackingCode());
+    System.out.printlf("Status: %s", parcels.get(parcelIdx).getStatus());
     System.out.print("Items shipped:\n");
     parcels.get(parcelIdx).displayItems();
     System.out.println("----------------------------------\n");

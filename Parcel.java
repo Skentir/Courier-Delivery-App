@@ -1,9 +1,12 @@
 import java.util.ArrayList;
 import java.util.Collection;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.time.*;
 import java.util.*;
 import packer.Dimension;
 
@@ -26,6 +29,7 @@ public class Parcel
   private final String recipient;
   private final String region;
   private final Date shipDate;
+  private String status;
   private ArrayList<Item> items;
   private String trackingCode;
   private String parcelType;
@@ -78,11 +82,52 @@ public class Parcel
   {
     shipDate = currDate;
   }
-  public void getShipDate(Date currDate)
+  private void getStatus(Date shipDate)
   {
-    shipDate = currDate;
+    Date rDate = new Date();
+    Date fr = new SimpleDateFormat("dd-M-yyyy").parse((String)request.getParameter(rDate);
+    Date sD = new SimpleDateFormat("dd-M-yyyy").parse((String)request.getParameter(shipDate));
+
+    long diff = (sD.getTime() - fr.getTime())/(24*60*60*10000);
+    System.out.printf("\nIt has been %d days since parcel was shipped\n", diff);
+
+    if (region.equalsIgnorecase("METRO MANILA"))
+    {
+      if (diff <= 0)
+        status = "Processing";
+      else if (diff > 0 && dif < 3)
+        status = "Delivered";
+    }
+    else if (region.equalsIgnorecase("LUZON"))
+    {
+      if (diff == 0)
+        status = "Processing";
+      else if (diff > 0 && diff < 4)
+        status = "Shipping";
+      else
+        status = "Delivered";
+    }
+    else if (region.equalsIgnorecase("VISAYAS"))
+    {
+      if (diff <= 0)
+        status = "Processing";
+      else if (diff > 0 && diff < 5)
+        status = "Shipping";
+      else
+        status = "Delivered";
+    }
+    else if (region.equalsIgnorecase("MINDANAO"))
+    {
+      if (diff <= 0)
+        status = "Processing";
+      else if (diff > 0 && diff < 7)
+        status = "Shipping";
+      else
+        status = "Delivered";
+    }
   }
-  public void getStatus(Date currDate)
+
+  public void getShipDate(Date currDate)
   {
     shipDate = currDate;
   }*/
