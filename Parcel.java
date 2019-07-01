@@ -268,7 +268,7 @@ public class Parcel
 
   public void addItems(Collection<Item> items)
   {
-    items.addAll(items);
+    this.items.addAll(items);
   }
 
   public List<Item> getItems()

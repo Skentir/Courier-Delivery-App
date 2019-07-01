@@ -9,15 +9,15 @@ public class ParcelPacker extends DefaultPacker
 {
   private static final Container[] CONTAINERS = new Container[]
   {
-    new Container(9, 1, 14, 3, Parcel.FLAT),
-    new Container(12, 3, 18, 3, Parcel.FLAT),
-    new Container(12, 10, 5, 1000, Parcel.BOX),
-    new Container(14, 11, 7, 1000, Parcel.BOX),
-    new Container(18, 12, 9, 1000, Parcel.BOX),
-    new Container(20, 16, 12, 1000, Parcel.BOX)
+    new Container(9, 1, 14, 3, Parcel.FLAT, 0),
+    new Container(12, 3, 18, 3, Parcel.FLAT, 1),
+    new Container(12, 10, 5, 1000, Parcel.BOX, 0),
+    new Container(14, 11, 7, 1000, Parcel.BOX, 1),
+    new Container(18, 12, 9, 1000, Parcel.BOX, 2),
+    new Container(20, 16, 12, 1000, Parcel.BOX, 3)
   };
 
-  public boolean pack(Parcel parcel, Item[] items)
+  public List<Container> pack(Parcel parcel, Item[] items)
   {
     Container candidate = null;
     for (Container container : CONTAINERS)

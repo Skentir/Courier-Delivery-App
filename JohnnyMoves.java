@@ -2,6 +2,7 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import packer.Container;
 
 public class JohnnyMoves {
   private Scanner sc;
@@ -136,40 +137,11 @@ public class JohnnyMoves {
     }
   }
 
-  public String regionCode(String region)
-  {
-    switch (region.toLowerCase())
-    {
-      case "metro manila": return "MML";
-      case "visayas": return "VIS";
-      case "mindanao": return "MIN";
-      case "luzon": return "LUZ";
-      default: return null;
-    }
-  }
-
   public String dateCode(Parcel parcel)
   {
     Date shipDate = parcel.getShipDate();
-    SimpleDateFormat fDate = new SimpleDateFormat ("MMDD");
+    SimpleDateFormat fDate = new SimpleDateFormat("MMdd");
     return fDate.format(shipDate);
-  }
-
-  public static class ParcelComparator implements Comparator<Parcel>
-  {
-    @Override
-    public int compare(Parcel p1, Parcel p2)
-    {
-      Date d1 = p1.getShipDate();
-      Date d2 = p2.getShipDate();
-
-      if(d1.before(d2))
-        return -1;
-      else if (d2.before(d1))
-        return 1;
-      else
-        return 0;
-    }
   }
 
   public int seqCode(Parcel parcel)
@@ -177,16 +149,23 @@ public class JohnnyMoves {
     Date target = parcel.getShipDate();
     //Collections.sort(parcels, new ParcelComparator());
     int seq = 0, i = 0;
-    boolean found = false;
+    boolean found;
     /* Find the index where the first occurance of the Month and Day of the parcel sent */
 
     do
     {
       seq++;
+      found = true;
       for (int j = 0; j < parcels.size(); j++)
       {
         String trackingCode = parcels.get(j).getTrackingCode();
-        String dateCode = trackingCode.
+        String dateCode1 = trackingCode.substring(3, 7);
+        String dateCode2 = dateCode(parcel);
+        int seqCode1 = Integer.parseInt(trackingCode.substring(12, 15));
+        if (dateCode1.equals(dateCode2) && seq == seqCode1) {
+          found = false;
+          break;
+        }
       }
 
     } while (!found);
@@ -201,7 +180,7 @@ public class JohnnyMoves {
     itemNum = String.format("%02d", parcel.getItems().size()); /* Gets number of items */
     pType = parcel.getParcelType(); /* Get parcel Type: FLT or BOX */
     date = dateCode(parcel); /* Set date in string format of MMDD */
-    seq = String.format("%03d", seqCode()); /* Number for the day */
+    seq = String.format("%03d", seqCode(parcel)); /* Number for the day */
     //code = "<"+pType+">"+"<"+date+">"+"<"+dest+">"+"<"+itemNum+">"+"<"+seq+">";
     code = pType + date + dest + itemNum + seq;
     //parcel.setTrackingCode(code);
@@ -290,13 +269,10 @@ public class JohnnyMoves {
           break;
         case 4:
           Parcel parcel = new Parcel(recipient, region, insured);
-          // TODO: add items to parcel before computing
+          Collection<Container>
           if (compute(parcel, items)) {
             parcel.addItems(items);
-            // TODO parcel.startTracking();
-            System.out.println(parcel);
-            parcel.displayItems();
-            System.out.println(parcel.getDimensions());
+            System.out.println("Your tracking code is " + parcel.getTrackingCode());
             parcels.add(parcel);
             running = false;
           } else {
