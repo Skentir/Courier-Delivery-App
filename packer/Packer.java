@@ -17,5 +17,6 @@ public interface Packer
    * @param items the items to be packed
    *
    * @return packages containing all the items
+   */
   Collection<Packing> pack(Container container, PackItem[] items);
 }
