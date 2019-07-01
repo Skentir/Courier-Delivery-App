@@ -48,17 +48,31 @@ public class Container
     this.maxWeight = maxWeight;
     this.type = type;
   }
-
+  /**
+   * Returns the container dimension
+   *
+   * @return container dimension
+   */
   public Dimension getDimensions()
   {
     return dimensions;
   }
 
+  /**
+   * Returns max weight of container
+   *
+   * @return a double value weight of container
+   */
   public double getMaxWeight()
   {
     return maxWeight;
   }
 
+  /**
+   * Returns type of container (FLT or BOX)
+   *
+   * @return a String of type FLT or BOX
+   */
   public String getType()
   {
     return type;
@@ -66,6 +80,8 @@ public class Container
 
   /**
    * Formats the container into a string.
+   *
+   * @return a formatted String of the type and dimensions of container;
    */
   @Override
   public String toString()

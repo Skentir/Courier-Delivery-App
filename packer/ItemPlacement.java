@@ -12,17 +12,29 @@ public class ItemPlacement
     this.placement = placement;
     this.weight = item.getWeight();
   }
-
+  /**
+   * Returns item inside the container
+   *
+   * @return a PackItem
+   */
   public PackItem getItem()
   {
     return item;
   }
-
+  /**
+   * Returns placement of item
+   *
+   * @return a Space placement
+   */
   public Space getPlacement()
   {
     return placement;
   }
-
+  /**
+   * Returns weight of item
+   *
+   * @return a double value of weight
+   */
   public double getWeight()
   {
     return weight;
