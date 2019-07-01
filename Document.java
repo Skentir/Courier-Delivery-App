@@ -32,18 +32,33 @@ public class Document extends Item
     return pages;
   }
 
+  /**
+   * Gets the type of the item.
+   *
+   * @return the type, in this case, Document
+   */
   @Override
   public String getItemType()
   {
     return "Document";
   }
 
+  /**
+   * Gets the height or thickness of the document, which depends on the number of pages.
+   *
+   * @return the thickness of the document.
+   */
   @Override
   public double getHeight()
   {
     return Math.ceil(pages / 25.0);
   }
 
+  /**
+   * Gets the weight of the document, dependent on the number of pages.
+   *
+   * @return the weight of the document
+   */
   @Override
   public double getWeight()
   {
