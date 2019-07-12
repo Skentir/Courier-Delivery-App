@@ -21,7 +21,7 @@ public class Employee {
     else
     {
       this.setSalary = numYear * 500;
-      return setSalary;  
+      return setSalary;
     }
   }
 
@@ -30,9 +30,9 @@ public class Employee {
     return name;
   }
 
-  public String getSalary()
+  public double getSalary()
   {
-    return name;
+    return salary;
   }
 
   public String getID()
