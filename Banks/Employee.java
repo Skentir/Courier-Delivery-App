@@ -30,11 +30,6 @@ public class Employee {
     return name;
   }
 
-  public double getSalary()
-  {
-    return salary;
-  }
-
   public String getID()
   {
     return id;
