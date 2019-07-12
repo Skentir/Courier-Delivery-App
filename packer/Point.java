@@ -1,7 +1,8 @@
 package packer;
 
 /**
- * Represents a 3D point inside a container.
+ * Represents a 3D point inside a container. The point inside the container is
+ * relative to the lower-left, front side of the container.
  */
 public class Point
 {
@@ -25,16 +26,31 @@ public class Point
     this.z = z;
   }
 
+  /**
+   * Gets the x location of the point.
+   *
+   * @return x coordinate
+   */
   public double getX()
   {
     return x;
   }
 
+  /**
+   * Gets the y location of the point.
+   *
+   * @return y coordinate
+   */
   public double getY()
   {
     return y;
   }
 
+  /**
+   * Gets the z location of the point.
+   *
+   * @return z coordinate
+   */
   public double getZ()
   {
     return z;

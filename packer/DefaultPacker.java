@@ -4,8 +4,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Default implementation of the 3D packing algorithm.
+ * Sourced from https://github.com/mushishi78/box_packer and translated into
+ * Java.
+ */
 public class DefaultPacker implements Packer
 {
+  /**
+   * Default implementation of the packing algorithm.
+   */
   @Override
   public Collection<Packing> pack(Container container, PackItem[] items)
   {
@@ -36,6 +44,9 @@ public class DefaultPacker implements Packer
         packings.add(packing);
       }
     }
+
+    if (items == null || items.length == 0)
+      packings.add(new Packing(container));
 
     return packings;
   }

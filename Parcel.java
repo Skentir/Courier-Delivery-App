@@ -85,14 +85,16 @@ public class Parcel
     {
       if (diff <= 0)
         status = "Processing";
-      else if (diff > 0)
+      else if (diff > 0 && diff < 1)
+        status = "Shipping";
+      else
         status = "Delivered";
     }
     else if (region.equalsIgnoreCase("LUZON"))
     {
-      if (diff == 0)
+      if (diff <= 0)
         status = "Processing";
-      else if (diff > 0 && diff < 4)
+      else if (diff > 0 && diff < 2)
         status = "Shipping";
       else
         status = "Delivered";
@@ -101,7 +103,7 @@ public class Parcel
     {
       if (diff <= 0)
         status = "Processing";
-      else if (diff > 0 && diff < 5)
+      else if (diff > 0 && diff < 4)
         status = "Shipping";
       else
         status = "Delivered";
