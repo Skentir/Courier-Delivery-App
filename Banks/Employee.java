@@ -25,7 +25,7 @@ public class Employee {
     }
   }
 
-  public String numYear()
+  public int getYears()
   {
     return numYear;
   }
