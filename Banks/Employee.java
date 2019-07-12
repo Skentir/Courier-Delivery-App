@@ -15,13 +15,13 @@ public class Employee {
   {
     if (this instanceof Manager)
     {
-      this.setSalary = numYear * ((Manager) this).getEmployees().size() * 300;
-      return setSalary;
+      this.salary = numYear * ((Manager) this).getEmployees().size() * 300;
+      return salary;
     }
     else
     {
-      this.setSalary = numYear * 500;
-      return setSalary;
+      this.salary = numYear * 500;
+      return salary;
     }
   }
 
