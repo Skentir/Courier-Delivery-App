@@ -25,6 +25,11 @@ public class Employee {
     }
   }
 
+  public String numYear()
+  {
+    return numYear;
+  }
+
   public String getName()
   {
     return name;
