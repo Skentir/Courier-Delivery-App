@@ -94,6 +94,7 @@ public class JohnnyMovesGui extends Application
         welcomeLabel.setText("Welcome to Johnny Moves!");
         Button getStartedButton = new Button();
         getStartedButton.setText("Get Started");
+        getStartedButton.setId("get-started");
 
         BorderPane mainPane = new BorderPane();
         VBox mainBox = new VBox();
@@ -118,7 +119,9 @@ public class JohnnyMovesGui extends Application
         GridPane.setHalignment(parcelPic, HPos.LEFT);
         GridPane.setHalignment(magnifyingPic, HPos.RIGHT);
         sendBtn.setText("Send a Parcel");
+        sendBtn.setId("main-send");
         trackBtn.setText("Track a Parcel");
+        trackBtn.setId("main-track");
 
         /* Layout 1 for Main Menu */
         centerMenu.add(sendBtn, 0, 1);
@@ -147,10 +150,15 @@ public class JohnnyMovesGui extends Application
         Button checkout = new Button();
         Button backToMain = new Button();
         setRecipient.setText("Set Recipient");
+        setRecipient.setId("items-recipient");
         setInsurance.setText("Set Insurance");
+        setInsurance.setId("items-insurance");
         modifyItems.setText("Add, remove, or view items");
+        modifyItems.setId("items-edit");
         checkout.setText("Checkout");
+        checkout.setId("items-checkout");
         backToMain.setText("Go Back to Main Menu");
+        backToMain.setId("items-return");
         setRecipient.setMaxWidth(MAX_BTN_SIZE);
         setInsurance.setMaxWidth(MAX_BTN_SIZE);
         modifyItems.setMaxWidth(MAX_BTN_SIZE);
@@ -194,8 +202,10 @@ public class JohnnyMovesGui extends Application
         Button submitCode = new Button();
         Button trackToMain = new Button();
         trackToMain.setText("Go Back to Main Menu");
+        trackToMain.setId("track-return");
         promptCode.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD, 24));
         submitCode.setText("Submit");
+        submitCode.setId("track-submit");
         submitCode.setMaxWidth(MAX_BTN_SIZE/3);
         enterCode.setMaxWidth(MAX_BTN_SIZE);
 
@@ -222,11 +232,13 @@ public class JohnnyMovesGui extends Application
 
         Button cancelRecipientButton = new Button();
         cancelRecipientButton.setText("Cancel");
+        cancelRecipientButton.setId("recipient-cancel");
         GridPane.setFillWidth(cancelRecipientButton, true);
         GridPane.setMargin(cancelRecipientButton, new Insets(5, 10, 5, 10));
 
         Button submitRecipientButton = new Button();
         submitRecipientButton.setText("Submit");
+        submitRecipientButton.setId("recipient-submit");
         GridPane.setFillWidth(submitRecipientButton, true);
         GridPane.setMargin(submitRecipientButton, new Insets(5, 10, 5, 10));
 
@@ -265,18 +277,21 @@ public class JohnnyMovesGui extends Application
 
         Button addItemButton = new Button();
         addItemButton.setText("Add");
+        addItemButton.setId("items-add");
         addItemButton.setMaxWidth(145);
         GridPane.setFillWidth(addItemButton, true);
         GridPane.setMargin(addItemButton, new Insets(5, 20, 20, 10));
 
         Button removeItemButton = new Button();
         removeItemButton.setText("Remove");
+        removeItemButton.setId("items-remove");
         removeItemButton.setMaxWidth(145);
         GridPane.setFillWidth(removeItemButton, true);
         GridPane.setMargin(removeItemButton, new Insets(5, 10, 20, 10));
 
         Button doneItemButton = new Button();
         doneItemButton.setText("Done");
+        doneItemButton.setId("items-done");
         doneItemButton.setMaxWidth(145);
         GridPane.setFillWidth(doneItemButton, true);
         GridPane.setMargin(doneItemButton, new Insets(5, 10, 20, 20));
@@ -324,12 +339,14 @@ public class JohnnyMovesGui extends Application
 
         Button checkoutButton = new Button();
         checkoutButton.setText("Checkout");
+        checkoutButton.setId("checkout-checkout");
         checkoutButton.setMaxWidth(145);
         GridPane.setFillWidth(checkoutButton, true);
         GridPane.setMargin(checkoutButton, new Insets(5, 10, 20, 20));
 
         Button cancelCheckoutButton = new Button();
         cancelCheckoutButton.setText("Cancel");
+        cancelCheckoutButton.setId("checkout-cancel");
         cancelCheckoutButton.setMaxWidth(145);
         GridPane.setFillWidth(cancelCheckoutButton, true);
         GridPane.setMargin(cancelCheckoutButton, new Insets(5, 10, 20, 20));
