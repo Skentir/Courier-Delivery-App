@@ -1,7 +1,11 @@
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import java.util.Optional;
 
 public class JohnnyMovesController implements EventHandler<ActionEvent>
 {
@@ -20,17 +24,47 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
         if (target instanceof Button)
         {
             Button button = (Button)target;
-            switch (button.getText())
+
+            Alert alert;
+            Optional<ButtonType> result;
+            switch (button.getId())
             {
-                case "Go Back to Main Menu": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
-                case "Get Started": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
-                case "Send a Parcel": gui.setScene(JohnnyMovesGui.SENDING); break;
-                case "Track a Parcel": gui.setScene(JohnnyMovesGui.TRACKING); break;
-                case "Set Recipient": gui.setScene(JohnnyMovesGui.RECIPIENT); break;
-                case "Add, remove, or view items": gui.setScene(JohnnyMovesGui.ITEMS); break;
-                case "Checkout": gui.setScene(JohnnyMovesGui.CHECKOUT); break;
-                case "Cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
-                case "Done": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "items-return": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
+                case "get-started": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
+                case "main-send": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "main-track": gui.setScene(JohnnyMovesGui.TRACKING); break;
+                case "items-recipient": gui.setScene(JohnnyMovesGui.RECIPIENT); break;
+                case "items-edit": gui.setScene(JohnnyMovesGui.ITEMS); break;
+                case "items-insurance":
+                alert = new Alert(AlertType.CONFIRMATION, "Insure the parcel?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+                result = alert.showAndWait();
+                if (result.isPresent())
+                {
+                    boolean insure = result.get() == ButtonType.YES;
+                    if (result.get() != ButtonType.CANCEL)
+                    {
+                        // TODO: insure the item
+                    }
+                }
+                break;
+                case "items-checkout": gui.setScene(JohnnyMovesGui.CHECKOUT); break;
+                case "items-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "items-add": break;
+                case "items-remove":
+                alert = new Alert(AlertType.WARNING, "Removing an item cannot be undone. Proceed?", ButtonType.YES, ButtonType.NO);
+                result = alert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.YES)
+                {
+                    // TODO: remove the item
+                }
+                break;
+                case "items-done": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "recipient-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "recipient-submit": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
+                case "track-submit": break;
+                case "track-return": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
             }
         }
     }
