@@ -14,8 +14,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import java.io.FileInputStream;
@@ -32,7 +31,18 @@ public class JohnnyMovesGui extends Application
     Scene 1 is the Main Menu. User can go to send menu or track menu.
     Scene 2 is send menu.
     */
-    Scene menu, sending;
+    private Scene
+        startScene,
+        menuScene,
+        sendingScene,
+        recipientScene,
+        itemsScene,
+        checkoutScene,
+        trackingScene,
+        statusScene,
+        optionsScene,
+        timeScene;
+
     Stage stage;
 
     public JohnnyMovesGui()
@@ -63,14 +73,30 @@ public class JohnnyMovesGui extends Application
         //    root.getChildren().add(sendBtn);
         //    root.getChildren().add(display);
 
-        primaryStage.setScene(menu);
+        primaryStage.setScene(startScene);
         primaryStage.setTitle("Johnny Moves");
         primaryStage.show();
     }
 
     private void createScenes()
     {
+        /* -------------------------- */
+        /* INITIALIZE SCENE 0 - START */
+        /* -------------------------- */
 
+        Label welcomeLabel = new Label();
+        welcomeLabel.setText("Welcome to Johnny Moves!");
+        Button getStartedButton = new Button();
+        getStartedButton.setText("Get Started");
+
+        BorderPane borderPane = new BorderPane();
+        VBox vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
+        vbox.getChildren().add(welcomeLabel);
+        vbox.getChildren().add(getStartedButton);
+        borderPane.setCenter(vbox);
+
+        startScene = new Scene(borderPane, 500, 300);
 
         /* Scene 1 Buttons */
         Button sendBtn = new Button();
@@ -96,7 +122,7 @@ public class JohnnyMovesGui extends Application
         mainMenu.getChildren().addAll(sendBtn, trackBtn);
         if (imageView != null)
             mainMenu.getChildren().add(imageView);
-        menu = new Scene(mainMenu, 700, 450);
+        menuScene = new Scene(mainMenu, 700, 450);
 
         /* Scene 2 Buttons */
         Button setRecipient = new Button();
@@ -114,21 +140,8 @@ public class JohnnyMovesGui extends Application
         /* Layout 2 for Send Menu */
         VBox sendMenu = new VBox(20);
         sendMenu.getChildren().addAll(setRecipient, setInsurance, modifyItems, checkout, backToMain);
-        sending = new Scene(sendMenu, 700, 450);
+        sendingScene = new Scene(sendMenu, 700, 450);
 
-    }
-
-    private void attachHandlerToScene(Scene scene, EventHandler<ActionEvent> handler)
-    {
-        Parent root = scene.getRoot();
-        for (Node node : root.getChildrenUnmodifiable())
-        {
-            if (node instanceof Button)
-            {
-                Button button = (Button)node;
-                button.setOnAction(handler);
-            }
-        }
     }
 
     public void setScene(String scene)
@@ -136,8 +149,8 @@ public class JohnnyMovesGui extends Application
         Scene s = null;
         switch (scene)
         {
-        case MAIN_MENU: s = menu; break;
-        case SENDING: s = sending; break;
+        case MAIN_MENU: s = menuScene; break;
+        case SENDING: s = sendingScene; break;
         }
 
         if (s != null)
@@ -151,10 +164,36 @@ public class JohnnyMovesGui extends Application
 
     }
 
+    private void attachHandlerToPane(Pane pane, EventHandler<ActionEvent> handler)
+    {
+        for (Node node : pane.getChildren())
+        {
+            if (node instanceof Button)
+            {
+                Button button = (Button)node;
+                button.setOnAction(handler);
+            }
+            else if (node instanceof Pane)
+            {
+                attachHandlerToPane((Pane)node, handler);
+            }
+        }
+    }
+
+    private void attachHandlerToScene(Scene scene, EventHandler<ActionEvent> handler)
+    {
+        Parent root = scene.getRoot();
+        if (root instanceof Pane)
+        {
+            attachHandlerToPane((Pane)root, handler);
+        }
+    }
+
     public void addActionListener(EventHandler<ActionEvent> handler)
     {
-        attachHandlerToScene(menu, handler);
-        attachHandlerToScene(sending, handler);
+        attachHandlerToScene(startScene, handler);
+        attachHandlerToScene(menuScene, handler);
+        attachHandlerToScene(sendingScene, handler);
     }
 
     public static void main(String[] args)
