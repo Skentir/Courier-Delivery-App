@@ -28,6 +28,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "Track a Parcel": gui.setScene(JohnnyMovesGui.TRACKING); break;
                 case "Set Recipient": gui.setScene(JohnnyMovesGui.RECIPIENT); break;
                 case "Add, remove, or view items": gui.setScene(JohnnyMovesGui.ITEMS); break;
+                case "Checkout": gui.setScene(JohnnyMovesGui.ITEMS); break;
                 case "Cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "Done": gui.setScene(JohnnyMovesGui.SENDING); break;
             }

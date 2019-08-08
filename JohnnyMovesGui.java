@@ -353,7 +353,7 @@ public class JohnnyMovesGui extends Application
         checkoutPane.add(checkoutButton, 2, 6);
         checkoutPane.add(cancelCheckoutButton, 3, 6);
 
-        itemsScene = new Scene(checkoutPane, 700, 500);
+        checkoutScene = new Scene(checkoutPane, 700, 500);
     }
 
     public void setScene(String scene)
