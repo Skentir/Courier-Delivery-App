@@ -18,6 +18,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class JohnnyMovesGui extends Application
 {
@@ -76,9 +78,24 @@ public class JohnnyMovesGui extends Application
         sendBtn.setText("Send a Parcel");
         trackBtn.setText("Track a Parcel");
         //sendBtn.setOnAction(e -> primaryStage.setScene(sending));
+
+        Image image = null;
+        ImageView imageView = null;
+        try
+        {
+            image = new Image(new FileInputStream("logo.png"));
+            imageView = new ImageView(image);
+        }
+        catch (FileNotFoundException e)
+        {
+
+        }
+
         /* Layout 1 for Main Menu */
         VBox mainMenu = new VBox(3);
         mainMenu.getChildren().addAll(sendBtn, trackBtn);
+        if (imageView != null)
+            mainMenu.getChildren().add(imageView);
         menu = new Scene(mainMenu, 700, 450);
 
         /* Scene 2 Buttons */
