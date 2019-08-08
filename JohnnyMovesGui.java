@@ -28,6 +28,7 @@ public class JohnnyMovesGui extends Application
     public static final String RECIPIENT = "RECIPIENT";
     public static final String ITEMS = "ITEMS";
     public static final String TRACKING = "TRACKING";
+    public static final String CHECKOUT = "CHECKOUT";
 
     /* Attributes */
     Label display = new Label();
@@ -333,14 +334,14 @@ public class JohnnyMovesGui extends Application
         GridPane.setFillWidth(cancelCheckoutButton, true);
         GridPane.setMargin(cancelCheckoutButton, new Insets(5, 10, 20, 20));
 
-        itemsPane.getColumnConstraints().addAll(
+        checkoutPane.getColumnConstraints().addAll(
             new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
             new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
             new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
             new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
         );
 
-        checkoutPane.add(itemsList, 0, 0, 2, 6);
+        checkoutPane.add(checkoutList, 0, 0, 2, 6);
         //itemsPane.add(itemNameLabel, 2, 0);
         checkoutPane.add(checkoutRecipientNameLabel, 2, 1);
         checkoutPane.add(checkoutRegionNameLabel, 2, 2);
@@ -366,6 +367,7 @@ public class JohnnyMovesGui extends Application
         case TRACKING: s = trackingScene; break;
         case RECIPIENT: s = recipientScene; break;
         case ITEMS: s = itemsScene; break;
+        case CHECKOUT: s = checkoutScene; break;
         }
 
         if (s != null)
@@ -412,6 +414,7 @@ public class JohnnyMovesGui extends Application
         attachHandlerToScene(trackingScene, handler);
         attachHandlerToScene(recipientScene, handler);
         attachHandlerToScene(itemsScene, handler);
+        attachHandlerToScene(checkoutScene, handler);
     }
 
     public static void main(String[] args)
