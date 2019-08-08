@@ -90,7 +90,7 @@ public class JohnnyMovesGui extends Application
         /* -------------------------- */
 
         Label welcomeLabel = new Label();
-        welcomeLabel.setText("Welcome to Johnny Moves!");
+        Image logo = new ImageView(new Image("Logo.png"));
         Button getStartedButton = new Button();
         getStartedButton.setStyle("-fx-font-weight: bold; -fx-background-color: #8fe1a2; -fx-text-fill: darkslateblue;");
         getStartedButton.setText("Get Started");
@@ -98,13 +98,11 @@ public class JohnnyMovesGui extends Application
         BorderPane mainPane = new BorderPane();
         VBox mainBox = new VBox();
         mainBox.setAlignment(Pos.CENTER);
-        mainBox.getChildren().add(welcomeLabel);
-        mainBox.getChildren().add(getStartedButton);
+        mainBox.getChildren().addAll(logo,getStartedButton);
         mainPane.setCenter(mainBox);
 
         startScene = new Scene(mainPane, 500, 300);
 
-        //  Image logo = new Image("Logo.png");
         Image header = new Image("Header.png");
         ImageView parcelPic = new  ImageView(new Image("Parcel.png"));
         ImageView magnifyingPic = new  ImageView(new Image("Magnifying.png"));
