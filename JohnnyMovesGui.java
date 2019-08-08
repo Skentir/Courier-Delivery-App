@@ -27,6 +27,7 @@ public class JohnnyMovesGui extends Application
     public static final String SENDING = "SENDING";
     public static final String RECIPIENT = "RECIPIENT";
     public static final String ITEMS = "ITEMS";
+    public static final String TRACKING = "TRACKING";
 
     /* Attributes */
     Label display = new Label();
