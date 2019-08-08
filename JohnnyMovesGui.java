@@ -3,7 +3,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.text.Font;
+import javafx.scene.text.*;
 import javafx.geometry.*;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -59,7 +59,7 @@ public class JohnnyMovesGui extends Application
         optionsScene,
         timeScene;
 
-    Stage stage;
+    Stage stage, insured;
 
     public JohnnyMovesGui()
     {
@@ -75,19 +75,6 @@ public class JohnnyMovesGui extends Application
 
         JohnnyMovesController contoller = new JohnnyMovesController(this);
 
-        /* Scene 3 Button */
-
-        /* Layout 3 for Tracking Menu */
-
-        /*sendBtn.setOnAction(new EventHandler<ActionEvent>() {
-        @Override public void handle(ActionEvent e) {
-        display.setText("Dummy Send");
-        }
-        }); */
-
-        //    StackPane root = new StackPane();
-        //    root.getChildren().add(sendBtn);
-        //    root.getChildren().add(display);
 
         primaryStage.setScene(startScene);
         primaryStage.setTitle("Johnny Moves");
@@ -106,32 +93,50 @@ public class JohnnyMovesGui extends Application
         Button getStartedButton = new Button();
         getStartedButton.setText("Get Started");
 
-        BorderPane borderPane = new BorderPane();
-        VBox vbox = new VBox();
-        vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().add(welcomeLabel);
-        vbox.getChildren().add(getStartedButton);
-        borderPane.setCenter(vbox);
+        BorderPane mainPane = new BorderPane();
+        VBox mainBox = new VBox();
+        mainBox.setAlignment(Pos.CENTER);
+        mainBox.getChildren().add(welcomeLabel);
+        mainBox.getChildren().add(getStartedButton);
+        mainPane.setCenter(mainBox);
 
-        startScene = new Scene(borderPane, 500, 300);
+        startScene = new Scene(mainPane, 500, 300);
 
         //  Image logo = new Image("Logo.png");
         Image header = new Image("Header.png");
-        display.setFont(Font.font("Verdana",16));
-
+        ImageView parcelPic = new  ImageView(new Image("Parcel.png"));
+        ImageView magnifyingPic = new  ImageView(new Image("Magnifying.png"));
         /* Scene 1 Buttons */
+        BorderPane menuPane = new BorderPane();
+        GridPane centerMenu = new GridPane();
         Button sendBtn = new Button();
         Button trackBtn = new Button();
+        GridPane.setHalignment(sendBtn, HPos.LEFT);
+        GridPane.setHalignment(trackBtn, HPos.RIGHT);
+        GridPane.setHalignment(parcelPic, HPos.LEFT);
+        GridPane.setHalignment(magnifyingPic, HPos.RIGHT);
         sendBtn.setText("Send a Parcel");
         trackBtn.setText("Track a Parcel");
+
         /* Layout 1 for Main Menu */
-        Pane mainMenu = new Pane();
-        mainMenu.getChildren().addAll(sendBtn, trackBtn);
-        sendBtn.setLayoutX(120);
-        sendBtn.setLayoutY(350);
-        trackBtn.setLayoutX(480);
-        trackBtn.setLayoutY(350);
-        menuScene = new Scene(mainMenu, 700, 500);
+        centerMenu.add(sendBtn, 0, 1);
+        centerMenu.add(trackBtn, 1, 1);
+        centerMenu.add(parcelPic, 0, 0);
+        centerMenu.add(magnifyingPic, 1, 0);
+        centerMenu.setAlignment(Pos.CENTER);
+        GridPane.setMargin(sendBtn, new Insets(0,0,0,55));
+        GridPane.setMargin(trackBtn, new Insets(0,55,0,0));
+        GridPane.setMargin(parcelPic, new Insets(0,0,0,55));
+        GridPane.setMargin(magnifyingPic, new Insets(0,55,0,0));
+
+        StackPane mainTop = new StackPane();
+        mainTop.getChildren().add(new ImageView(header));
+        mainTop.setBackground(new Background(new BackgroundFill(Color.rgb(40, 40, 40), CornerRadii.EMPTY, Insets.EMPTY)));
+        menuPane.setTop(mainTop);
+        menuPane.setCenter(centerMenu);
+    //    menuPane.getChildren().add(centerMenu);
+
+        menuScene = new Scene(menuPane, 700, 500);
 
         /* Scene 2 Buttons */
         Button setRecipient = new Button();
@@ -157,11 +162,11 @@ public class JohnnyMovesGui extends Application
         sendMenu.setPadding(new Insets(10));
         sendBorder.setCenter(sendMenu);
         sendMenu.getChildren().addAll(setRecipient, setInsurance, modifyItems, checkout, backToMain);
-      //  sendMenu.getChildren().add(new ImageView(header));
-        StackPane headerTop = new StackPane();
-        headerTop.getChildren().add(new ImageView(header));
-        headerTop.setBackground(new Background(new BackgroundFill(Color.rgb(40, 40, 40), CornerRadii.EMPTY, Insets.EMPTY)));
-        sendBorder.setTop(headerTop);
+
+        StackPane sendTop = new StackPane();
+        sendTop.getChildren().add(new ImageView(header));
+        sendTop.setBackground(new Background(new BackgroundFill(Color.rgb(40, 40, 40), CornerRadii.EMPTY, Insets.EMPTY)));
+        sendBorder.setTop(sendTop);
         sendBorder.setCenter(sendMenu);
 
         sendingScene = new Scene(sendBorder, 700, 500);
@@ -181,6 +186,32 @@ public class JohnnyMovesGui extends Application
         TextField recipientField = new TextField();
         GridPane.setFillWidth(recipientField, true);
         GridPane.setMargin(recipientField, new Insets(5, 10, 5, 10));
+        /* Scene 6 Button */
+        Label promptCode = new Label("Enter Tracking Number");
+        TextField enterCode = new TextField();
+        Button submitCode = new Button();
+        Button trackToMain = new Button();
+        trackToMain.setText("Go Back to Main Menu");
+        promptCode.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD, 24));
+        submitCode.setText("Submit");
+        submitCode.setMaxWidth(MAX_BTN_SIZE/3);
+        enterCode.setMaxWidth(MAX_BTN_SIZE);
+
+        /* Layout 6 for Tracking Menu */
+        BorderPane trackBorder = new BorderPane();
+        VBox trackDeets = new VBox(30);
+        HBox trackBtns = new HBox(30);
+        trackBtns.setAlignment(Pos.CENTER);
+        trackBtns.getChildren().addAll(submitCode, trackToMain);
+        trackDeets.getChildren().addAll(promptCode,enterCode, trackBtns);
+        trackDeets.setAlignment(Pos.CENTER);
+        StackPane trackTop = new StackPane();
+        trackTop.getChildren().add(new ImageView(header));
+        trackTop.setBackground(new Background(new BackgroundFill(Color.rgb(40, 40, 40), CornerRadii.EMPTY, Insets.EMPTY)));
+        trackBorder.setTop(trackTop);
+        trackBorder.setCenter(trackDeets);
+
+        trackingScene = new Scene(trackBorder, 700, 500);
 
         ComboBox<String> regionComboBox = new ComboBox<>();
         regionComboBox.getItems().addAll(Parcel.REGIONS);
@@ -331,6 +362,7 @@ public class JohnnyMovesGui extends Application
         {
         case MAIN_MENU: s = menuScene; break;
         case SENDING: s = sendingScene; break;
+        case TRACKING: s = trackingScene; break;
         case RECIPIENT: s = recipientScene; break;
         case ITEMS: s = itemsScene; break;
         }
@@ -376,6 +408,7 @@ public class JohnnyMovesGui extends Application
         attachHandlerToScene(startScene, handler);
         attachHandlerToScene(menuScene, handler);
         attachHandlerToScene(sendingScene, handler);
+        attachHandlerToScene(trackingScene, handler);
         attachHandlerToScene(recipientScene, handler);
         attachHandlerToScene(itemsScene, handler);
     }
