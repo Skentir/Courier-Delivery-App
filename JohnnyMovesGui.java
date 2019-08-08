@@ -31,7 +31,7 @@ public class JohnnyMovesGui extends Application
     public static final String CHECKOUT = "CHECKOUT";
 
     /* Attributes */
-    Label display = new Label();
+    Color bg = Color.rgb(250,248,247);
 
     ListView<Item> itemsList = new ListView<>();
     Label itemNameLabel = new Label();
@@ -72,7 +72,6 @@ public class JohnnyMovesGui extends Application
     public void start(Stage primaryStage)
     {
         stage = primaryStage;
-        display.setFont(Font.font("Verdana",16));
         createScenes();
 
         JohnnyMovesController contoller = new JohnnyMovesController(this);
@@ -223,7 +222,7 @@ public class JohnnyMovesGui extends Application
         trackBorder.setTop(trackTop);
         trackBorder.setCenter(trackDeets);
 
-        trackingScene = new Scene(trackBorder, 700, 500);
+        trackingScene = new Scene(trackBorder, 700, 500, bg);
 
         ComboBox<String> regionComboBox = new ComboBox<>();
         regionComboBox.getItems().addAll(Parcel.REGIONS);
