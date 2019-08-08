@@ -25,6 +25,7 @@ public class JohnnyMovesGui extends Application
     public static final double MAX_BTN_SIZE = 380.0;
     public static final String MAIN_MENU = "MENU";
     public static final String SENDING = "SENDING";
+    public static final String RECIPIENT = "RECIPIENT";
 
     /* Attributes */
     Label display = new Label();
@@ -151,18 +152,45 @@ public class JohnnyMovesGui extends Application
 
         sendingScene = new Scene(sendBorder, 700, 500);
 
-        /* Scene 3 Button */
+        /* ------------------------------ */
+        /* INITIALIZE SCENE 3 - RECIPIENT */
+        /* ------------------------------ */
+        GridPane recipientPane = new GridPane();
 
-        /* Layout 3 for Tracking Menu */
+        recipientPane.setAlignment(Pos.CENTER);
 
-        /*sendBtn.setOnAction(new EventHandler<ActionEvent>() {
-                @Override public void handle(ActionEvent e) {
-                    display.setText("Dummy Send");
-                }
-            }); */
+        Label recipientNameLabel = new Label();
+        recipientNameLabel.setText("Name");
+        Label recipientRegionLabel = new Label();
+        recipientRegionLabel.setText("Region");
 
+        TextField recipientField = new TextField();
+        GridPane.setFillWidth(recipientField, true);
+        GridPane.setMargin(recipientField, new Insets(5, 10, 5, 10));
 
+        ComboBox<String> regionComboBox = new ComboBox<>();
+        regionComboBox.getItems().addAll(Parcel.REGIONS);
+        GridPane.setFillWidth(regionComboBox, true);
+        GridPane.setMargin(regionComboBox, new Insets(5, 10, 5, 10));
 
+        Button cancelRecipientButton = new Button();
+        cancelRecipientButton.setText("Cancel");
+        GridPane.setFillWidth(cancelRecipientButton, true);
+        GridPane.setMargin(cancelRecipientButton, new Insets(5, 10, 5, 10));
+
+        Button submitRecipientButton = new Button();
+        submitRecipientButton.setText("Submit");
+        GridPane.setFillWidth(submitRecipientButton, true);
+        GridPane.setMargin(submitRecipientButton, new Insets(5, 10, 5, 10));
+
+        recipientPane.add(recipientNameLabel, 0, 0);
+        recipientPane.add(recipientRegionLabel, 0, 1);
+        recipientPane.add(recipientField, 1, 0, 2, 1);
+        recipientPane.add(regionComboBox, 1, 1, 2, 1);
+        recipientPane.add(submitRecipientButton, 1, 2);
+        recipientPane.add(cancelRecipientButton, 2, 2);
+
+        recipientScene = new Scene(recipientPane, 350, 200);
     }
 
     public void setScene(String scene)
@@ -172,6 +200,7 @@ public class JohnnyMovesGui extends Application
         {
         case MAIN_MENU: s = menuScene; break;
         case SENDING: s = sendingScene; break;
+        case RECIPIENT: s = recipientScene; break;
         }
 
         if (s != null)
@@ -215,6 +244,7 @@ public class JohnnyMovesGui extends Application
         attachHandlerToScene(startScene, handler);
         attachHandlerToScene(menuScene, handler);
         attachHandlerToScene(sendingScene, handler);
+        attachHandlerToScene(recipientScene, handler);
     }
 
     public static void main(String[] args)
