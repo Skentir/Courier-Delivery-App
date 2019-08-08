@@ -92,6 +92,7 @@ public class JohnnyMovesGui extends Application
         Label welcomeLabel = new Label();
         welcomeLabel.setText("Welcome to Johnny Moves!");
         Button getStartedButton = new Button();
+        getStartedButton.setStyle("-fx-font-weight: bold; -fx-background-color: #8fe1a2; -fx-text-fill: darkslateblue;");
         getStartedButton.setText("Get Started");
         getStartedButton.setId("get-started");
 
@@ -117,6 +118,8 @@ public class JohnnyMovesGui extends Application
         GridPane.setHalignment(trackBtn, HPos.RIGHT);
         GridPane.setHalignment(parcelPic, HPos.LEFT);
         GridPane.setHalignment(magnifyingPic, HPos.RIGHT);
+        sendBtn.setStyle("-fx-background-color: #8fe1a2; -fx-text-fill: darkslateblue;");
+        trackBtn.setStyle("-fx-background-color: #8fe1a2; -fx-text-fill: darkslateblue;");
         sendBtn.setText("Send a Parcel");
         sendBtn.setId("main-send");
         trackBtn.setText("Track a Parcel");
@@ -148,6 +151,11 @@ public class JohnnyMovesGui extends Application
         Button modifyItems = new Button();
         Button checkout = new Button();
         Button backToMain = new Button();
+        setRecipient.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+        setInsurance.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+        modifyItems.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+        checkout.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+        backToMain.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
         setRecipient.setText("Set Recipient");
         setRecipient.setId("items-recipient");
         setInsurance.setText("Set Insurance");
@@ -204,6 +212,8 @@ public class JohnnyMovesGui extends Application
         trackToMain.setId("track-return");
         promptCode.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD, 24));
         submitCode.setText("Submit");
+        submitCode.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+        trackToMain.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
         submitCode.setId("track-submit");
         submitCode.setMaxWidth(MAX_BTN_SIZE/3);
         enterCode.setMaxWidth(MAX_BTN_SIZE);
