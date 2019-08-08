@@ -26,9 +26,23 @@ public class JohnnyMovesGui extends Application
     public static final String MAIN_MENU = "MENU";
     public static final String SENDING = "SENDING";
     public static final String RECIPIENT = "RECIPIENT";
+    public static final String ITEMS = "ITEMS";
 
     /* Attributes */
     Label display = new Label();
+
+    ListView<Item> itemsList = new ListView<>();
+    Label itemNameLabel = new Label();
+    Label dimensionsLabel = new Label();
+    Label weightLabel = new Label();
+    Label typeLabel = new Label();
+
+    ListView<Item> checkoutList = new ListView<>();
+    Label checkoutRecipientLabel = new Label();
+    Label checkoutRegionLabel = new Label();
+    Label checkoutItemCountLabel = new Label();
+    Label checkoutPriceLabel = new Label();
+
     /*
     Scene 1 is the Main Menu. User can go to send menu or track menu.
     Scene 2 is send menu.
@@ -191,6 +205,123 @@ public class JohnnyMovesGui extends Application
         recipientPane.add(cancelRecipientButton, 2, 2);
 
         recipientScene = new Scene(recipientPane, 350, 200);
+
+        /* -------------------------- */
+        /* INITIALIZE SCENE 4 - ITEMS */
+        /* -------------------------- */
+        GridPane itemsPane = new GridPane();
+
+        itemsPane.setAlignment(Pos.CENTER);
+
+        itemsList = new ListView<>();
+        GridPane.setFillWidth(itemsList, true);
+        GridPane.setMargin(itemsList, new Insets(20, 20, 5, 10));
+
+        itemNameLabel = new Label();
+        GridPane.setMargin(itemNameLabel, new Insets(20, 10, 5, 20));
+        Label dimensionsNameLabel = new Label();
+        dimensionsNameLabel.setText("Dimensions: ");
+        Label weightNameLabel = new Label();
+        weightNameLabel.setText("Weight: ");
+        Label typeNameLabel = new Label();
+        typeNameLabel.setText("Type: ");
+
+        dimensionsLabel = new Label();
+        weightLabel = new Label();
+        typeLabel = new Label();
+
+        Button addItemButton = new Button();
+        addItemButton.setText("Add");
+        addItemButton.setMaxWidth(145);
+        GridPane.setFillWidth(addItemButton, true);
+        GridPane.setMargin(addItemButton, new Insets(5, 20, 20, 10));
+
+        Button removeItemButton = new Button();
+        removeItemButton.setText("Remove");
+        removeItemButton.setMaxWidth(145);
+        GridPane.setFillWidth(removeItemButton, true);
+        GridPane.setMargin(removeItemButton, new Insets(5, 10, 20, 10));
+
+        Button doneItemButton = new Button();
+        doneItemButton.setText("Done");
+        doneItemButton.setMaxWidth(145);
+        GridPane.setFillWidth(doneItemButton, true);
+        GridPane.setMargin(doneItemButton, new Insets(5, 10, 20, 20));
+
+        itemsPane.getColumnConstraints().addAll(
+            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
+        );
+
+        itemsPane.add(itemsList, 0, 0, 2, 6);
+        itemsPane.add(addItemButton, 0, 6);
+        itemsPane.add(removeItemButton, 1, 6);
+        itemsPane.add(itemNameLabel, 2, 0);
+        itemsPane.add(dimensionsNameLabel, 2, 1);
+        itemsPane.add(weightNameLabel, 2, 2);
+        itemsPane.add(typeNameLabel, 2, 3);
+        itemsPane.add(dimensionsLabel, 3, 1);
+        itemsPane.add(weightLabel, 3, 2);
+        itemsPane.add(typeLabel, 3, 3);
+        itemsPane.add(doneItemButton, 3, 6);
+
+        itemsScene = new Scene(itemsPane, 700, 500);
+
+        /* ----------------------------- */
+        /* INITIALIZE SCENE 5 - CHECKOUT */
+        /* ----------------------------- */
+        GridPane checkoutPane = new GridPane();
+
+        checkoutPane.setAlignment(Pos.CENTER);
+
+        checkoutList = new ListView<>();
+        GridPane.setFillWidth(checkoutList, true);
+        GridPane.setMargin(checkoutList, new Insets(20, 20, 5, 10));
+
+        Label checkoutRecipientNameLabel = new Label();
+        checkoutRecipientNameLabel.setText("Recipient:");
+        Label checkoutRegionNameLabel = new Label();
+        checkoutRegionNameLabel.setText("Region:");
+        Label checkoutItemCountNameLabel = new Label();
+        checkoutItemCountNameLabel.setText("# of items:");
+        Label checkoutPriceNameLabel = new Label();
+        checkoutPriceNameLabel.setText("Price:");
+
+        Button checkoutButton = new Button();
+        checkoutButton.setText("Checkout");
+        checkoutButton.setMaxWidth(145);
+        GridPane.setFillWidth(checkoutButton, true);
+        GridPane.setMargin(checkoutButton, new Insets(5, 10, 20, 20));
+
+        Button cancelCheckoutButton = new Button();
+        cancelCheckoutButton.setText("Cancel");
+        cancelCheckoutButton.setMaxWidth(145);
+        GridPane.setFillWidth(cancelCheckoutButton, true);
+        GridPane.setMargin(cancelCheckoutButton, new Insets(5, 10, 20, 20));
+
+        itemsPane.getColumnConstraints().addAll(
+            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
+        );
+
+        checkoutPane.add(itemsList, 0, 0, 2, 6);
+        //itemsPane.add(itemNameLabel, 2, 0);
+        checkoutPane.add(checkoutRecipientNameLabel, 2, 1);
+        checkoutPane.add(checkoutRegionNameLabel, 2, 2);
+        checkoutPane.add(checkoutItemCountNameLabel, 2, 3);
+        checkoutPane.add(checkoutPriceNameLabel, 2, 4);
+        checkoutPane.add(checkoutRecipientLabel, 3, 1);
+        checkoutPane.add(checkoutRegionLabel, 3, 2);
+        checkoutPane.add(checkoutItemCountLabel, 3, 3);
+        checkoutPane.add(checkoutPriceLabel, 3, 4);
+        checkoutPane.add(checkoutButton, 2, 6);
+        checkoutPane.add(cancelCheckoutButton, 3, 6);
+
+        itemsScene = new Scene(checkoutPane, 700, 500);
     }
 
     public void setScene(String scene)
@@ -201,6 +332,7 @@ public class JohnnyMovesGui extends Application
         case MAIN_MENU: s = menuScene; break;
         case SENDING: s = sendingScene; break;
         case RECIPIENT: s = recipientScene; break;
+        case ITEMS: s = itemsScene; break;
         }
 
         if (s != null)
@@ -245,6 +377,7 @@ public class JohnnyMovesGui extends Application
         attachHandlerToScene(menuScene, handler);
         attachHandlerToScene(sendingScene, handler);
         attachHandlerToScene(recipientScene, handler);
+        attachHandlerToScene(itemsScene, handler);
     }
 
     public static void main(String[] args)
