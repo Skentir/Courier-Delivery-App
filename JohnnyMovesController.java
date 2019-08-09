@@ -58,10 +58,16 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
                 case "track-submit":
-                  String addTime = gui.openTimeDialog();
+                   gui.openTimeDialog();
+                   int daysOffset = gui.getSpinnerDays();
+                   int hoursOffset = gui.getSpinnerHours();
+                   int minsOffset = gui.getSpinnerMins();
+                   int secsOffset = gui.getSpinnerSecs();
+                   Date now = new Date();
+                   new Date(now.getTime() + daysOffset * 86400L * 1000L);
+                case "track-return": gui.setScene(JohnnyMovesGui.MAIN_MENU);
 
                 break;
-            case "track-return": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
             }
         }
     }
