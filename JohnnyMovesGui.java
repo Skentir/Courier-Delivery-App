@@ -486,12 +486,9 @@ public class JohnnyMovesGui extends Application
 
         ButtonType submitButtonType = new ButtonType("Submit", ButtonData.APPLY);
 
-<<<<<<< HEAD
-=======
         insuranceDialog.getDialogPane().getButtonTypes().add(submitButtonType);
         insuranceDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
->>>>>>> marc
         Label insuranceLabel = new Label();
         insuranceLabel.setText("Do you want the parcel insured?");
 
