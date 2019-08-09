@@ -61,24 +61,6 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
                 case "track-main": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
                 case "track-submit":
-                  String trackingCode = gui.setScene(JohnnyMovesGui.TRACKING);
-
-                  if (isValidCode(trackingCode))
-                    {
-                      gui.openTimeDialog();
-                      int daysOffset = gui.getSpinnerDays();
-                      int hoursOffset = gui.getSpinnerHours();
-                      int minsOffset = gui.getSpinnerMins();
-                      int secsOffset = gui.getSpinnerSecs();
-                      Date now = new Date();
-                      new Date(now.getTime() + daysOffset * 86400L * 1000L);
-                      //TODO: Update Formula */
-                    }
-                    else
-                      throw new TrackingException(trackingCode + "is not valid");
-
-                case "track-return": gui.setScene(JohnnyMovesGui.MAIN_MENU);
-                  gui.setScene(JohnnyMovesGui.TRACKING);
                   String code = gui.getCodeInput();
                   if (code.length() != 0)
                   {
