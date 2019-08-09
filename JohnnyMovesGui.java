@@ -67,7 +67,7 @@ public class JohnnyMovesGui extends Application
 
     Dialog<Item> addItemDialog;
     Dialog<ButtonType> insuranceDialog;
-    Dialog<String> adjustTimeDialog;
+    Dialog<Integer> adjustTimeDialog;
 
     /*
     Scene 1 is the Main Menu. User can go to send menu or track menu.
@@ -85,7 +85,11 @@ public class JohnnyMovesGui extends Application
         optionsScene,
         timeScene;
 
-    Stage stage, insured;
+    Stage stage;
+    Spinner<Integer> daySpinner = new Spinner<Integer>();
+    Spinner<Integer> hourSpinner = new Spinner<Integer>();
+    Spinner<Integer> minuteSpinner = new Spinner<Integer>();
+    Spinner<Integer> secondsSpinner = new Spinner<Integer>();
 
     public JohnnyMovesGui()
     {
@@ -443,23 +447,19 @@ public class JohnnyMovesGui extends Application
         Button timeBtn = new Button();
         timeBtn.setText("Submit");
 
-        Spinner<Integer> daySpinner = new Spinner<Integer>();
         Integer initialValue = 0;
         SpinnerValueFactory<Integer> dayFactory =
           new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, initialValue);
         daySpinner.setValueFactory(dayFactory);
 
-        Spinner<Integer> hourSpinner = new Spinner<Integer>();
         SpinnerValueFactory<Integer> hourFactory =
           new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, initialValue);
         hourSpinner.setValueFactory(hourFactory);
 
-        Spinner<Integer> minuteSpinner = new Spinner<Integer>();
         SpinnerValueFactory<Integer> minuteFactory =
           new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, initialValue);
         minuteSpinner.setValueFactory(minuteFactory);
 
-        Spinner<Integer> secondsSpinner = new Spinner<Integer>();
         SpinnerValueFactory<Integer> secondsFactory =
           new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, initialValue);
         secondsSpinner.setValueFactory(secondsFactory);
@@ -576,6 +576,26 @@ public class JohnnyMovesGui extends Application
 
     }
 
+    public int getSpinnerDays()
+    {
+      return daySpinner.getValue();
+    }
+
+    public int getSpinnerHours()
+    {
+      return hourSpinner.getValue();
+    }
+
+    public int getSpinnerMins()
+    {
+      return minuteSpinner.getValue();
+    }
+
+    public int getSpinnerSecs()
+    {
+      return secondsSpinner.getValue();
+    }
+
     private void attachHandlerToPane(Pane pane, EventHandler<ActionEvent> handler)
     {
         for (Node node : pane.getChildren())
@@ -629,9 +649,9 @@ public class JohnnyMovesGui extends Application
         return result.orElse(null);
     }
 
-    public String openTimeDialog()
+    public Integer openTimeDialog()
     {
-      Optional<String> result = adjustTimeDialog.showAndWait();
+      Optional<Integer> result = adjustTimeDialog.showAndWait();
       return result.orElse(null); // Return current Date/Time
     }
 

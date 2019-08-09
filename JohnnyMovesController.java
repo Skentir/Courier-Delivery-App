@@ -5,7 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import java.util.Optional;
+import java.util.*;
 
 public class JohnnyMovesController implements EventHandler<ActionEvent>
 {
