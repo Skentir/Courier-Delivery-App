@@ -66,6 +66,12 @@ public class JohnnyMovesGui extends Application
     TextField documentLengthField = new TextField();
     TextField documentPagesField = new TextField();
 
+    Stage stage;
+    Spinner<Integer> daySpinner = new Spinner<Integer>();
+    Spinner<Integer> hourSpinner = new Spinner<Integer>();
+    Spinner<Integer> minuteSpinner = new Spinner<Integer>();
+    Spinner<Integer> secondsSpinner = new Spinner<Integer>();
+
     Dialog<Item> addItemDialog;
     Dialog<ButtonType> insuranceDialog;
     Dialog<Integer> adjustTimeDialog;
@@ -85,12 +91,6 @@ public class JohnnyMovesGui extends Application
         statusScene,
         optionsScene,
         timeScene;
-
-    Stage stage;
-    Spinner<Integer> daySpinner = new Spinner<Integer>();
-    Spinner<Integer> hourSpinner = new Spinner<Integer>();
-    Spinner<Integer> minuteSpinner = new Spinner<Integer>();
-    Spinner<Integer> secondsSpinner = new Spinner<Integer>();
 
     public JohnnyMovesGui()
     {
@@ -129,7 +129,8 @@ public class JohnnyMovesGui extends Application
         VBox mainBox = new VBox();
         mainBox.setAlignment(Pos.CENTER);
         mainBox.getChildren().addAll(logo, getStartedButton);
-        mainPane.setStyle("-fx-background-color: #662d91;");
+        mainPane.setStyle("-fx-background-color: #662d91;-fx-font-size: 2em;");
+        mainBox.setMargin(getStartedButton, new Insets(15, 0, 0, 0));
         mainPane.setCenter(mainBox);
 
         startScene = new Scene(mainPane, 700, 500);
