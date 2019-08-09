@@ -55,7 +55,8 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
                 case "track-submit":
-                  
+                  String addTime = gui.openTimeDialog();
+
                 break;
                 case "track-return": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
             }

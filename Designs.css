@@ -1,0 +1,7 @@
+.minuteSpinner .increment-arrow-button .increment-arrow {
+    -fx-background-color: red;
+}
+
+.minuteSpinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: red;
+}
