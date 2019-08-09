@@ -55,6 +55,7 @@ public class JohnnyMovesGui extends Application
     RadioButton insuredButton = new RadioButton("Yes, insure");
     RadioButton notInsuredButton = new RadioButton("No, don't insure");
 
+    Pane addItemRoot;
     GridPane productGroup;
     TextField productWidthField = new TextField();
     TextField productHeightField = new TextField();
@@ -141,8 +142,8 @@ public class JohnnyMovesGui extends Application
         GridPane centerMenu = new GridPane();
         Button sendBtn = new Button();
         Button trackBtn = new Button();
-        GridPane.setHalignment(sendBtn, HPos.LEFT);
-        GridPane.setHalignment(trackBtn, HPos.RIGHT);
+        GridPane.setHalignment(sendBtn, HPos.CENTER);
+        GridPane.setHalignment(trackBtn, HPos.CENTER);
         GridPane.setHalignment(parcelPic, HPos.LEFT);
         GridPane.setHalignment(magnifyingPic, HPos.RIGHT);
         sendBtn.setStyle("-fx-background-color: #8fe1a2; -fx-text-fill: darkslateblue;");
@@ -152,14 +153,22 @@ public class JohnnyMovesGui extends Application
         trackBtn.setText("Track a Parcel");
         trackBtn.setId("main-track");
 
+        centerMenu.getColumnConstraints().addAll(
+            new ColumnConstraints(180.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(40.0),
+            new ColumnConstraints(180.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
+        );
+
         /* Layout 1 for Main Menu */
         centerMenu.add(sendBtn, 0, 1);
-        centerMenu.add(trackBtn, 1, 1);
+        centerMenu.add(trackBtn, 2, 1);
         centerMenu.add(parcelPic, 0, 0);
-        centerMenu.add(magnifyingPic, 1, 0);
+        centerMenu.add(magnifyingPic, 2, 0);
         centerMenu.setAlignment(Pos.CENTER);
-        GridPane.setMargin(sendBtn, new Insets(0,0,0,55));
-        GridPane.setMargin(trackBtn, new Insets(0,55,0,0));
+        GridPane.setMargin(sendBtn, new Insets(10,0,0,55));
+        GridPane.setMargin(trackBtn, new Insets(10,55,0,0));
+        GridPane.setFillWidth(parcelPic, true);
+        GridPane.setFillWidth(magnifyingPic, true);
         GridPane.setMargin(parcelPic, new Insets(0,0,0,55));
         GridPane.setMargin(magnifyingPic, new Insets(0,55,0,0));
 
@@ -466,17 +475,25 @@ public class JohnnyMovesGui extends Application
         secondsSpinner.setValueFactory(secondsFactory);
 
         /* Layout for Time Adjustment */
+        daySpinner.setPrefWidth(100);
         timePane.add(daySpinner, 0, 1);
+        GridPane.setMargin(daySpinner, new Insets(5, 20, 5, 0));
         timePane.add(new Label("Days"),0, 2);
+        hourSpinner.setPrefWidth(100);
         timePane.add(hourSpinner, 1,1);
+        GridPane.setMargin(hourSpinner, new Insets(5, 20, 5, 0));
         timePane.add(new Label("Hours"),1, 2);
+        minuteSpinner.setPrefWidth(100);
         timePane.add(minuteSpinner, 2,1);
+        GridPane.setMargin(minuteSpinner, new Insets(5, 20, 5, 0));
         timePane.add(new Label("Minutes"),2, 2);
+        secondsSpinner.setPrefWidth(100);
         timePane.add(secondsSpinner, 3,1);
+        GridPane.setMargin(secondsSpinner, new Insets(5, 20, 5, 0));
         timePane.add(new Label("Seconds"),3, 2);
         timeBorder.setTop(timeLabel);
         timeBorder.setCenter(timePane);
-        adjustTimeDialog.getDialogPane().getButtonTypes().add(timeBtn); //2,3
+        adjustTimeDialog.getDialogPane().getButtonTypes().add(timeBtn);
         adjustTimeDialog.getDialogPane().setContent(timeBorder);
 
 
@@ -516,18 +533,15 @@ public class JohnnyMovesGui extends Application
         addItemDialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         addItemDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
+        Label itemTypeLabel = new Label("Type");
         ComboBox<String> itemTypes = new ComboBox<>();
         itemTypes.setId("items-type");
         itemTypes.getItems().addAll("REGULAR PRODUCT", "IRREGULAR PRODUCT", "DOCUMENT");
         productGroup = new GridPane();
-        Label productWidthLabel = new Label();
-        productWidthLabel.setText("Width");
-        Label productHeightLabel = new Label();
-        productHeightLabel.setText("Height");
-        Label productLengthLabel = new Label();
-        productLengthLabel.setText("Length");
-        Label productWeightLabel = new Label();
-        productWeightLabel.setText("Weight");
+        Label productWidthLabel = new Label("Width");
+        Label productHeightLabel = new Label("Height");
+        Label productLengthLabel = new Label("Length");
+        Label productWeightLabel = new Label("Weight");
         productGroup.add(productWidthLabel, 0, 0);
         productGroup.add(productWidthField, 1, 0);
         productGroup.add(productHeightLabel, 0, 1);
@@ -538,12 +552,9 @@ public class JohnnyMovesGui extends Application
         productGroup.add(productWeightField, 1, 3);
 
         documentGroup = new GridPane();
-        Label documentWidthLabel = new Label();
-        documentWidthLabel.setText("Width");
-        Label documentLengthLabel = new Label();
-        documentLengthLabel.setText("Length");
-        Label documentPagesLabel = new Label();
-        documentPagesLabel.setText("Weight");
+        Label documentWidthLabel = new Label("Width");
+        Label documentLengthLabel = new Label("Length");
+        Label documentPagesLabel = new Label("Pages");
         documentGroup.add(documentWidthLabel, 0, 0);
         documentGroup.add(documentWidthField, 1, 0);
         documentGroup.add(documentLengthLabel, 0, 1);
@@ -551,9 +562,12 @@ public class JohnnyMovesGui extends Application
         documentGroup.add(documentPagesLabel, 0, 2);
         documentGroup.add(documentPagesField, 1, 2);
 
+        addItemPane.add(itemTypeLabel, 0, 0);
+        addItemPane.add(itemTypes, 1, 0);
 
+        addItemRoot = addItemPane;
 
-        insuranceDialog.getDialogPane().setContent(insurancePane);
+        addItemDialog.getDialogPane().setContent(addItemPane);
     }
 
     public void setScene(String scene)
@@ -615,7 +629,7 @@ public class JohnnyMovesGui extends Application
             }
             else if (node instanceof ComboBox)
             {
-                ComboBox cb = (ComboBox)node;
+                ComboBox<?> cb = (ComboBox<?>)node;
                 cb.setOnAction(handler);
             }
         }
@@ -639,6 +653,7 @@ public class JohnnyMovesGui extends Application
         attachHandlerToScene(recipientScene, handler);
         attachHandlerToScene(itemsScene, handler);
         attachHandlerToScene(checkoutScene, handler);
+
     }
 
     public ButtonType openInsuranceDialog()
