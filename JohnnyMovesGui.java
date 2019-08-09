@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -53,6 +54,16 @@ public class JohnnyMovesGui extends Application
     ToggleGroup insureGroup = new ToggleGroup();
     RadioButton insuredButton = new RadioButton("Yes, insure");
     RadioButton notInsuredButton = new RadioButton("No, don't insure");
+
+    GridPane productGroup;
+    TextField productWidthField = new TextField();
+    TextField productHeightField = new TextField();
+    TextField productLengthField = new TextField();
+    TextField productWeightField = new TextField();
+    GridPane documentGroup;
+    TextField documentWidthField = new TextField();
+    TextField documentLengthField = new TextField();
+    TextField documentPagesField = new TextField();
 
     Dialog<Item> addItemDialog;
     Dialog<ButtonType> insuranceDialog;
@@ -361,33 +372,40 @@ public class JohnnyMovesGui extends Application
         checkoutPane.setAlignment(Pos.CENTER);
 
         checkoutList = new ListView<>();
+        GridPane.setHalignment(checkoutList, HPos.CENTER);
         GridPane.setFillWidth(checkoutList, true);
-        GridPane.setMargin(checkoutList, new Insets(20, 20, 5, 10));
+        GridPane.setMargin(checkoutList, new Insets(20, 20, 20, 10));
 
         Label checkoutRecipientNameLabel = new Label();
         checkoutRecipientNameLabel.setText("Recipient:");
+        GridPane.setMargin(checkoutRecipientLabel, new Insets(20, 0, 5, 5));
         Label checkoutRegionNameLabel = new Label();
         checkoutRegionNameLabel.setText("Region:");
+        GridPane.setMargin(checkoutRegionNameLabel, new Insets(0, 0, 5, 5));
         Label checkoutItemCountNameLabel = new Label();
         checkoutItemCountNameLabel.setText("# of items:");
+        GridPane.setMargin(checkoutItemCountNameLabel, new Insets(0, 0, 5, 5));
         Label checkoutPriceNameLabel = new Label();
         checkoutPriceNameLabel.setText("Price:");
+        GridPane.setMargin(checkoutPriceNameLabel, new Insets(0, 0, 5, 5));
 
         Button checkoutButton = new Button();
         checkoutButton.setText("Checkout");
         checkoutButton.setId("checkout-checkout");
         checkoutButton.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: #8fe1a2;");
         checkoutButton.setMaxWidth(145);
+        GridPane.setValignment(checkoutButton, VPos.BOTTOM);
         GridPane.setFillWidth(checkoutButton, true);
-        GridPane.setMargin(checkoutButton, new Insets(5, 10, 20, 20));
+        GridPane.setMargin(checkoutButton, new Insets(0, 10, 20, 20));
 
         Button cancelCheckoutButton = new Button();
         cancelCheckoutButton.setText("Cancel");
         cancelCheckoutButton.setId("checkout-cancel");
         cancelCheckoutButton.setStyle("-fx-background-color:#8fe1a2; -fx-text-fill: darkslateblue;");
         cancelCheckoutButton.setMaxWidth(145);
+        GridPane.setValignment(cancelCheckoutButton, VPos.BOTTOM);
         GridPane.setFillWidth(cancelCheckoutButton, true);
-        GridPane.setMargin(cancelCheckoutButton, new Insets(5, 10, 20, 20));
+        GridPane.setMargin(cancelCheckoutButton, new Insets(0, 10, 20, 20));
 
         checkoutPane.getColumnConstraints().addAll(
             new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
@@ -396,7 +414,7 @@ public class JohnnyMovesGui extends Application
             new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
         );
 
-        checkoutPane.add(checkoutList, 0, 0, 2, 6);
+        checkoutPane.add(checkoutList, 0, 0, 2, 8);
         //itemsPane.add(itemNameLabel, 2, 0);
         checkoutPane.add(checkoutRecipientNameLabel, 2, 1);
         checkoutPane.add(checkoutRegionNameLabel, 2, 2);
@@ -406,8 +424,8 @@ public class JohnnyMovesGui extends Application
         checkoutPane.add(checkoutRegionLabel, 3, 2);
         checkoutPane.add(checkoutItemCountLabel, 3, 3);
         checkoutPane.add(checkoutPriceLabel, 3, 4);
-        checkoutPane.add(checkoutButton, 2, 6);
-        checkoutPane.add(cancelCheckoutButton, 3, 6);
+        checkoutPane.add(checkoutButton, 2, 7);
+        checkoutPane.add(cancelCheckoutButton, 3, 7);
 
         checkoutMenu.setCenter(checkoutPane);
         checkoutScene = new Scene(checkoutMenu, 700, 500);
@@ -466,23 +484,73 @@ public class JohnnyMovesGui extends Application
         GridPane insurancePane = new GridPane();
         insurancePane.setAlignment(Pos.CENTER);
 
+        ButtonType submitButtonType = new ButtonType("Submit", ButtonData.APPLY);
 
+<<<<<<< HEAD
+=======
+        insuranceDialog.getDialogPane().getButtonTypes().add(submitButtonType);
+        insuranceDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+>>>>>>> marc
         Label insuranceLabel = new Label();
         insuranceLabel.setText("Do you want the parcel insured?");
 
         insuredButton.setToggleGroup(insureGroup);
         notInsuredButton.setToggleGroup(insureGroup);
 
-        Button confirmInsuranceButton = new Button();
-        confirmInsuranceButton.setText("Submit");
-        Button cancelInsuranceButton = new Button();
-        cancelInsuranceButton.setText("Cancel");
-
         insurancePane.add(insuranceLabel, 0, 0, 2, 1);
         insurancePane.add(insuredButton, 0, 1, 2, 1);
         insurancePane.add(notInsuredButton, 0, 2, 2, 1);
-        insurancePane.add(confirmInsuranceButton, 0, 3);
-        insurancePane.add(cancelInsuranceButton, 1, 3);
+
+        insuranceDialog.getDialogPane().setContent(insurancePane);
+
+        /* ---------------------------- */
+        /* INITIALIZE DIALOG - ADD ITEM */
+        /* ---------------------------- */
+        addItemDialog = new Dialog<>();
+        addItemDialog.setTitle("Add item");
+        GridPane addItemPane = new GridPane();
+        addItemPane.setAlignment(Pos.CENTER);
+
+        addItemDialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        addItemDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        ComboBox<String> itemTypes = new ComboBox<>();
+        itemTypes.setId("items-type");
+        itemTypes.getItems().addAll("REGULAR PRODUCT", "IRREGULAR PRODUCT", "DOCUMENT");
+        productGroup = new GridPane();
+        Label productWidthLabel = new Label();
+        productWidthLabel.setText("Width");
+        Label productHeightLabel = new Label();
+        productHeightLabel.setText("Height");
+        Label productLengthLabel = new Label();
+        productLengthLabel.setText("Length");
+        Label productWeightLabel = new Label();
+        productWeightLabel.setText("Weight");
+        productGroup.add(productWidthLabel, 0, 0);
+        productGroup.add(productWidthField, 1, 0);
+        productGroup.add(productHeightLabel, 0, 1);
+        productGroup.add(productHeightField, 1, 1);
+        productGroup.add(productLengthLabel, 0, 2);
+        productGroup.add(productLengthField, 1, 2);
+        productGroup.add(productWeightLabel, 0, 3);
+        productGroup.add(productWeightField, 1, 3);
+
+        documentGroup = new GridPane();
+        Label documentWidthLabel = new Label();
+        documentWidthLabel.setText("Width");
+        Label documentLengthLabel = new Label();
+        documentLengthLabel.setText("Length");
+        Label documentPagesLabel = new Label();
+        documentPagesLabel.setText("Weight");
+        documentGroup.add(documentWidthLabel, 0, 0);
+        documentGroup.add(documentWidthField, 1, 0);
+        documentGroup.add(documentLengthLabel, 0, 1);
+        documentGroup.add(documentLengthField, 1, 1);
+        documentGroup.add(documentPagesLabel, 0, 2);
+        documentGroup.add(documentPagesField, 1, 2);
+
+
 
         insuranceDialog.getDialogPane().setContent(insurancePane);
     }
@@ -523,6 +591,11 @@ public class JohnnyMovesGui extends Application
             else if (node instanceof Pane)
             {
                 attachHandlerToPane((Pane)node, handler);
+            }
+            else if (node instanceof ComboBox)
+            {
+                ComboBox cb = (ComboBox)node;
+                cb.setOnAction(handler);
             }
         }
     }
