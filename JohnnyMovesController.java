@@ -51,8 +51,8 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "items-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "items-add": break;
                 case "items-remove":
-                alert = new Alert(AlertType.WARNING, "Removing an item cannot be undone. Proceed?", ButtonType.YES, ButtonType.NO);
-                result = alert.showAndWait();
+                  alert = new Alert(AlertType.WARNING, "Removing an item cannot be undone. Proceed?", ButtonType.YES, ButtonType.NO);
+                  result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.YES)
                 {
                     // TODO: remove the item
@@ -63,7 +63,9 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "recipient-submit": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
-                case "track-submit": break;
+                case "track-submit":
+                  
+                break;
                 case "track-return": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
             }
         }

@@ -100,7 +100,7 @@ public class JohnnyMovesGui extends Application
         VBox mainBox = new VBox();
         mainBox.setAlignment(Pos.CENTER);
         mainBox.getChildren().addAll(logo, getStartedButton);
-        mainPane.setStyle("-fx-background-color: #282828;");
+        mainPane.setStyle("-fx-background-color: #662d91;");
         mainPane.setCenter(mainBox);
 
         startScene = new Scene(mainPane, 700, 500);
@@ -262,7 +262,12 @@ public class JohnnyMovesGui extends Application
         /* -------------------------- */
         /* INITIALIZE SCENE 4 - ITEMS */
         /* -------------------------- */
+        BorderPane itemMenu = new BorderPane();
         GridPane itemsPane = new GridPane();
+        StackPane itemTop = new StackPane();
+        itemTop.getChildren().add(new ImageView(header));
+        itemTop.setBackground(new Background(new BackgroundFill(Color.rgb(40, 40, 40), CornerRadii.EMPTY, Insets.EMPTY)));
+        itemMenu.setTop(itemTop);
 
         itemsPane.setAlignment(Pos.CENTER);
 
@@ -270,7 +275,7 @@ public class JohnnyMovesGui extends Application
         GridPane.setFillWidth(itemsList, true);
         GridPane.setMargin(itemsList, new Insets(20, 20, 5, 10));
 
-        itemNameLabel = new Label();
+        Label itemNameLabel = new Label();
         GridPane.setMargin(itemNameLabel, new Insets(20, 10, 5, 20));
         Label dimensionsNameLabel = new Label();
         dimensionsNameLabel.setText("Dimensions: ");
@@ -286,11 +291,13 @@ public class JohnnyMovesGui extends Application
         Button addItemButton = new Button();
         addItemButton.setText("Add");
         addItemButton.setId("items-add");
+        addItemButton.setStyle("-fx-background-color:#8fe1a2; -fx-text-fill: darkslateblue;");
         addItemButton.setMaxWidth(145);
         GridPane.setFillWidth(addItemButton, true);
         GridPane.setMargin(addItemButton, new Insets(5, 20, 20, 10));
 
         Button removeItemButton = new Button();
+        removeItemButton.setStyle("-fx-background-color:#8fe1a2; -fx-text-fill: darkslateblue;");
         removeItemButton.setText("Remove");
         removeItemButton.setId("items-remove");
         removeItemButton.setMaxWidth(145);
@@ -301,6 +308,7 @@ public class JohnnyMovesGui extends Application
         doneItemButton.setText("Done");
         doneItemButton.setId("items-done");
         doneItemButton.setMaxWidth(145);
+        doneItemButton.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: #8fe1a2;");
         GridPane.setFillWidth(doneItemButton, true);
         GridPane.setMargin(doneItemButton, new Insets(5, 10, 20, 20));
 
@@ -323,12 +331,19 @@ public class JohnnyMovesGui extends Application
         itemsPane.add(typeLabel, 3, 3);
         itemsPane.add(doneItemButton, 3, 6);
 
-        itemsScene = new Scene(itemsPane, 700, 500);
+        itemMenu.setCenter(itemsPane);
+
+        itemsScene = new Scene(itemMenu, 700, 500);
 
         /* ----------------------------- */
         /* INITIALIZE SCENE 5 - CHECKOUT */
         /* ----------------------------- */
+        BorderPane checkoutMenu = new BorderPane();
         GridPane checkoutPane = new GridPane();
+        StackPane checkTop = new StackPane();
+        checkTop.getChildren().add(new ImageView(header));
+        checkTop.setBackground(new Background(new BackgroundFill(Color.rgb(40, 40, 40), CornerRadii.EMPTY, Insets.EMPTY)));
+        checkoutMenu.setTop(checkTop);
 
         checkoutPane.setAlignment(Pos.CENTER);
 
@@ -348,6 +363,7 @@ public class JohnnyMovesGui extends Application
         Button checkoutButton = new Button();
         checkoutButton.setText("Checkout");
         checkoutButton.setId("checkout-checkout");
+        checkoutButton.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: #8fe1a2;");
         checkoutButton.setMaxWidth(145);
         GridPane.setFillWidth(checkoutButton, true);
         GridPane.setMargin(checkoutButton, new Insets(5, 10, 20, 20));
@@ -355,6 +371,7 @@ public class JohnnyMovesGui extends Application
         Button cancelCheckoutButton = new Button();
         cancelCheckoutButton.setText("Cancel");
         cancelCheckoutButton.setId("checkout-cancel");
+        cancelCheckoutButton.setStyle("-fx-background-color:#8fe1a2; -fx-text-fill: darkslateblue;");
         cancelCheckoutButton.setMaxWidth(145);
         GridPane.setFillWidth(cancelCheckoutButton, true);
         GridPane.setMargin(cancelCheckoutButton, new Insets(5, 10, 20, 20));
@@ -379,7 +396,9 @@ public class JohnnyMovesGui extends Application
         checkoutPane.add(checkoutButton, 2, 6);
         checkoutPane.add(cancelCheckoutButton, 3, 6);
 
-        checkoutScene = new Scene(checkoutPane, 700, 500);
+        checkoutMenu.setCenter(checkoutPane);
+
+        checkoutScene = new Scene(checkoutMenu, 700, 500);
     }
 
     public void setScene(String scene)
