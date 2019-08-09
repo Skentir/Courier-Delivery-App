@@ -30,6 +30,7 @@ public class JohnnyMovesGui extends Application
     public static final String RECIPIENT = "RECIPIENT";
     public static final String ITEMS = "ITEMS";
     public static final String TRACKING = "TRACKING";
+    public static final String DISPLAY_CODE = "DISPLAY_CODE";
     public static final String CHECKOUT = "CHECKOUT";
 
     public static final String DIALOG_INSURANCE = "INSURANCE";
@@ -38,6 +39,7 @@ public class JohnnyMovesGui extends Application
 
     /* Attributes */
     Color bg = Color.rgb(250,248,247);
+    TextField enterCode = new TextField();
 
     ListView<Item> itemsList = new ListView<>();
     Label itemNameLabel = new Label();
@@ -50,6 +52,12 @@ public class JohnnyMovesGui extends Application
     Label checkoutRegionLabel = new Label();
     Label checkoutItemCountLabel = new Label();
     Label checkoutPriceLabel = new Label();
+
+    ListView<Item> displayParcelItems = new ListView<>();
+    Label displayTrackingCode = new Label();
+    Label displayRecipient= new Label();
+    Label displayRegion = new Label();
+    Label displayStatus = new Label();
 
     ToggleGroup insureGroup = new ToggleGroup();
     RadioButton insuredButton = new RadioButton("Yes, insure");
@@ -88,6 +96,7 @@ public class JohnnyMovesGui extends Application
         itemsScene,
         checkoutScene,
         trackingScene,
+        displayParcelScene,
         statusScene,
         optionsScene,
         timeScene;
@@ -242,11 +251,11 @@ public class JohnnyMovesGui extends Application
         GridPane.setMargin(recipientField, new Insets(5, 10, 5, 10));
         /* Scene 6 Button */
         Label promptCode = new Label("Enter Tracking Number");
-        TextField enterCode = new TextField();
+        enterCode = new TextField();
         Button submitCode = new Button();
         Button trackToMain = new Button();
         trackToMain.setText("Go Back to Main Menu");
-        trackToMain.setId("track-return");
+        trackToMain.setId("track-main");
         promptCode.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD, 24));
         submitCode.setText("Submit");
         submitCode.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -563,12 +572,77 @@ public class JohnnyMovesGui extends Application
         documentGroup.add(documentPagesLabel, 0, 2);
         documentGroup.add(documentPagesField, 1, 2);
 
+<<<<<<< HEAD
         addItemPane.add(itemTypeLabel, 0, 0);
         addItemPane.add(itemTypes, 1, 0);
 
         addItemRoot = addItemPane;
 
         addItemDialog.getDialogPane().setContent(addItemPane);
+=======
+        insuranceDialog.getDialogPane().setContent(insurancePane);
+
+        /* --------------------------------- */
+        /* INITIALIZE SCENE 7 - DISPLAY CODE */
+        /* --------------------------------- */
+        BorderPane displayCodeMenu = new BorderPane();
+        GridPane displayInfo = new GridPane();
+        StackPane displayCodeTop = new StackPane();
+        displayCodeTop.getChildren().add(new ImageView(header));
+        displayCodeTop.setBackground(new Background(new BackgroundFill(Color.rgb(40, 40, 40), CornerRadii.EMPTY, Insets.EMPTY)));
+        displayCodeMenu.setTop(checkTop);
+        displayCodeMenu.setId("track-return");
+
+        displayParcelItems = new ListView<>();
+        GridPane.setHalignment(displayInfo, HPos.CENTER);
+        GridPane.setFillWidth(displayInfo, true);
+        GridPane.setMargin(displayInfo, new Insets(20, 20, 20, 10));
+
+        Label displayLabel = new Label();
+        displayLabel.setText("Parcel Details");
+        GridPane.setMargin(displayLabel, new Insets(20, 0, 5, 5));
+        Label displayTrackingCode = new Label();
+        GridPane.setMargin(displayTrackingCode, new Insets(0, 0, 5, 5));
+        Label displayRecipient = new Label();
+        GridPane.setMargin(displayRecipient, new Insets(0, 0, 5, 5));
+        Label displayRegion = new Label();
+        GridPane.setMargin(displayRegion, new Insets(0, 0, 5, 5));
+        Label displayStatus = new Label();
+        GridPane.setMargin(displayStatus, new Insets(0, 0, 5, 5));
+
+        displayInfo.add(displayParcelItems, 0, 0, 2, 8);
+        displayInfo.add(displayTrackingCode, 2, 1);
+        displayInfo.add(displayLabel, 2, 2);
+        displayInfo.add(displayRecipient, 2, 3);
+        displayInfo.add(displayRegion, 2, 4);
+        displayInfo.add(displayStatus, 3, 1);
+        /*
+        checkoutPane.add(checkoutRegionLabel, 3, 2);
+        checkoutPane.add(checkoutItemCountLabel, 3, 3);
+        checkoutPane.add(checkoutPriceLabel, 3, 4);
+        checkoutPane.add(checkoutButton, 2, 7);
+        checkoutPane.add(cancelCheckoutButton, 3, 7);*/
+
+        displayInfo.getColumnConstraints().addAll(
+            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
+        );
+
+        /* For Reference lang */
+        displayCodeMenu.setCenter(displayInfo);
+        /*
+        System.out.print("Tracking Code: ");
+        System.out.println (parcel.getTrackingCode());
+        System.out.printf("Recipient: %s\n", parcel.getRecipient());
+        System.out.printf("Region: %s\n", parcel.getRegion());
+        System.out.printf("Status: %s\n", parcel.getStatus(getDate()));
+        System.out.print("Items shipped:\n");
+        parcel.displayItems(); */
+
+        displayParcelScene = new Scene(displayCodeMenu, 700, 500);
+>>>>>>> origin/kirsten
     }
 
     public void setScene(String scene)
@@ -613,6 +687,12 @@ public class JohnnyMovesGui extends Application
     public int getSpinnerSecs()
     {
       return secondsSpinner.getValue();
+    }
+
+    public String getCodeInput()
+    {
+      System.out.println("I got this "+ enterCode.getText());
+      return enterCode.getText();
     }
 
     private void attachHandlerToPane(Pane pane, EventHandler<ActionEvent> handler)

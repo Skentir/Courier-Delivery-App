@@ -482,7 +482,7 @@ public class JohnnyMoves
       if (p.getTrackingCode().equalsIgnoreCase(code))
         return true;
     }
-    return  false;
+    return false;
   }
 
   /**
