@@ -19,10 +19,10 @@ public class Parcel
    */
   public static final String BOX = "BOX";
 
-  private final boolean insured;
   private final String recipient;
   private final String region;
   private final Date shipDate;
+  private boolean insured;
   private ArrayList<Item> items;
 
   private String trackingCode;
@@ -161,7 +161,10 @@ public class Parcel
         return 0.0;
     }
   }
-
+  public void setInsurance(boolean insured)
+  {
+    this.insured = insured;
+  }
   /**
    * Gets the total weight of all the items in the parcel.
    *

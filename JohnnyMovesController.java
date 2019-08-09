@@ -12,18 +12,20 @@ import java.util.*;
 public class JohnnyMovesController implements EventHandler<ActionEvent>
 {
     private JohnnyMovesGui gui;
-    private ArrayList<Parcel> parcels;
+    private List<Parcel> parcels;
 
     public JohnnyMovesController(JohnnyMovesGui gui)
     {
         this.gui = gui;
         gui.addActionListener(this);
+        parcels = new ArrayList<>();
     }
 
     @Override
     public void handle(ActionEvent event)
     {
         EventTarget target = event.getTarget();
+
         if (target instanceof Node)
         {
             Node node = (Node)target;
@@ -38,6 +40,9 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
             case "main-track": gui.setScene(JohnnyMovesGui.TRACKING); break;
             case "items-recipient":
                 Recipient recipient = gui.openRecipientDialog();
+                String name = gui.getRecipient();
+                String region = gui.getRegion();
+                parcels.add(new Parcel(name, region));
                 break;
             case "items-edit": gui.setScene(JohnnyMovesGui.ITEMS); break;
             case "items-type":
@@ -45,6 +50,16 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 break;
             case "items-insurance":
                 ButtonType type = gui.openInsuranceDialog();
+                String insuredValue = gui.getInsurance();
+
+                Parcel p = parcels.get(parcels.size()-1);
+                p.setTrackingCode(generateCode(p));
+
+                if (insuredValue.equals("Yes, insure"))
+                    p.setInsurance(true);
+                else
+                    p.setInsurance(false)
+                    ;
                 break;
             case "items-checkout": gui.setScene(JohnnyMovesGui.CHECKOUT); break;
             case "items-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
@@ -70,24 +85,14 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                   if (code.length() >= 15)
                   {
                     System.out.println("Entered a something");
-                    if (isValidCode(code) && code != null) //TODO: Fix this part
+                    if (isValidCode(code))
                     {
                         Integer tmpTime = gui.openTimeDialog();
                         if (tmpTime != null)
                         {
                             int time = tmpTime;
                             Date date = new Date(new Date().getTime() + time * 1000L);
-
-                        }/*
-                        int daysOffset = gui.getSpinnerDays();
-                        int hoursOffset = gui.getSpinnerHours();
-                        int minsOffset = gui.getSpinnerMins();
-                        int secsOffset = gui.getSpinnerSecs();
-                        Date now = new Date();
-                        new Date(now.getTime() + daysOffset * 86400L * 1000L);*/
-                      //Date now = new Date();
-                      //new Date(now.getTime() + daysOffset * 86400L * 1000L);
-                      //TODO: Update the formula
+                        }
                       Parcel p = parcels.get(parcels.size()-1);
                       p.setTrackingCode(generateCode(p));
                     }

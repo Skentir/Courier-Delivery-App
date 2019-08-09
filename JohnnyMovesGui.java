@@ -40,7 +40,10 @@ public class JohnnyMovesGui extends Application
     /* Attributes */
     Color bg = Color.rgb(250,248,247);
     TextField enterCode = new TextField();
-
+    TextField recipientField = new TextField();
+    ComboBox<String> regionComboBox = new ComboBox<>();
+    ToggleGroup insureGroup = new ToggleGroup();
+    RadioButton selectedRadioBtn;
     ListView<Item> itemsList = new ListView<>();
     Label itemNameLabel = new Label();
     Label dimensionsLabel = new Label();
@@ -59,7 +62,6 @@ public class JohnnyMovesGui extends Application
     Label displayRegion = new Label();
     Label displayStatus = new Label();
 
-    ToggleGroup insureGroup = new ToggleGroup();
     RadioButton insuredButton = new RadioButton("Yes, insure");
     RadioButton notInsuredButton = new RadioButton("No, don't insure");
 
@@ -280,11 +282,9 @@ public class JohnnyMovesGui extends Application
         Label recipientRegionLabel = new Label();
         recipientRegionLabel.setText("Region");
 
-        TextField recipientField = new TextField();
         GridPane.setFillWidth(recipientField, true);
         GridPane.setMargin(recipientField, new Insets(5, 10, 5, 10));
 
-        ComboBox<String> regionComboBox = new ComboBox<>();
         regionComboBox.getItems().addAll(Parcel.REGIONS);
         GridPane.setFillWidth(regionComboBox, true);
         GridPane.setMargin(regionComboBox, new Insets(5, 10, 5, 10));
@@ -706,12 +706,7 @@ public class JohnnyMovesGui extends Application
         displayInfo.add(displayRecipient, 2, 3);
         displayInfo.add(displayRegion, 2, 4);
         displayInfo.add(displayStatus, 3, 1);
-        /*
-        checkoutPane.add(checkoutRegionLabel, 3, 2);
-        checkoutPane.add(checkoutItemCountLabel, 3, 3);
-        checkoutPane.add(checkoutPriceLabel, 3, 4);
-        checkoutPane.add(checkoutButton, 2, 7);
-        checkoutPane.add(cancelCheckoutButton, 3, 7);*/
+
 
         displayInfo.getColumnConstraints().addAll(
             new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
@@ -719,17 +714,8 @@ public class JohnnyMovesGui extends Application
             new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
             new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
         );
-
-        /* For Reference lang */
         displayCodeMenu.setCenter(displayInfo);
-        /*
-        System.out.print("Tracking Code: ");
-        System.out.println (parcel.getTrackingCode());
-        System.out.printf("Recipient: %s\n", parcel.getRecipient());
-        System.out.printf("Region: %s\n", parcel.getRegion());
-        System.out.printf("Status: %s\n", parcel.getStatus(getDate()));
-        System.out.print("Items shipped:\n");
-        parcel.displayItems(); */
+
 
         displayParcelScene = new Scene(displayCodeMenu, 700, 500);
     }
@@ -745,6 +731,7 @@ public class JohnnyMovesGui extends Application
         case RECIPIENT: s = recipientScene; break;
         case ITEMS: s = itemsScene; break;
         case CHECKOUT: s = checkoutScene; break;
+        case DISPLAY_CODE: s = displayParcelScene; break;
         }
 
         if (s != null)
@@ -758,30 +745,29 @@ public class JohnnyMovesGui extends Application
 
     }
 
-    public int getSpinnerDays()
-    {
-      return daySpinner.getValue();
-    }
-
-    public int getSpinnerHours()
-    {
-      return hourSpinner.getValue();
-    }
-
-    public int getSpinnerMins()
-    {
-      return minuteSpinner.getValue();
-    }
-
-    public int getSpinnerSecs()
-    {
-      return secondsSpinner.getValue();
-    }
-
     public String getCodeInput()
     {
       System.out.println("I got this " + enterCode.getText());
       return enterCode.getText();
+    }
+
+    public String getRecipient()
+    {
+      System.out.println("Reciever is " + recipientField.getText());
+      return recipientField.getText();
+    }
+
+    public String getRegion()
+    {
+      System.out.println("Region is " + regionComboBox.getValue());
+      return regionComboBox.getValue();
+    }
+
+    public String getInsurance()
+    {
+      selectedRadioBtn = (RadioButton) insureGroup.getSelectedToggle();
+      System.out.println("Insurance choice is " + selectedRadioBtn.getText());
+      return selectedRadioBtn.getText();
     }
 
     private void attachHandlerToPane(Pane pane, EventHandler<ActionEvent> handler)
@@ -880,7 +866,7 @@ public class JohnnyMovesGui extends Application
     public Integer openTimeDialog()
     {
         Optional<Integer> result = adjustTimeDialog.showAndWait();
-        return result.orElse(null); // Return current Date/Time
+        return result.orElse(null);
     }
 
     public static void main(String[] args)
