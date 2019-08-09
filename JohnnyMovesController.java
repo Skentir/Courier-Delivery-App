@@ -6,6 +6,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import java.text.SimpleDateFormat;
+import javafx.scene.Node;
 import java.util.*;
 
 public class JohnnyMovesController implements EventHandler<ActionEvent>
@@ -23,21 +24,25 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
     public void handle(ActionEvent event)
     {
         EventTarget target = event.getTarget();
-        if (target instanceof Button)
+        if (target instanceof Node)
         {
-            Button button = (Button)target;
+            Node node = (Node)target;
 
             Alert alert;
             Optional<ButtonType> result;
-            switch (button.getId())
+            switch (node.getId())
             {
             case "items-return": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
             case "get-started": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
             case "main-send": gui.setScene(JohnnyMovesGui.SENDING); break;
             case "main-track": gui.setScene(JohnnyMovesGui.TRACKING); break;
-            case "items-recipient": gui.setScene(JohnnyMovesGui.RECIPIENT); break;
+            case "items-recipient":
+                Recipient recipient = gui.openRecipientDialog();
+                break;
             case "items-edit": gui.setScene(JohnnyMovesGui.ITEMS); break;
-            case "items-type": break;
+            case "items-type":
+                gui.updateAddItemPane();
+                break;
             case "items-insurance":
                 ButtonType type = gui.openInsuranceDialog();
                 break;
@@ -67,13 +72,21 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                     System.out.println("Entered a something");
                     if (isValidCode(code) && code != null) //TODO: Fix this part
                     {
-                      gui.openTimeDialog();
-                      int daysOffset = gui.getSpinnerDays();
-                      int hoursOffset = gui.getSpinnerHours();
-                      int minsOffset = gui.getSpinnerMins();
-                      int secsOffset = gui.getSpinnerSecs();
-                      Date now = new Date();
-                      new Date(now.getTime() + daysOffset * 86400L * 1000L);
+                        Integer tmpTime = gui.openTimeDialog();
+                        if (tmpTime != null)
+                        {
+                            int time = tmpTime;
+                            Date date = new Date(new Date().getTime() + time * 1000L);
+
+                        }/*
+                        int daysOffset = gui.getSpinnerDays();
+                        int hoursOffset = gui.getSpinnerHours();
+                        int minsOffset = gui.getSpinnerMins();
+                        int secsOffset = gui.getSpinnerSecs();
+                        Date now = new Date();
+                        new Date(now.getTime() + daysOffset * 86400L * 1000L);*/
+                      //Date now = new Date();
+                      //new Date(now.getTime() + daysOffset * 86400L * 1000L);
                       //TODO: Update the formula
                       Parcel p = parcels.get(parcels.size()-1);
                       p.setTrackingCode(generateCode(p));

@@ -63,7 +63,8 @@ public class JohnnyMovesGui extends Application
     RadioButton insuredButton = new RadioButton("Yes, insure");
     RadioButton notInsuredButton = new RadioButton("No, don't insure");
 
-    Pane addItemRoot;
+    GridPane addItemRoot;
+    ComboBox<String> itemTypes = new ComboBox<>();
     GridPane productGroup;
     TextField productWidthField = new TextField();
     TextField productHeightField = new TextField();
@@ -80,6 +81,7 @@ public class JohnnyMovesGui extends Application
     Spinner<Integer> minuteSpinner = new Spinner<Integer>();
     Spinner<Integer> secondsSpinner = new Spinner<Integer>();
 
+    Dialog<Recipient> recipientDialog;
     Dialog<Item> addItemDialog;
     Dialog<ButtonType> insuranceDialog;
     Dialog<Integer> adjustTimeDialog;
@@ -233,22 +235,6 @@ public class JohnnyMovesGui extends Application
         sendBorder.setCenter(sendMenu);
 
         sendingScene = new Scene(sendBorder, 700, 500);
-
-        /* ------------------------------ */
-        /* INITIALIZE SCENE 3 - RECIPIENT */
-        /* ------------------------------ */
-        GridPane recipientPane = new GridPane();
-
-        recipientPane.setAlignment(Pos.CENTER);
-
-        Label recipientNameLabel = new Label();
-        recipientNameLabel.setText("Name");
-        Label recipientRegionLabel = new Label();
-        recipientRegionLabel.setText("Region");
-
-        TextField recipientField = new TextField();
-        GridPane.setFillWidth(recipientField, true);
-        GridPane.setMargin(recipientField, new Insets(5, 10, 5, 10));
         /* Scene 6 Button */
         Label promptCode = new Label("Enter Tracking Number");
     // enter code
@@ -280,31 +266,50 @@ public class JohnnyMovesGui extends Application
 
         trackingScene = new Scene(trackBorder, 700, 500, bg);
 
+        /* ------------------------------ */
+        /* INITIALIZE SCENE 3 - RECIPIENT */
+        /* ------------------------------ */
+        recipientDialog = new Dialog<>();
+        recipientDialog.setTitle("Enter recipient");
+        GridPane recipientPane = new GridPane();
+
+        recipientPane.setAlignment(Pos.CENTER);
+
+        Label recipientNameLabel = new Label();
+        recipientNameLabel.setText("Name");
+        Label recipientRegionLabel = new Label();
+        recipientRegionLabel.setText("Region");
+
+        TextField recipientField = new TextField();
+        GridPane.setFillWidth(recipientField, true);
+        GridPane.setMargin(recipientField, new Insets(5, 10, 5, 10));
+
         ComboBox<String> regionComboBox = new ComboBox<>();
         regionComboBox.getItems().addAll(Parcel.REGIONS);
         GridPane.setFillWidth(regionComboBox, true);
         GridPane.setMargin(regionComboBox, new Insets(5, 10, 5, 10));
 
-        Button cancelRecipientButton = new Button();
-        cancelRecipientButton.setText("Cancel");
-        cancelRecipientButton.setId("recipient-cancel");
-        GridPane.setFillWidth(cancelRecipientButton, true);
-        GridPane.setMargin(cancelRecipientButton, new Insets(5, 10, 5, 10));
-
-        Button submitRecipientButton = new Button();
-        submitRecipientButton.setText("Submit");
-        submitRecipientButton.setId("recipient-submit");
-        GridPane.setFillWidth(submitRecipientButton, true);
-        GridPane.setMargin(submitRecipientButton, new Insets(5, 10, 5, 10));
+        recipientDialog.setResultConverter(btype ->
+        {
+            switch (btype.getButtonData())
+            {
+            case OK_DONE:
+                return new Recipient(recipientField.getText(), regionComboBox.getValue());
+            case CANCEL_CLOSE:
+            default:
+                return null;
+            }
+        });
 
         recipientPane.add(recipientNameLabel, 0, 0);
         recipientPane.add(recipientRegionLabel, 0, 1);
         recipientPane.add(recipientField, 1, 0, 2, 1);
         recipientPane.add(regionComboBox, 1, 1, 2, 1);
-        recipientPane.add(submitRecipientButton, 1, 2);
-        recipientPane.add(cancelRecipientButton, 2, 2);
 
-        recipientScene = new Scene(recipientPane, 350, 200);
+        recipientDialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        recipientDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        recipientDialog.getDialogPane().setContent(recipientPane);
 
         /* -------------------------- */
         /* INITIALIZE SCENE 4 - ITEMS */
@@ -506,6 +511,16 @@ public class JohnnyMovesGui extends Application
         adjustTimeDialog.getDialogPane().getButtonTypes().add(timeBtn);
         adjustTimeDialog.getDialogPane().setContent(timeBorder);
 
+        adjustTimeDialog.setResultConverter(btype ->
+        {
+            switch (btype.getButtonData())
+            {
+            case OK_DONE:
+                return daySpinner.getValue() * 86400 + hourSpinner.getValue() * 3600 + minuteSpinner.getValue() * 60 + secondsSpinner.getValue();
+            default:
+                return null;
+            }
+        });
 
         /* --------------------------------- */
         /* INITIALIZE DIALOG - SET INSURANCE */
@@ -540,11 +555,61 @@ public class JohnnyMovesGui extends Application
         GridPane addItemPane = new GridPane();
         addItemPane.setAlignment(Pos.CENTER);
 
+        addItemPane.getColumnConstraints().addAll(
+            new ColumnConstraints(60.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(240.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
+        );
+
         addItemDialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         addItemDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
+        addItemDialog.setResultConverter(btype ->
+        {
+            String type = itemTypes.getValue();
+            itemTypes.setValue(null);
+            closeItemPane();
+            switch (btype.getButtonData())
+            {
+            case OK_DONE:
+                switch (type)
+                {
+                case "REGULAR PRODUCT":
+                    double regProdLength = Double.parseDouble(productLengthField.getText());
+                    double regProdWidth = Double.parseDouble(productWidthField.getText());
+                    double regProdHeight = Double.parseDouble(productHeightField.getText());
+                    double regProdWeight = Double.parseDouble(productWeightField.getText());
+                    productLengthField.clear();
+                    productWidthField.clear();
+                    productHeightField.clear();
+                    productWeightField.clear();
+                    return new RegularProduct(null, regProdLength, regProdWidth, regProdHeight, regProdWeight);
+                case "IRREGULAR PRODUCT":
+                    double irregProdLength = Double.parseDouble(productLengthField.getText());
+                    double irregProdWidth = Double.parseDouble(productWidthField.getText());
+                    double irregProdHeight = Double.parseDouble(productHeightField.getText());
+                    double irregProdWeight = Double.parseDouble(productWeightField.getText());
+                    productLengthField.clear();
+                    productWidthField.clear();
+                    productHeightField.clear();
+                    productWeightField.clear();
+                    return new IrregularProduct(null, irregProdLength, irregProdWidth, irregProdHeight, irregProdWeight);
+                case "DOCUMENT":
+                    double docLength = Double.parseDouble(documentLengthField.getText());
+                    double docWidth = Double.parseDouble(documentWidthField.getText());
+                    int docPages = Integer.parseInt(documentPagesField.getText());
+                    documentLengthField.clear();
+                    documentWidthField.clear();
+                    documentPagesField.clear();
+                    return new Document(null, docLength, docWidth, docPages);
+                default: return null; // TODO: custom exception
+                }
+            case CANCEL_CLOSE:
+            default:
+                return null;
+            }
+        });
+
         Label itemTypeLabel = new Label("Type");
-        ComboBox<String> itemTypes = new ComboBox<>();
         itemTypes.setId("items-type");
         itemTypes.getItems().addAll("REGULAR PRODUCT", "IRREGULAR PRODUCT", "DOCUMENT");
         productGroup = new GridPane();
@@ -553,28 +618,53 @@ public class JohnnyMovesGui extends Application
         Label productLengthLabel = new Label("Length");
         Label productWeightLabel = new Label("Weight");
         productGroup.add(productWidthLabel, 0, 0);
+        GridPane.setMargin(productWidthLabel, new Insets(10, 0, 0, 0));
         productGroup.add(productWidthField, 1, 0);
+        GridPane.setMargin(productWidthField, new Insets(10, 0, 0, 5));
         productGroup.add(productHeightLabel, 0, 1);
+        GridPane.setMargin(productHeightLabel, new Insets(10, 0, 0, 0));
         productGroup.add(productHeightField, 1, 1);
+        GridPane.setMargin(productHeightField, new Insets(10, 0, 0, 5));
         productGroup.add(productLengthLabel, 0, 2);
+        GridPane.setMargin(productLengthLabel, new Insets(10, 0, 0, 0));
         productGroup.add(productLengthField, 1, 2);
+        GridPane.setMargin(productLengthField, new Insets(10, 0, 0, 5));
         productGroup.add(productWeightLabel, 0, 3);
+        GridPane.setMargin(productWeightLabel, new Insets(10, 0, 0, 0));
         productGroup.add(productWeightField, 1, 3);
+        GridPane.setMargin(productWeightField, new Insets(10, 0, 0, 5));
 
         documentGroup = new GridPane();
         Label documentWidthLabel = new Label("Width");
         Label documentLengthLabel = new Label("Length");
         Label documentPagesLabel = new Label("Pages");
         documentGroup.add(documentWidthLabel, 0, 0);
+        GridPane.setMargin(documentWidthLabel, new Insets(10, 0, 0, 0));
         documentGroup.add(documentWidthField, 1, 0);
+        GridPane.setMargin(documentWidthField, new Insets(10, 0, 0, 5));
         documentGroup.add(documentLengthLabel, 0, 1);
+        GridPane.setMargin(documentLengthLabel, new Insets(10, 0, 0, 0));
         documentGroup.add(documentLengthField, 1, 1);
+        GridPane.setMargin(documentLengthField, new Insets(10, 0, 0, 5));
         documentGroup.add(documentPagesLabel, 0, 2);
+        GridPane.setMargin(documentPagesLabel, new Insets(10, 0, 0, 0));
         documentGroup.add(documentPagesField, 1, 2);
+        GridPane.setMargin(documentPagesField, new Insets(10, 0, 0, 5));
+
+        productGroup.getColumnConstraints().addAll(
+            new ColumnConstraints(60.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(240.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
+        );
+
+        documentGroup.getColumnConstraints().addAll(
+            new ColumnConstraints(60.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(240.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
+        );
 
 
         addItemPane.add(itemTypeLabel, 0, 0);
         addItemPane.add(itemTypes, 1, 0);
+        GridPane.setFillWidth(itemTypes, true);
 
         addItemRoot = addItemPane;
 
@@ -730,10 +820,49 @@ public class JohnnyMovesGui extends Application
         attachHandlerToScene(menuScene, handler);
         attachHandlerToScene(sendingScene, handler);
         attachHandlerToScene(trackingScene, handler);
-        attachHandlerToScene(recipientScene, handler);
         attachHandlerToScene(itemsScene, handler);
         attachHandlerToScene(checkoutScene, handler);
+        attachHandlerToPane(addItemRoot, handler);
+    }
 
+    public void openProductPane()
+    {
+        addItemRoot.getChildren().removeAll(documentGroup, productGroup);
+        addItemRoot.add(productGroup, 0, 1, 2, 1);
+        addItemDialog.setHeight(320.0);
+    }
+
+    public void openDocumentPane()
+    {
+        addItemRoot.getChildren().remove(productGroup);
+        addItemRoot.add(documentGroup, 0, 1, 2, 1);
+        addItemDialog.setHeight(270.0);
+    }
+
+    public void closeItemPane()
+    {
+        addItemRoot.getChildren().removeAll(documentGroup, productGroup);
+        addItemDialog.setHeight(70.0);
+    }
+
+    public void updateAddItemPane()
+    {
+        String selected = itemTypes.getValue();
+        if (selected != null)
+        {
+            if (selected.contains("PRODUCT"))
+                openProductPane();
+            else if (selected.contains("DOCUMENT"))
+                openDocumentPane();
+            else
+                closeItemPane();
+        }
+    }
+
+    public Recipient openRecipientDialog()
+    {
+        Optional<Recipient> result = recipientDialog.showAndWait();
+        return result.orElse(null);
     }
 
     public ButtonType openInsuranceDialog()
@@ -750,8 +879,8 @@ public class JohnnyMovesGui extends Application
 
     public Integer openTimeDialog()
     {
-      Optional<Integer> result = adjustTimeDialog.showAndWait();
-      return result.orElse(null); // Return current Date/Time
+        Optional<Integer> result = adjustTimeDialog.showAndWait();
+        return result.orElse(null); // Return current Date/Time
     }
 
     public static void main(String[] args)
