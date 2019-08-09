@@ -59,35 +59,47 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "recipient-submit": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
+                case "track-main": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
                 case "track-submit":
                   gui.setScene(JohnnyMovesGui.TRACKING);
                   String code = gui.getCodeInput();
-                  if (isValidCode(code)) //TODO: Fix this part
+                  if (code.length() != 0)
                   {
-                   gui.openTimeDialog();
-                   int daysOffset = gui.getSpinnerDays();
-                   int hoursOffset = gui.getSpinnerHours();
-                   int minsOffset = gui.getSpinnerMins();
-                   int secsOffset = gui.getSpinnerSecs();
-                   Date now = new Date();
-                   new Date(now.getTime() + daysOffset * 86400L * 1000L);
-                   //TODO: Update the formula
-                   Parcel p = parcels.get(parcels.size()-1);
-                   p.setTrackingCode(generateCode(p));
-                 }
-                 else
-                 {
-                   alert = new Alert(AlertType.WARNING, "Code does not exist. Try Again.");
-                   alert.setTitle("Error");
-                   alert.setContentText("A correct tracking code contains 15 characters: FLT0821VIS0301");
-                   alert.showAndWait();
-                  break;
-                 }
+                    System.out.println("Entered a something");
+                    if (isValidCode(code) && code != null) //TODO: Fix this part
+                    {
+                      gui.openTimeDialog();
+                      int daysOffset = gui.getSpinnerDays();
+                      int hoursOffset = gui.getSpinnerHours();
+                      int minsOffset = gui.getSpinnerMins();
+                      int secsOffset = gui.getSpinnerSecs();
+                      Date now = new Date();
+                      new Date(now.getTime() + daysOffset * 86400L * 1000L);
+                      //TODO: Update the formula
+                      Parcel p = parcels.get(parcels.size()-1);
+                      p.setTrackingCode(generateCode(p));
+                    }
+                    else
+                    {
+                      alert = new Alert(AlertType.WARNING, "Invalid Input. Try Again.");
+                      alert.setTitle("Error");
+                      alert.setContentText("A correct tracking code contains 15 characters.\nSample Code: FLT0821VIS0301");
+                      alert.showAndWait();
+                      break;
+                    }
+                  }
+                  else
+                  {
+                    System.out.println("Entered nothing :( ");
+                    alert = new Alert(AlertType.WARNING, "Please enter a code. Try Again.");
+                    alert.setTitle("Error");
+                    alert.setContentText("A correct tracking code contains 15 characters.\nSample Code: FLT0821VIS0301");
+                    alert.showAndWait();
+                    break;
+                  }
                 case "track-return":
                   gui.setScene(JohnnyMovesGui.DISPLAY_CODE);
                   break;
-                case "track-main":
-                  gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
             }
         }
     }
