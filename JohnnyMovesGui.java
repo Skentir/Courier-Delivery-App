@@ -642,7 +642,6 @@ public class JohnnyMovesGui extends Application
         parcel.displayItems(); */
 
         displayParcelScene = new Scene(displayCodeMenu, 700, 500);
->>>>>>> origin/kirsten
     }
 
     public void setScene(String scene)
