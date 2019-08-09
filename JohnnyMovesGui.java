@@ -572,14 +572,14 @@ public class JohnnyMovesGui extends Application
         documentGroup.add(documentPagesLabel, 0, 2);
         documentGroup.add(documentPagesField, 1, 2);
 
-<<<<<<< HEAD
+
         addItemPane.add(itemTypeLabel, 0, 0);
         addItemPane.add(itemTypes, 1, 0);
 
         addItemRoot = addItemPane;
 
         addItemDialog.getDialogPane().setContent(addItemPane);
-=======
+
         insuranceDialog.getDialogPane().setContent(insurancePane);
 
         /* --------------------------------- */
