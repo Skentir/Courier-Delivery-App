@@ -62,7 +62,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "track-main": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
                 case "track-submit":
                   String code = gui.getCodeInput();
-                  if (code.length() != 0)
+                  if (code.length() >= 15)
                   {
                     System.out.println("Entered a something");
                     if (isValidCode(code) && code != null) //TODO: Fix this part

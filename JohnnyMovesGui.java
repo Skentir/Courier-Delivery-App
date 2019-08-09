@@ -251,7 +251,7 @@ public class JohnnyMovesGui extends Application
         GridPane.setMargin(recipientField, new Insets(5, 10, 5, 10));
         /* Scene 6 Button */
         Label promptCode = new Label("Enter Tracking Number");
-        enterCode = new TextField();
+    // enter code
         Button submitCode = new Button();
         Button trackToMain = new Button();
         trackToMain.setText("Go Back to Main Menu");
@@ -690,7 +690,7 @@ public class JohnnyMovesGui extends Application
 
     public String getCodeInput()
     {
-      System.out.println("I got this "+ enterCode.getText());
+      System.out.println("I got this " + enterCode.getText());
       return enterCode.getText();
     }
 
