@@ -36,17 +36,8 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "items-recipient": gui.setScene(JohnnyMovesGui.RECIPIENT); break;
                 case "items-edit": gui.setScene(JohnnyMovesGui.ITEMS); break;
                 case "items-insurance":
-                alert = new Alert(AlertType.CONFIRMATION, "Insure the parcel?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
-                result = alert.showAndWait();
-                if (result.isPresent())
-                {
-                    boolean insure = result.get() == ButtonType.YES;
-                    if (result.get() != ButtonType.CANCEL)
-                    {
-                        // TODO: insure the item
-                    }
-                }
-                break;
+                    ButtonType type = gui.openInsuranceDialog();
+                    break;
                 case "items-checkout": gui.setScene(JohnnyMovesGui.CHECKOUT); break;
                 case "items-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "items-add": break;

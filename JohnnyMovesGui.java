@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Optional;
 
 public class JohnnyMovesGui extends Application
 {
@@ -29,6 +30,9 @@ public class JohnnyMovesGui extends Application
     public static final String ITEMS = "ITEMS";
     public static final String TRACKING = "TRACKING";
     public static final String CHECKOUT = "CHECKOUT";
+
+    public static final String DIALOG_INSURANCE = "INSURANCE";
+    public static final String DIALOG_ADD_ITEM = "ADD_ITEM";
 
     /* Attributes */
     Color bg = Color.rgb(250,248,247);
@@ -44,6 +48,13 @@ public class JohnnyMovesGui extends Application
     Label checkoutRegionLabel = new Label();
     Label checkoutItemCountLabel = new Label();
     Label checkoutPriceLabel = new Label();
+
+    ToggleGroup insureGroup = new ToggleGroup();
+    RadioButton insuredButton = new RadioButton("Yes, insure");
+    RadioButton notInsuredButton = new RadioButton("No, don't insure");
+
+    Dialog<Item> addItemDialog;
+    Dialog<ButtonType> insuranceDialog;
 
     /*
     Scene 1 is the Main Menu. User can go to send menu or track menu.
@@ -381,6 +392,35 @@ public class JohnnyMovesGui extends Application
         checkoutPane.add(cancelCheckoutButton, 3, 6);
 
         checkoutScene = new Scene(checkoutPane, 700, 500);
+
+        /* --------------------------------- */
+        /* INITIALIZE DIALOG - SET INSURANCE */
+        /* --------------------------------- */
+        insuranceDialog = new Dialog<>();
+        insuranceDialog.setTitle("Insure parcel?");
+        GridPane insurancePane = new GridPane();
+        insurancePane.setAlignment(Pos.CENTER);
+
+
+
+        Label insuranceLabel = new Label();
+        insuranceLabel.setText("Do you want the parcel insured?");
+
+        insuredButton.setToggleGroup(insureGroup);
+        notInsuredButton.setToggleGroup(insureGroup);
+
+        Button confirmInsuranceButton = new Button();
+        confirmInsuranceButton.setText("Submit");
+        Button cancelInsuranceButton = new Button();
+        cancelInsuranceButton.setText("Cancel");
+
+        insurancePane.add(insuranceLabel, 0, 0, 2, 1);
+        insurancePane.add(insuredButton, 0, 1, 2, 1);
+        insurancePane.add(notInsuredButton, 0, 2, 2, 1);
+        insurancePane.add(confirmInsuranceButton, 0, 3);
+        insurancePane.add(cancelInsuranceButton, 1, 3);
+
+        insuranceDialog.getDialogPane().setContent(insurancePane);
     }
 
     public void setScene(String scene)
@@ -441,6 +481,18 @@ public class JohnnyMovesGui extends Application
         attachHandlerToScene(recipientScene, handler);
         attachHandlerToScene(itemsScene, handler);
         attachHandlerToScene(checkoutScene, handler);
+    }
+
+    public ButtonType openInsuranceDialog()
+    {
+        Optional<ButtonType> result = insuranceDialog.showAndWait();
+        return result.orElse(ButtonType.CANCEL);
+    }
+
+    public Item openAddItemDialog()
+    {
+        Optional<Item> result = addItemDialog.showAndWait();
+        return result.orElse(null);
     }
 
     public static void main(String[] args)
