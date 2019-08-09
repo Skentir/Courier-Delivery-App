@@ -279,31 +279,28 @@ public class JohnnyMovesGui extends Application
         regionComboBox.getItems().addAll(Parcel.REGIONS);
         GridPane.setFillWidth(regionComboBox, true);
         GridPane.setMargin(regionComboBox, new Insets(5, 10, 5, 10));
-        /*
-        Button cancelRecipientButton = new Button();
-        cancelRecipientButton.setText("Cancel");
-        cancelRecipientButton.setId("recipient-cancel");
-        GridPane.setFillWidth(cancelRecipientButton, true);
-        GridPane.setMargin(cancelRecipientButton, new Insets(5, 10, 5, 10));
 
-        Button submitRecipientButton = new Button();
-        submitRecipientButton.setText("Submit");
-        submitRecipientButton.setId("recipient-submit");
-        GridPane.setFillWidth(submitRecipientButton, true);
-        GridPane.setMargin(submitRecipientButton, new Insets(5, 10, 5, 10));
-        */
+        recipientDialog.setResultConverter(btype ->
+        {
+            switch (btype.getButtonData())
+            {
+            case OK_DONE:
+                return new Recipient(recipientField.getText(), regionComboBox.getValue());
+            case CANCEL_CLOSE:
+            default:
+                return null;
+            }
+        });
+
         recipientPane.add(recipientNameLabel, 0, 0);
         recipientPane.add(recipientRegionLabel, 0, 1);
         recipientPane.add(recipientField, 1, 0, 2, 1);
         recipientPane.add(regionComboBox, 1, 1, 2, 1);
-        //recipientPane.add(submitRecipientButton, 1, 2);
-        //recipientPane.add(cancelRecipientButton, 2, 2);
 
         recipientDialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         recipientDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
         recipientDialog.getDialogPane().setContent(recipientPane);
-        //recipientScene = new Scene(recipientPane, 350, 200);
 
         /* -------------------------- */
         /* INITIALIZE SCENE 4 - ITEMS */
@@ -505,6 +502,16 @@ public class JohnnyMovesGui extends Application
         adjustTimeDialog.getDialogPane().getButtonTypes().add(timeBtn);
         adjustTimeDialog.getDialogPane().setContent(timeBorder);
 
+        adjustTimeDialog.setResultConverter(btype ->
+        {
+            switch (btype.getButtonData())
+            {
+            case OK_DONE:
+                return daySpinner.getValue() * 86400 + hourSpinner.getValue() * 3600 + minuteSpinner.getValue() * 60 + secondsSpinner.getValue();
+            default:
+                return null;
+            }
+        });
 
         /* --------------------------------- */
         /* INITIALIZE DIALOG - SET INSURANCE */
@@ -546,6 +553,52 @@ public class JohnnyMovesGui extends Application
 
         addItemDialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         addItemDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        addItemDialog.setResultConverter(btype ->
+        {
+            String type = itemTypes.getValue();
+            itemTypes.setValue(null);
+            closeItemPane();
+            switch (btype.getButtonData())
+            {
+            case OK_DONE:
+                switch (type)
+                {
+                case "REGULAR PRODUCT":
+                    double regProdLength = Double.parseDouble(productLengthField.getText());
+                    double regProdWidth = Double.parseDouble(productWidthField.getText());
+                    double regProdHeight = Double.parseDouble(productHeightField.getText());
+                    double regProdWeight = Double.parseDouble(productWeightField.getText());
+                    productLengthField.clear();
+                    productWidthField.clear();
+                    productHeightField.clear();
+                    productWeightField.clear();
+                    return new RegularProduct(null, regProdLength, regProdWidth, regProdHeight, regProdWeight);
+                case "IRREGULAR PRODUCT":
+                    double irregProdLength = Double.parseDouble(productLengthField.getText());
+                    double irregProdWidth = Double.parseDouble(productWidthField.getText());
+                    double irregProdHeight = Double.parseDouble(productHeightField.getText());
+                    double irregProdWeight = Double.parseDouble(productWeightField.getText());
+                    productLengthField.clear();
+                    productWidthField.clear();
+                    productHeightField.clear();
+                    productWeightField.clear();
+                    return new IrregularProduct(null, irregProdLength, irregProdWidth, irregProdHeight, irregProdWeight);
+                case "DOCUMENT":
+                    double docLength = Double.parseDouble(documentLengthField.getText());
+                    double docWidth = Double.parseDouble(documentWidthField.getText());
+                    int docPages = Integer.parseInt(documentPagesField.getText());
+                    documentLengthField.clear();
+                    documentWidthField.clear();
+                    documentPagesField.clear();
+                    return new Document(null, docLength, docWidth, docPages);
+                default: return null; // TODO: custom exception
+                }
+            case CANCEL_CLOSE:
+            default:
+                return null;
+            }
+        });
 
         Label itemTypeLabel = new Label("Type");
         itemTypes.setId("items-type");
@@ -707,6 +760,12 @@ public class JohnnyMovesGui extends Application
         addItemDialog.setHeight(270.0);
     }
 
+    public void closeItemPane()
+    {
+        addItemRoot.getChildren().removeAll(documentGroup, productGroup);
+        addItemDialog.setHeight(70.0);
+    }
+
     public void updateAddItemPane()
     {
         String selected = itemTypes.getValue();
@@ -714,8 +773,10 @@ public class JohnnyMovesGui extends Application
         {
             if (selected.contains("PRODUCT"))
                 openProductPane();
-            else
+            else if (selected.contains("DOCUMENT"))
                 openDocumentPane();
+            else
+                closeItemPane();
         }
     }
 
