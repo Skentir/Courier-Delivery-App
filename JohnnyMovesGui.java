@@ -34,6 +34,7 @@ public class JohnnyMovesGui extends Application
 
     public static final String DIALOG_INSURANCE = "INSURANCE";
     public static final String DIALOG_ADD_ITEM = "ADD_ITEM";
+    public static final String DIALOG_ADJUST_TIME = "ADJUST_TIME";
 
     /* Attributes */
     Color bg = Color.rgb(250,248,247);
@@ -66,6 +67,7 @@ public class JohnnyMovesGui extends Application
 
     Dialog<Item> addItemDialog;
     Dialog<ButtonType> insuranceDialog;
+    Dialog<String> adjustTimeDialog;
 
     /*
     Scene 1 is the Main Menu. User can go to send menu or track menu.
@@ -429,6 +431,52 @@ public class JohnnyMovesGui extends Application
         checkoutScene = new Scene(checkoutMenu, 700, 500);
 
         /* --------------------------------- */
+        /* INITIALIZE DIALOG - ADJUST TIME   */
+        /* --------------------------------- */
+        adjustTimeDialog = new Dialog<>();
+        adjustTimeDialog.setTitle("Time Machine");
+        Label timeLabel = new Label();
+        timeLabel.setText("Speed-up time?");
+        timeLabel.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD, 16));
+        GridPane timePane = new GridPane();
+        timePane.setAlignment(Pos.CENTER);
+        Button timeBtn = new Button();
+        timeBtn.setText("Submit");
+
+        Spinner<Integer> daySpinner = new Spinner<Integer>();
+        Integer initialValue = 0;
+        SpinnerValueFactory<Integer> dayFactory =
+          new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, initialValue);
+        daySpinner.setValueFactory(dayFactory);
+
+        Spinner<Integer> hourSpinner = new Spinner<Integer>();
+        SpinnerValueFactory<Integer> hourFactory =
+          new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, initialValue);
+        hourSpinner.setValueFactory(hourFactory);
+
+        Spinner<Integer> minuteSpinner = new Spinner<Integer>();
+        SpinnerValueFactory<Integer> minuteFactory =
+          new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, initialValue);
+        minuteSpinner.setValueFactory(minuteFactory);
+
+        Spinner<Integer> secondsSpinner = new Spinner<Integer>();
+        SpinnerValueFactory<Integer> secondsFactory =
+          new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, initialValue);
+        secondsSpinner.setValueFactory(secondsFactory);
+
+        /* Layout for Time Adjustment */
+        timePane.add(timeLabel, 0, 0);
+        timePane.add(daySpinner, 0, 1);
+        timePane.add(new Label("Days"),0, 2);
+        timePane.add(hourSpinner, 1,1);
+        timePane.add(new Label("Hours"),1, 2);
+        timePane.add(minuteSpinner, 2,1);
+        timePane.add(new Label("Minutes"),2, 2);
+        timePane.add(secondsSpinner, 3,1);
+        timePane.add(new Label("Seconds"),3, 2);
+        timePane.add(timeBtn, 2, 3);
+        adjustTimeDialog.getDialogPane().setContent(timePane);
+        /* --------------------------------- */
         /* INITIALIZE DIALOG - SET INSURANCE */
         /* --------------------------------- */
         insuranceDialog = new Dialog<>();
@@ -579,6 +627,12 @@ public class JohnnyMovesGui extends Application
     {
         Optional<Item> result = addItemDialog.showAndWait();
         return result.orElse(null);
+    }
+
+    public String openTimeDialog()
+    {
+      Optional<String> result = adjustTimeDialog.showAndWait();
+      return result.orElse(null); // Return current Date/Time
     }
 
     public static void main(String[] args)

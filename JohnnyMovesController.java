@@ -52,12 +52,13 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                     // TODO: remove the item
                 }
                 break;
-            case "items-done": gui.setScene(JohnnyMovesGui.SENDING); break;
-            case "recipient-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
-            case "recipient-submit": gui.setScene(JohnnyMovesGui.SENDING); break;
-            case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
-            case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
-            case "track-submit":
+                case "items-done": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "recipient-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "recipient-submit": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
+                case "track-submit":
+                  String addTime = gui.openTimeDialog();
 
                 break;
             case "track-return": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
