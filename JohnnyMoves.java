@@ -470,6 +470,22 @@ public class JohnnyMoves
   }
 
   /**
+   * Checks if the tracking code passed is valid.
+   *
+   * @return true or false
+   */
+  public boolean isValidCode(String code)
+  {
+    for (int i = 0; i < parcels.size(); i++)
+    {
+      Parcel p = parcels.get(i);
+      if (p.getTrackingCode().equalsIgnoreCase(code))
+        return true;
+    }
+    return  false;
+  }
+
+  /**
    * Runs the parcel tracking menu.
    */
   public void trackMenu()

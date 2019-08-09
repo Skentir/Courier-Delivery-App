@@ -10,6 +10,7 @@ import java.util.*;
 public class JohnnyMovesController implements EventHandler<ActionEvent>
 {
     private JohnnyMovesGui gui;
+    private List<Parcel> parcels;
 
     public JohnnyMovesController(JohnnyMovesGui gui)
     {
@@ -58,13 +59,23 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
                 case "track-submit":
-                   gui.openTimeDialog();
-                   int daysOffset = gui.getSpinnerDays();
-                   int hoursOffset = gui.getSpinnerHours();
-                   int minsOffset = gui.getSpinnerMins();
-                   int secsOffset = gui.getSpinnerSecs();
-                   Date now = new Date();
-                   new Date(now.getTime() + daysOffset * 86400L * 1000L);
+
+                String trackingCode = gui.setScene(JohnnyMovesGui.TRACKING);
+
+                if (isValidCode(trackingCode))
+                  {
+                    gui.openTimeDialog();
+                    int daysOffset = gui.getSpinnerDays();
+                    int hoursOffset = gui.getSpinnerHours();
+                    int minsOffset = gui.getSpinnerMins();
+                    int secsOffset = gui.getSpinnerSecs();
+                    Date now = new Date();
+                    new Date(now.getTime() + daysOffset * 86400L * 1000L);
+                    //TODO: Update Formula */
+                  }
+                else
+                  throw new TrackingException(trackingCode + "is not valid");
+
                 case "track-return": gui.setScene(JohnnyMovesGui.MAIN_MENU);
 
                 break;
