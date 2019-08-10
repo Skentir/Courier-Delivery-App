@@ -410,7 +410,7 @@ public class JohnnyMovesGui extends Application
         ImageView containerAssets[] = new ImageView[6];
         for (int i=0; i<6; i++)
         {
-          containerAssets[i] = new ImageView(new Image("Container"+i+".png"));
+          containerAssets[i] = new ImageView(new Image("ImageAssets/Container"+(i+1)+".png", 80, 80, true, true));
           containerChoice.getChildren().add(containerAssets[i]);
         }
 
@@ -702,7 +702,7 @@ public class JohnnyMovesGui extends Application
         StackPane displayCodeTop = new StackPane();
         displayCodeTop.getChildren().add(new ImageView(header));
         displayCodeTop.setBackground(new Background(new BackgroundFill(Color.rgb(40, 40, 40), CornerRadii.EMPTY, Insets.EMPTY)));
-        displayCodeMenu.setTop(checkTop);
+        displayCodeMenu.setTop(displayCodeTop);
         displayCodeMenu.setId("track-return");
 
         displayParcelItems = new ListView<>();
