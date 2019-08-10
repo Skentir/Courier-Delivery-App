@@ -34,4 +34,13 @@ public class ReceiptGroup implements ReceiptEntry
             p += e.getPrice();
         return p;
     }
+
+    @Override
+    public String toString()
+    {
+        String[] e = new String[entries.size()];
+        for (int i = 0; i < entries.size(); i++)
+            e[i] = entries.get(i).toString();
+        return String.format("P% 10.2f - %s\n%s", getPrice(), name, String.join("\n", e));
+    }
 }

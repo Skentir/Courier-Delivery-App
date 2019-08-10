@@ -38,4 +38,22 @@ public class Receipt
     {
         return this.entries;
     }
+
+    public double getPrice()
+    {
+        double p = 0.0;
+        for (ReceiptEntry e : entries)
+            p += e.getPrice();
+        return p;
+    }
+
+    @Override
+    public String toString()
+    {
+        String[] e = new String[entries.size()];
+        for (int i = 0; i < entries.size(); i++)
+            e[i] = entries.get(i).toString();
+        return String.format("Sent to: %s\nRegion: %s\n\n%s\n\nP% 10.2f - Total", recipient.getName(), recipient.getRegion(),
+            String.join("\n\n", e), getPrice());
+    }
 }

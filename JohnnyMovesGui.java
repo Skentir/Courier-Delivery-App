@@ -56,7 +56,8 @@ public class JohnnyMovesGui extends Application
     Label weightLabel = new Label();
     Label typeLabel = new Label();
 
-    ListView<Item> checkoutList = new ListView<>();
+    //ListView<Item> checkoutList = new ListView<>();
+    TextArea receiptView = new TextArea();
     Label checkoutRecipientLabel = new Label();
     Label checkoutRegionLabel = new Label();
     Label checkoutInsuredLabel = new Label();
@@ -454,8 +455,8 @@ public class JohnnyMovesGui extends Application
         containerChoice.add(box4Button, 2, 1);
         GridPane.setMargin(containerChoice, new Insets(10, 0, 5, 0));
 
-        checkoutList = new ListView<>();
-        GridPane.setMargin(checkoutList, new Insets(0, 20, 10, 0));
+        //checkoutList = new ListView<>();
+        GridPane.setMargin(receiptView, new Insets(0, 20, 10, 0));
 
         Label checkoutRecipientNameLabel = new Label("Recipient:");
         GridPane.setMargin(checkoutRecipientNameLabel, new Insets(0, 0, 10, 0));
@@ -499,7 +500,7 @@ public class JohnnyMovesGui extends Application
             new ColumnConstraints(190.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
         );
 
-        checkoutPane.add(checkoutList, 0, 0, 2, 8);
+        checkoutPane.add(receiptView, 0, 0, 2, 8);
         checkoutPane.add(containerChoice, 0, 8, 2, 4);
         checkoutPane.add(checkoutRecipientNameLabel, 2, 1);
         checkoutPane.add(checkoutRegionNameLabel, 2, 2);
@@ -574,7 +575,11 @@ public class JohnnyMovesGui extends Application
         {
             switch (btype.getButtonData())
             {
+<<<<<<< HEAD
                 case APPLY:
+=======
+            case APPLY:
+>>>>>>> 2e0adec15805c44d9432a43e91370b3ceba830a8
                 return daySpinner.getValue() * 86400 + hourSpinner.getValue() * 3600 + minuteSpinner.getValue() * 60 + secondsSpinner.getValue();
             default:
                 return null;
@@ -877,30 +882,25 @@ public class JohnnyMovesGui extends Application
         }
     }
 
-    public void updateCheckoutInfo(Recipient recipient, boolean insured, List<Item> items)
+    public void updateCheckoutInfo(Parcel parcel)
     {
-        if (items == null)
-        {
-            checkoutList.getItems().clear();
-            checkoutItemCountLabel.setText("");
-        }
-        else
-        {
-            checkoutList.getItems().setAll(items);
-            checkoutItemCountLabel.setText(Integer.toString(items.size()));
-        }
-
-        if (recipient == null)
+        if (parcel == null)
         {
             checkoutRecipientLabel.setText("");
             checkoutRegionLabel.setText("");
             checkoutInsuredLabel.setText("");
+            //checkoutList.getItems().clear();
+            receiptView.clear();
+            checkoutItemCountLabel.setText("");
         }
         else
         {
-            checkoutRecipientLabel.setText(recipient.getName());
-            checkoutRegionLabel.setText(recipient.getRegion());
-            checkoutInsuredLabel.setText(insured ? "Yes" : "No");
+            checkoutRecipientLabel.setText(parcel.getRecipient().getName());
+            checkoutRegionLabel.setText(parcel.getRecipient().getRegion());
+            checkoutInsuredLabel.setText(parcel.getInsurance() ? "Yes" : "No");
+            //checkoutList.getItems().setAll(items);
+            receiptView.setText(parcel.generateReceipt().toString());
+            checkoutItemCountLabel.setText(Integer.toString(parcel.getItems().size()));
         }
     }
 
@@ -1069,6 +1069,11 @@ public class JohnnyMovesGui extends Application
             else
                 closeItemPane();
         }
+    }
+
+    public void clearParcelSize()
+    {
+        parcelGroup.selectToggle(null);
     }
 
     public String getSelectedSize()
