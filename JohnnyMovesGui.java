@@ -134,7 +134,7 @@ public class JohnnyMovesGui extends Application
         /* -------------------------- */
 
         Label welcomeLabel = new Label();
-        ImageView logo = new ImageView(new Image("Logo.png"));
+        ImageView logo = new ImageView(new Image("ImageAssets/Logo.png"));
         Button getStartedButton = new Button();
         getStartedButton.setStyle("-fx-font-weight: bold; -fx-background-color: #8fe1a2; -fx-text-fill: darkslateblue;");
         getStartedButton.setText("Get Started");
@@ -150,9 +150,9 @@ public class JohnnyMovesGui extends Application
 
         startScene = new Scene(mainPane, 700, 500);
 
-        Image header = new Image("Header.png");
-        ImageView parcelPic = new  ImageView(new Image("Parcel.png"));
-        ImageView magnifyingPic = new  ImageView(new Image("Magnifying.png"));
+        Image header = new Image("ImageAssets/Header.png");
+        ImageView parcelPic = new  ImageView(new Image("ImageAssets/Parcel.png"));
+        ImageView magnifyingPic = new  ImageView(new Image("ImageAssets/Magnifying.png"));
         /* Scene 1 Buttons */
         BorderPane menuPane = new BorderPane();
         GridPane centerMenu = new GridPane();
