@@ -1,3 +1,7 @@
+/**
+* @author Kirsten Sison and Marc Tiburcio
+* CCPROG3 S12A - Nathalie Lim Cheng
+*/
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

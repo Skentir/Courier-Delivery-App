@@ -1,4 +1,8 @@
 /**
+* @author Kirsten Sison and Marc Tiburcio
+* CCPROG3 S12A - Nathalie Lim Cheng
+*/
+/**
  * Represents a regular, cuboid (3d figure with a width, length and height)
  * object.
  */

@@ -1,4 +1,8 @@
 /**
+* @author Kirsten Sison and Marc Tiburcio
+* CCPROG3 S12A - Nathalie Lim Cheng
+*/
+/**
  * Represents an irregularly shaped product whose dimensions are its maximum
  * extents.
  */
