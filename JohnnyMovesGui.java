@@ -21,6 +21,7 @@ import javafx.scene.text.Font;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Optional;
+import java.util.List;
 
 public class JohnnyMovesGui extends Application
 {
@@ -324,6 +325,7 @@ public class JohnnyMovesGui extends Application
         itemsPane.setAlignment(Pos.CENTER);
 
         itemsList = new ListView<>();
+        itemsList.setId("items-list");
         GridPane.setFillWidth(itemsList, true);
         GridPane.setMargin(itemsList, new Insets(20, 20, 5, 10));
 
@@ -720,6 +722,35 @@ public class JohnnyMovesGui extends Application
         displayParcelScene = new Scene(displayCodeMenu, 700, 500);
     }
 
+    public void updateItems(List<Item> items)
+    {
+        if (items == null)
+            itemsList.getItems().clear();
+        else
+            itemsList.getItems().setAll(items);
+    }
+
+    public Item getSelectedItem()
+    {
+        return itemsList.getSelectionModel().getSelectedItem();
+    }
+
+    public void updateItemDetails(Item item)
+    {
+        if (item != null)
+        {
+            dimensionsLabel.setText(String.format("%.2f' x %.2f' x %.2f'", item.getWidth(), item.getHeight(), item.getLength()));
+            weightLabel.setText(String.format("%.2f kg", item.getWeight()));
+            typeLabel.setText(item.getItemType());
+        }
+        else
+        {
+            dimensionsLabel.setText("");
+            weightLabel.setText("");
+            typeLabel.setText("");
+        }
+    }
+
     public void setScene(String scene)
     {
         Scene s = null;
@@ -742,7 +773,7 @@ public class JohnnyMovesGui extends Application
 
     public void close()
     {
-
+        stage.close();
     }
 
     public String getCodeInput()
@@ -809,6 +840,11 @@ public class JohnnyMovesGui extends Application
         attachHandlerToScene(itemsScene, handler);
         attachHandlerToScene(checkoutScene, handler);
         attachHandlerToPane(addItemRoot, handler);
+    }
+
+    public void addMouseListener(EventHandler<MouseEvent> handler)
+    {
+        itemsList.setOnMouseClicked(handler);
     }
 
     public void openProductPane()

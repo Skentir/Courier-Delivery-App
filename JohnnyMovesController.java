@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseEvent;
 import java.text.SimpleDateFormat;
 import javafx.scene.Node;
 import java.util.*;
@@ -26,6 +27,12 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
     {
         this.gui = gui;
         gui.addActionListener(this);
+        gui.addMouseListener(event ->
+        {
+            Item item = gui.getSelectedItem();
+            gui.updateItemDetails(item);
+            event.consume();
+        });
         parcels = new ArrayList<>();
         items = new ArrayList<>();
         parcels.add(new Parcel("TEMP_Name", "  VISAYAS")); // remove later hahaha
@@ -63,14 +70,18 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 Alert closeItems = new Alert(AlertType.WARNING, "Items added will not be saved.", ButtonType.YES, ButtonType.NO);
                 boolean close = true;
                 if (items.size() > 0)
-                    close = closeItems.showAndWait() == ButtonType.YES;
+                {
+                    result = closeItems.showAndWait();
+                    close = result.isPresent() && result.get() == ButtonType.YES;
+                }
 
                 if (close)
                 {
                     items.clear();
+                    gui.updateItems(null);
                     gui.setScene(JohnnyMovesGui.MAIN_MENU);
-                    break;
                 }
+                break;
             case "items-insurance":
                 ButtonType type = gui.openInsuranceDialog();
                 insuredValue = gui.getInsurance();
@@ -83,12 +94,17 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 else
                     p.setInsurance(false);
                 break;
-            case "items-checkout": gui.setScene(JohnnyMovesGui.CHECKOUT);
+            case "items-checkout":
+                gui.setScene(JohnnyMovesGui.CHECKOUT);
                 parcels.add(new Parcel(name, region));
-            break;
-            case "items-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
+                break;
             case "items-add":
                 Item item = gui.openAddItemDialog();
+                if (item != null)
+                {
+                    items.add(item);
+                    gui.updateItems(items);
+                }
                 break;
             case "items-remove":
                 alert = new Alert(AlertType.WARNING, "Removing an item cannot be undone. Proceed?", ButtonType.YES, ButtonType.NO);
@@ -96,51 +112,53 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 if (result.isPresent() && result.get() == ButtonType.YES)
                 {
                     // TODO: remove the item
+                    items.remove(gui.getSelectedItem());
+                    gui.updateItems(items);
                 }
                 break;
-                case "items-done": gui.setScene(JohnnyMovesGui.SENDING); break;
-                case "recipient-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
-                case "recipient-submit": gui.setScene(JohnnyMovesGui.SENDING); break;
-                case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
-                case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
-                case "track-main": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
-                case "track-submit":
-                  String code = gui.getCodeInput();
-                  if (code.length() >= 15)
-                  {
-                    System.out.println("Entered a something");
-                    if (isValidCode(code))
+            case "items-done": gui.setScene(JohnnyMovesGui.SENDING); break;
+            case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
+            case "checkout-checkout":
+                gui.setScene(JohnnyMovesGui.MAIN_MENU);
+                break;
+            case "track-main": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
+            case "track-submit":
+              String code = gui.getCodeInput();
+              if (code.length() >= 15)
+              {
+                System.out.println("Entered a something");
+                if (isValidCode(code))
+                {
+                    Integer tmpTime = gui.openTimeDialog();
+                    if (tmpTime != null)
                     {
-                        Integer tmpTime = gui.openTimeDialog();
-                        if (tmpTime != null)
-                        {
-                            int time = tmpTime;
-                            Date date = new Date(new Date().getTime() + time * 1000L);
-                        }
-                //     Parcel p = parcels.get(parcels.size()-1);
-                      p.setTrackingCode(generateCode(p));
+                        int time = tmpTime;
+                        Date date = new Date(new Date().getTime() + time * 1000L);
                     }
-                    else
-                    {
-                      alert = new Alert(AlertType.WARNING, "Invalid Input. Try Again.");
-                      alert.setTitle("Error");
-                      alert.setContentText("A correct tracking code contains 15 characters.\nSample Code: FLT0821VIS0301");
-                      alert.showAndWait();
-                      break;
-                    }
-                  }
-                  else
-                  {
-                    System.out.println("Entered nothing :( ");
-                    alert = new Alert(AlertType.WARNING, "Please enter a code. Try Again.");
-                    alert.setTitle("Error");
-                    alert.setContentText("A correct tracking code contains 15 characters.\nSample Code: FLT0821VIS0301");
-                    alert.showAndWait();
-                    break;
-                  }
-                case "track-return":
-                  gui.setScene(JohnnyMovesGui.DISPLAY_CODE);
+            //     Parcel p = parcels.get(parcels.size()-1);
+                  p.setTrackingCode(generateCode(p));
+                }
+                else
+                {
+                  alert = new Alert(AlertType.WARNING, "Invalid Input. Try Again.");
+                  alert.setTitle("Error");
+                  alert.setContentText("A correct tracking code contains 15 characters.\nSample Code: FLT0821VIS0301");
+                  alert.showAndWait();
                   break;
+                }
+              }
+              else
+              {
+                System.out.println("Entered nothing :( ");
+                alert = new Alert(AlertType.WARNING, "Please enter a code. Try Again.");
+                alert.setTitle("Error");
+                alert.setContentText("A correct tracking code contains 15 characters.\nSample Code: FLT0821VIS0301");
+                alert.showAndWait();
+                break;
+              }
+            case "track-return":
+              gui.setScene(JohnnyMovesGui.DISPLAY_CODE);
+              break;
             }
         }
     }
