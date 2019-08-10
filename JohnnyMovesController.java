@@ -12,13 +12,17 @@ import java.util.*;
 public class JohnnyMovesController implements EventHandler<ActionEvent>
 {
     private JohnnyMovesGui gui;
-    private List<Parcel> parcels;
+    private ArrayList<Parcel> parcels;
+    String name;
+    String region;
+    String insuredValue;
 
     public JohnnyMovesController(JohnnyMovesGui gui)
     {
         this.gui = gui;
         gui.addActionListener(this);
         parcels = new ArrayList<>();
+        parcels.add(new Parcel("TEMP_Name", "  VISAYAS")); // remove later hahaha
     }
 
     @Override
@@ -29,7 +33,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
         if (target instanceof Node)
         {
             Node node = (Node)target;
-
+            Parcel p = parcels.get(parcels.size()-1);
             Alert alert;
             Optional<ButtonType> result;
             switch (node.getId())
@@ -40,9 +44,8 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
             case "main-track": gui.setScene(JohnnyMovesGui.TRACKING); break;
             case "items-recipient":
                 Recipient recipient = gui.openRecipientDialog();
-                String name = gui.getRecipient();
-                String region = gui.getRegion();
-                parcels.add(new Parcel(name, region));
+                name = gui.getRecipient();
+                region = gui.getRegion();
                 break;
             case "items-edit": gui.setScene(JohnnyMovesGui.ITEMS); break;
             case "items-type":
@@ -50,18 +53,19 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 break;
             case "items-insurance":
                 ButtonType type = gui.openInsuranceDialog();
-                String insuredValue = gui.getInsurance();
+                insuredValue = gui.getInsurance();
+                //TODO: Create ArrayList of Parcels
 
-                Parcel p = parcels.get(parcels.size()-1);
                 p.setTrackingCode(generateCode(p));
 
                 if (insuredValue.equals("Yes, insure"))
                     p.setInsurance(true);
                 else
-                    p.setInsurance(false)
-                    ;
+                    p.setInsurance(false);
                 break;
-            case "items-checkout": gui.setScene(JohnnyMovesGui.CHECKOUT); break;
+            case "items-checkout": gui.setScene(JohnnyMovesGui.CHECKOUT);
+                parcels.add(new Parcel(name, region));
+            break;
             case "items-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
             case "items-add":
                 Item item = gui.openAddItemDialog();
@@ -93,7 +97,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                             int time = tmpTime;
                             Date date = new Date(new Date().getTime() + time * 1000L);
                         }
-                      Parcel p = parcels.get(parcels.size()-1);
+                //     Parcel p = parcels.get(parcels.size()-1);
                       p.setTrackingCode(generateCode(p));
                     }
                     else
