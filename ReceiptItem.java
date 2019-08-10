@@ -17,15 +17,15 @@ public class ReceiptItem implements ReceiptEntry
         else if (item instanceof RegularProduct)
         {
             RegularProduct p = (RegularProduct)item;
-            description = String.format("Reg. Prod. (%.2f\" x %.2f\" x %.2f, %.2f kg)", p.getWidth(), p.getHeight(), p.getLength(), d.getWeight());
-            price = d.getWeight() * 40.0;
+            description = String.format("Reg. Prod. (%.2f\" x %.2f\" x %.2f, %.2f kg)", p.getWidth(), p.getHeight(), p.getLength(), p.getWeight());
+            price = p.getWeight() * 40.0;
         }
-        else if (item instanceof RegularProduct)
+        else if (item instanceof IrregularProduct)
         {
-            RegularProduct p = (RegularProduct)item;
-            description = String.format("Reg. Prod. (%.2f\" x %.2f\" x %.2f, %.2f kg)", p.getWidth(), p.getHeight(), p.getLength(), d.getWeight());
-            double byWeight = 40.0 * d.getWeight();
-            double byVolume = 30.0 * d.getVolume() / 305.0;
+            IrregularProduct p = (IrregularProduct)item;
+            description = String.format("Reg. Prod. (%.2f\" x %.2f\" x %.2f, %.2f kg)", p.getWidth(), p.getHeight(), p.getLength(), p.getWeight());
+            double byWeight = 40.0 * p.getWeight();
+            double byVolume = 30.0 * p.getVolume() / 305.0;
             price = Math.max(byWeight, byVolume);
         }
         else
