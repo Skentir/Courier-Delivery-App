@@ -89,4 +89,10 @@ public class ReceiptItem implements ReceiptEntry
     {
         return price;
     }
+
+    @Override
+    public String toString()
+    {
+        return String.format("P% 10.2f - %s", price, description);
+    }
 }
