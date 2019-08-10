@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class ReceiptGroup implements ReceiptEntry
 {
     private final String name;
-    private final ArrayList<ReceiptEntry> entries;
+    private final List<ReceiptEntry> entries;
 
     public ReceiptGroup(String name, Collection<ReceiptEntry> entries)
     {
@@ -13,7 +14,7 @@ public class ReceiptGroup implements ReceiptEntry
         this.entries = new ArrayList<>(entries);
     }
 
-    public ReceiptGroup(String name, Collection<ReceiptEntry> entries)
+    public ReceiptGroup(String name, ReceiptEntry... entries)
     {
         this.name = name;
         this.entries = Arrays.asList(entries);
