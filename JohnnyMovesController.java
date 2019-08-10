@@ -14,11 +14,17 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
     private JohnnyMovesGui gui;
     private List<Parcel> parcels;
 
+    // DO NOT DECLARE A TEMPORARY PARCEL FIELD HERE
+    private List<Item> items;
+    private Recipient recipient;
+    private boolean insured;
+
     public JohnnyMovesController(JohnnyMovesGui gui)
     {
         this.gui = gui;
         gui.addActionListener(this);
         parcels = new ArrayList<>();
+        items = new ArrayList<>();
     }
 
     @Override
@@ -34,20 +40,33 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
             Optional<ButtonType> result;
             switch (node.getId())
             {
-            case "items-return": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
+            // purely navigational buttons
             case "get-started": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
             case "main-send": gui.setScene(JohnnyMovesGui.SENDING); break;
             case "main-track": gui.setScene(JohnnyMovesGui.TRACKING); break;
+
+            // send packing
             case "items-recipient":
                 Recipient recipient = gui.openRecipientDialog();
-                String name = gui.getRecipient();
-                String region = gui.getRegion();
-                parcels.add(new Parcel(name, region));
+                if (recipient != null)
+                    this.recipient = recipient;
                 break;
             case "items-edit": gui.setScene(JohnnyMovesGui.ITEMS); break;
             case "items-type":
                 gui.updateAddItemPane();
                 break;
+            case "items-return":
+                Alert closeItems = new Alert(AlertType.WARNING, "Items added will not be saved.", ButtonType.YES, ButtonType.NO);
+                boolean close = true;
+                if (items.size() > 0)
+                    close = closeItems.showAndWait() == ButtonType.YES;
+
+                if (close)
+                {
+                    items.clear();
+                    gui.setScene(JohnnyMovesGui.MAIN_MENU);
+                    break;
+                }
             case "items-insurance":
                 ButtonType type = gui.openInsuranceDialog();
                 String insuredValue = gui.getInsurance();
