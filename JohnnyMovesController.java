@@ -15,13 +15,14 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
 {
     private JohnnyMovesGui gui;
     private ArrayList<Parcel> parcels;
-    String name;
-    String region;
-    String insuredValue;
+    private ArrayList<Item> items;
+    private Recipient recipient, dummyPerson;
+    private boolean insuredValue;
+    private String parcelType;
+    private String generatedCode;
+    private String status;
 
     // DO NOT DECLARE A TEMPORARY PARCEL FIELD HERE
-    private List<Item> items;
-    private Recipient recipient;
     private boolean insured;
 
     public JohnnyMovesController(JohnnyMovesGui gui)
@@ -35,8 +36,8 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
             event.consume();
         });
         parcels = new ArrayList<>();
-        items = new ArrayList<>();
-        parcels.add(new Parcel("TEMP_Name", "  VISAYAS")); // remove later hahaha
+        dummyPerson = new Recipient("JohnnyMoves", "LUZON");
+        parcels.add(new Parcel(dummyPerson, items)); // remove later hahaha
     }
 
     @Override
@@ -59,7 +60,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
 
             // send packing
             case "items-recipient":
-                Recipient recipient = gui.openRecipientDialog();
+                recipient = gui.openRecipientDialog();
                 if (recipient != null)
                     this.recipient = recipient;
                 break;
@@ -108,6 +109,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                     gui.setScene(JohnnyMovesGui.CHECKOUT);
                 }
                 break;
+            case "items-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
             case "items-add":
                 Item item = gui.openAddItemDialog();
                 if (item != null)
@@ -126,38 +128,58 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                     gui.updateItemDetails(gui.getSelectedItem());
                 }
                 break;
-            case "items-done": gui.setScene(JohnnyMovesGui.SENDING); break;
-            case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
-            case "checkout-checkout":
-                // TODO: add new parcel
-                parcels.add(new Parcel(name, region));
-                gui.setScene(JohnnyMovesGui.MAIN_MENU);
-                break;
-            case "track-main": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
-            case "track-submit":
-              String code = gui.getCodeInput();
-              if (code.length() >= 15)
-              {
-                System.out.println("Entered a something");
-                if (isValidCode(code))
-                {
-                    Integer tmpTime = gui.openTimeDialog();
-                    if (tmpTime != null)
-                    {
-                        int time = tmpTime;
-                        Date date = new Date(new Date().getTime() + time * 1000L);
-                    }
-            //     Parcel p = parcels.get(parcels.size()-1);
+                case "items-done": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "recipient-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "recipient-submit": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU);
+                  Parcel buff = new Parcel(recipient, items);
+                  buff.setInsurance(insuredValue);
+                  buff.setParcelType(parcelType);
+                  //Display info
+                  gui.checkoutRecipientLabel.setText(recipient.getName());
+                  gui.checkoutRegionLabel.setText(recipient.getRegion());
+                  gui.checkoutItemCountLabel.setText(Integer.toString(items.size()));
+                  gui.checkoutPriceLabel.setText("Php " + Double.toString(buff.getBasePrice()));
+                  //Add the parcel
+                  parcels.add(buff);
                   p.setTrackingCode(generateCode(p));
-                }
-                else
-                {
+                  // Display a dialog box containing code
+                  // Display a dialogue box
+                  p.getBasePrice();
+                 break;
+                case "track-main": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
+                case "track-submit":
+                  String code = gui.getCodeInput();
+                  Date date;
+                  if (code.length() >= 15)
+                  {
+                    System.out.println("Entered a something");
+                    if (isValidCode(code))
+                    {
+                        Integer tmpTime = gui.openTimeDialog();
+                        if (tmpTime != null)
+                        {
+                            int time = tmpTime;
+                            date = new Date(new Date().getTime() + time * 1000L);
+                        }
+                        else
+                        {
+                          int time = tmpTime;
+                          date = new Date(new Date().getTime() + time * 1000L);
+                        }
+                        //    Parcel p = parcels.get(parcels.size()-1);
+                        for (int i=0; i < parcels.size(); i++)
+                          if (parcels.get(i).getTrackingCode().equalsIgnoreCase(code))
+                            status = parcels.get(i).getStatus(date);
+
+                } else
+
                   alert = new Alert(AlertType.WARNING, "Invalid Input. Try Again.");
                   alert.setTitle("Error");
                   alert.setContentText("A correct tracking code contains 15 characters.\nSample Code: FLT0821VIS0301");
                   alert.showAndWait();
                   break;
-                }
               }
               else
               {

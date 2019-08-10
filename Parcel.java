@@ -19,7 +19,7 @@ public class Parcel
    */
   public static final String BOX = "BOX";
 
-  private final String recipient;
+  private final Recipient recipient;
   private final String region;
   private final Date shipDate;
   private boolean insured;
@@ -46,9 +46,10 @@ public class Parcel
    * @param recipient who will receive the parcel
    * @param region in what region is the recipient located
    */
-  public Parcel(String recipient, String region)
+  public Parcel(Recipient recipient)
   {
-    this(recipient, region, false);
+    if (recipient != null)
+      this.recipient = recipient;
   }
 
   /**
@@ -58,13 +59,14 @@ public class Parcel
    * @param region in what region is the recipient located
    * @param insured is the parcel insured?
    */
-  public Parcel(String recipient, String region, boolean insured)
+  public Parcel(Recipient recipient, ArrayList<Item> items)
   {
+    if (recipient != null)
+      this.recipient = recipient;
+
     shipDate = new Date();
-    this.recipient = recipient;
-    this.region = region;
-    this.insured = insured;
     this.items = new ArrayList<>();
+    this.items = items;
   }
 
   /**
@@ -242,7 +244,7 @@ public class Parcel
    *
    * @return the name of the recipient
    */
-  public String getRecipient()
+  public Recipient getRecipient()
   {
     return recipient;
   }
