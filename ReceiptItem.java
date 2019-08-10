@@ -1,13 +1,23 @@
+import packer.Dimension;
+
 public class ReceiptItem implements ReceiptEntry
 {
     private final String description;
     private final double price;
 
-    public ReceiptItem(Item item)
+    public ReceiptItem(String description, double price)
+    {
+        this.description = description;
+        this.price = price;
+    }
+
+    public static ReceiptItem chargeForItem(Item item)
     {
         if (item == null)
             throw new IllegalArgumentException("item is null");
 
+        String description = null;
+        double price = 0.0;
         if (item instanceof Document)
         {
             Document d = (Document)item;
@@ -31,6 +41,40 @@ public class ReceiptItem implements ReceiptEntry
         else
         {
             throw new IllegalArgumentException("item is unsupported");
+        }
+
+        return new ReceiptItem(description, price);
+    }
+
+    public static ReceiptItem chargeForRegion(String region, double weight, double volume)
+    {
+        switch (region)
+        {
+        case "METRO MANILA": return new ReceiptItem("Delivery fee", 50.0);
+        case "LUZON": return new ReceiptItem("Delivery fee", 100.0);
+        case "VISAYAS":
+            return new ReceiptItem("Delivery fee", 1000.0 + Math.max(weight, volume) * 0.1);
+        case "MINDANAO":
+            return new ReceiptItem("Delivery fee", 3000.0 + Math.max(weight, volume) * 0.25);
+        default: throw new IllegalArgumentException("unknown region");
+        }
+    }
+
+    public static ReceiptItem chargeForInsurance(int itemCount)
+    {
+        return new ReceiptItem("Insurance", itemCount * 5);
+    }
+
+    public static ReceiptItem chargeForParcel(String parcelType, Dimension dimensions)
+    {
+        if (parcelType.equals("FLT"))
+        {
+            return new ReceiptItem(String.format("Flat parcel, %s", dimensions.getVolume() < 200.0 ? "small" : "big"),
+                dimensions.getVolume() < 200.0 ? 30.0 : 50.0);
+        }
+        else
+        {
+            return null;
         }
     }
 

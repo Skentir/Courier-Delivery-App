@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 public class ReceiptGroup implements ReceiptEntry
@@ -10,6 +11,12 @@ public class ReceiptGroup implements ReceiptEntry
     {
         this.name = name;
         this.entries = new ArrayList<>(entries);
+    }
+
+    public ReceiptGroup(String name, Collection<ReceiptEntry> entries)
+    {
+        this.name = name;
+        this.entries = Arrays.asList(entries);
     }
 
     @Override
