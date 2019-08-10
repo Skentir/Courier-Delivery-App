@@ -164,6 +164,11 @@ public class Parcel
         return 0.0;
     }
   }
+
+  public boolean getInsurance()
+  {
+      return insured;
+  }
   public void setInsurance(boolean insured)
   {
     this.insured = insured;
@@ -180,6 +185,53 @@ public class Parcel
       weight += item.getWeight();
 
     return weight;
+  }
+
+  public Receipt generateReceipt()
+  {
+      ReceiptGroup itemsGroup = null;
+      if (parcelType == null || !parcelType.contains("FLT"))
+      {
+          ReceiptEntry[] items = new ReceiptEntry[this.items.size()];
+          for (int i = 0; i < this.items.size(); i++)
+          {
+              items[i] = ReceiptItem.chargeForItem(this.items.get(i));
+          }
+
+          itemsGroup = new ReceiptGroup("All items", items);
+      }
+
+      ReceiptEntry insured = null;
+      if (this.insured)
+            insured = ReceiptItem.chargeForInsurance(items.size());
+
+
+    ReceiptEntry parcel = null;
+    if (parcelType != null)
+        parcel = ReceiptItem.chargeForParcel(parcelType, fromType(parcelType));
+    ReceiptEntry region = null;
+    if (parcelType != null)
+        region = ReceiptItem.chargeForRegion(recipient.getRegion(), getWeight(), fromType(parcelType).getVolume());
+    ArrayList<ReceiptEntry> entries = new ArrayList<>();
+    if (itemsGroup != null) entries.add(itemsGroup);
+    if (insured != null) entries.add(insured);
+    if (parcel != null) entries.add(parcel);
+    if (region != null) entries.add(region);
+    return new Receipt(recipient, entries);
+  }
+
+  private Dimension fromType(String parcelType)
+  {
+      switch (parcelType)
+      {
+          case "FLT0": return new Dimension(9,14,1);
+          case "FLT1": return new Dimension(12,18,3);
+          case "BOX0": return new Dimension(12,10,5);
+          case "BOX1": return new Dimension(14,11,7);
+          case "BOX2": return new Dimension(18,12,9);
+          case "BOX3": return new Dimension(20,16,12);
+          default: return null;
+      }
   }
 
   /**

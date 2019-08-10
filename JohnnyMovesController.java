@@ -77,7 +77,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                     items.clear();
                     gui.updateItemDetails(null);
                     gui.updateItems(null);
-                    gui.updateCheckoutInfo(null, false, null);
+                    gui.updateCheckoutInfo(null);
                     gui.setScene(JohnnyMovesGui.MAIN_MENU);
                 }
                 break;
@@ -90,7 +90,6 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 break;
             case "items-checkout":
                 gui.setScene(JohnnyMovesGui.CHECKOUT);
-                gui.updateCheckoutInfo(recipient, insuredValue, items);
                 parcelSize = null;
 
                 if (recipient != null && items != null)
@@ -105,7 +104,12 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                         gui.updateContainerChoice(sizes);
                         // Assign the type and compute for the price
                         Container selectedBox = gui.getSelectedContainer();
-                        dummy.setParcelType(selectedBox.getType());
+                        String selsize = gui.getSelectedSize();
+                        if (selsize != null)
+                        {
+                            dummy.setParcelType(selsize);
+                        }
+                        gui.updateCheckoutInfo(dummy);
                         gui.checkoutPriceLabel.setText("Php " + Double.toString(dummy.getPrice()));
                     }
                     else
