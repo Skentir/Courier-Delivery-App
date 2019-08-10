@@ -961,7 +961,7 @@ public class JohnnyMovesGui extends Application
     public void updateContainerChoice()
     {
         int selected = containerChoice.getItemAtPosition(getSelectedContainer());
-        if (selected <= 6 && selected >= 0) // ImageNames are relative to position in Container[]
+        if (selected <= 6 && selected >= 0) // ImageNames are relative to position in Container
         {
           //  containerChoice.getChildren().add();
         }
