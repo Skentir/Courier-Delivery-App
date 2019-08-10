@@ -336,17 +336,20 @@ public class JohnnyMovesGui extends Application
         GridPane.setMargin(itemsList, new Insets(20, 20, 5, 10));
 
         Label itemNameLabel = new Label();
-        GridPane.setMargin(itemNameLabel, new Insets(20, 10, 5, 20));
+        GridPane.setMargin(itemNameLabel, new Insets(20, 0, 0, 0));
+        itemNameLabel.setText("The quick brown fox jumps over the lazy dog.");
         Label dimensionsNameLabel = new Label();
+        GridPane.setMargin(dimensionsNameLabel, new Insets(10, 10, 0, 5));
+        GridPane.setMargin(dimensionsLabel, new Insets(10, 0, 0, 5));
         dimensionsNameLabel.setText("Dimensions: ");
         Label weightNameLabel = new Label();
+        GridPane.setMargin(weightNameLabel, new Insets(10, 10, 0, 5));
+        GridPane.setMargin(weightLabel, new Insets(10, 0, 0, 5));
         weightNameLabel.setText("Weight: ");
         Label typeNameLabel = new Label();
+        GridPane.setMargin(typeNameLabel, new Insets(10, 10, 0, 5));
+        GridPane.setMargin(typeLabel, new Insets(10, 0, 0, 5));
         typeNameLabel.setText("Type: ");
-
-        dimensionsLabel = new Label();
-        weightLabel = new Label();
-        typeLabel = new Label();
 
         Button addItemButton = new Button();
         addItemButton.setText("Add");
@@ -382,7 +385,7 @@ public class JohnnyMovesGui extends Application
         itemsPane.add(itemsList, 0, 0, 2, 6);
         itemsPane.add(addItemButton, 0, 6);
         itemsPane.add(removeItemButton, 1, 6);
-        itemsPane.add(itemNameLabel, 2, 0);
+        itemsPane.add(itemNameLabel, 2, 0, 2, 1);
         itemsPane.add(dimensionsNameLabel, 2, 1);
         itemsPane.add(weightNameLabel, 2, 2);
         itemsPane.add(typeNameLabel, 2, 3);
@@ -408,8 +411,15 @@ public class JohnnyMovesGui extends Application
         containerChoice = new ListView<>();
         checkoutPane.setAlignment(Pos.CENTER);
         containerChoice.setPadding(new Insets(5,0,5,0));
+<<<<<<< HEAD
       //  flow.setStyle();
 
+=======
+        containerChoice.setVgap(4);
+        containerChoice.setHgap(4);
+        containerChoice.setPrefWrapLength(255);
+        ImageView containerAssets[] = new ImageView[6];
+>>>>>>> e2d08dbd76b19c1bb88da707b703ad2117df8742
         for (int i=0; i<6; i++)
         {
           containerAssets[i] = new ImageView(new Image("ImageAssets/Container"+(i+1)+".png", 80, 80, true, true));
@@ -421,21 +431,21 @@ public class JohnnyMovesGui extends Application
         GridPane.setFillWidth(checkoutList, true);
         GridPane.setMargin(checkoutList, new Insets(20, 20, 20, 10));
 
-        Label checkoutRecipientNameLabel = new Label();
-        checkoutRecipientNameLabel.setText("Recipient:");
-        GridPane.setMargin(checkoutRecipientLabel, new Insets(20, 0, 5, 5));
-        Label checkoutRegionNameLabel = new Label();
-        checkoutRegionNameLabel.setText("Region:");
-        GridPane.setMargin(checkoutRegionNameLabel, new Insets(0, 0, 5, 5));
-        Label checkoutInsuredNameLabel = new Label();
-        checkoutInsuredNameLabel.setText("Insured:");
-        GridPane.setMargin(checkoutInsuredNameLabel, new Insets(0, 0, 5, 5));
-        Label checkoutItemCountNameLabel = new Label();
-        checkoutItemCountNameLabel.setText("# of items:");
-        GridPane.setMargin(checkoutItemCountNameLabel, new Insets(0, 0, 5, 5));
-        Label checkoutPriceNameLabel = new Label();
-        checkoutPriceNameLabel.setText("Price:");
-        GridPane.setMargin(checkoutPriceNameLabel, new Insets(0, 0, 5, 5));
+        Label checkoutRecipientNameLabel = new Label("Recipient:");
+        GridPane.setMargin(checkoutRecipientNameLabel, new Insets(10, 0, 0, 5));
+        GridPane.setMargin(checkoutRecipientLabel, new Insets(10, 0, 0, 5));
+        Label checkoutRegionNameLabel = new Label("Region:");
+        GridPane.setMargin(checkoutRegionNameLabel, new Insets(10, 0, 0, 5));
+        GridPane.setMargin(checkoutRegionLabel, new Insets(10, 0, 0, 5));
+        Label checkoutInsuredNameLabel = new Label("Insured:");
+        GridPane.setMargin(checkoutInsuredNameLabel, new Insets(10, 0, 0, 5));
+        GridPane.setMargin(checkoutInsuredLabel, new Insets(10, 0, 0, 5));
+        Label checkoutItemCountNameLabel = new Label("# of items:");
+        GridPane.setMargin(checkoutItemCountNameLabel, new Insets(10, 0, 0, 5));
+        GridPane.setMargin(checkoutItemCountLabel, new Insets(10, 0, 0, 5));
+        Label checkoutPriceNameLabel = new Label("Price:");
+        GridPane.setMargin(checkoutPriceNameLabel, new Insets(10, 0, 0, 5));
+        GridPane.setMargin(checkoutPriceLabel, new Insets(10, 0, 0, 5));
 
         Button checkoutButton = new Button();
         checkoutButton.setText("Checkout");
@@ -562,7 +572,10 @@ public class JohnnyMovesGui extends Application
         insuranceLabel.setText("Do you want the parcel insured?");
 
         insuredButton.setId("items-insured");
+        GridPane.setMargin(insuredButton, new Insets(10, 0, 0, 0));
         notInsuredButton.setId("items-notinsured");
+        GridPane.setMargin(notInsuredButton, new Insets(10, 0, 0, 0));
+
         insuredButton.setToggleGroup(insureGroup);
         notInsuredButton.setToggleGroup(insureGroup);
 
