@@ -830,9 +830,13 @@ public class JohnnyMovesGui extends Application
 
     public String getInsurance()
     {
-      selectedRadioBtn = (RadioButton) insureGroup.getSelectedToggle();
-      System.out.println("Insurance choice is " + selectedRadioBtn.getText());
-      return selectedRadioBtn.getId();
+        selectedRadioBtn = (RadioButton) insureGroup.getSelectedToggle();
+        if (selectedRadioBtn != null)
+        {
+            System.out.println("Insurance choice is " + selectedRadioBtn.getText());
+            return selectedRadioBtn.getId();
+        }
+        return null;
     }
 
     private void attachHandlerToPane(Pane pane, EventHandler<ActionEvent> handler)
