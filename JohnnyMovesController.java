@@ -36,6 +36,15 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
         items = new ArrayList<>();
     }
 
+    private Parcel makeParcel(String type)
+    {
+        Parcel p = new Parcel(recipient, items);
+        p.setInsurance(insuredValue);
+        if (type != null)
+            p.setParcelType(type);
+        return p;
+    }
+
     @Override
     public void handle(ActionEvent event)
     {
@@ -52,7 +61,12 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
             case "get-started": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
             case "main-send": gui.setScene(JohnnyMovesGui.SENDING); break;
             case "main-track": gui.setScene(JohnnyMovesGui.TRACKING); break;
-
+            case "toggle-flat1": gui.updateCheckoutInfo(makeParcel("FLT0")); break;
+            case "toggle-flat2": gui.updateCheckoutInfo(makeParcel("FLT1")); break;
+            case "toggle-box1": gui.updateCheckoutInfo(makeParcel("BOX0")); break;
+            case "toggle-box2": gui.updateCheckoutInfo(makeParcel("BOX1")); break;
+            case "toggle-box3": gui.updateCheckoutInfo(makeParcel("BOX2")); break;
+            case "toggle-box4": gui.updateCheckoutInfo(makeParcel("BOX3")); break;
             // send packing
             case "items-recipient":
                 Recipient r = gui.openRecipientDialog(this.recipient);
