@@ -36,7 +36,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
             event.consume();
         });
         parcels = new ArrayList<>();
-
+        items = new ArrayList<>();
     }
 
     @Override
@@ -87,10 +87,13 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 ButtonType type = gui.openInsuranceDialog();
                 String insured  = gui.getInsurance();
 
-                if (insured.equals("Yes, insure"))
-                    insuredValue = true;
-                else
-                    insuredValue = false;
+                if (type.getButtonData() == ButtonData.APPLY)
+                {
+                    if (insured.equals("items-insured"))
+                        insuredValue = true;
+                    else
+                        insuredValue = false;
+                }
                 break;
             case "items-checkout":
                 gui.setScene(JohnnyMovesGui.CHECKOUT);
