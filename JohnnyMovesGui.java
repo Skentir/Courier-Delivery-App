@@ -575,7 +575,11 @@ public class JohnnyMovesGui extends Application
         {
             switch (btype.getButtonData())
             {
+<<<<<<< HEAD
+                case APPLY:
+=======
             case APPLY:
+>>>>>>> 2e0adec15805c44d9432a43e91370b3ceba830a8
                 return daySpinner.getValue() * 86400 + hourSpinner.getValue() * 3600 + minuteSpinner.getValue() * 60 + secondsSpinner.getValue();
             default:
                 return null;
@@ -777,32 +781,46 @@ public class JohnnyMovesGui extends Application
         displayCodeTop.setBackground(new Background(new BackgroundFill(Color.rgb(40, 40, 40), CornerRadii.EMPTY, Insets.EMPTY)));
         displayCodeMenu.setTop(displayCodeTop);
         displayCodeMenu.setId("track-return");
-        statusIcon = new ImageView(new Image("ImageAssets/Preparing.png"));
+        statusIcon = new ImageView(new Image("ImageAssets/Preparing.png",150, 150, true, true));
         displayParcelItems = new ListView<>();
         GridPane.setHalignment(displayInfo, HPos.CENTER);
         GridPane.setFillWidth(displayInfo, true);
         GridPane.setMargin(displayInfo, new Insets(20, 20, 20, 10));
+        Button goBack = new Button();
+        goBack.setText("Okay");
+        goBack.setId("get-started");
+        GridPane.setMargin(goBack, new Insets(0, 120, 20, 5));
 
         Label displayLabel = new Label("Parcel Details");
+        displayLabel.setStyle("-fx-font-color: #662d91;-fx-font-size: 25;");
         GridPane.setMargin(displayLabel, new Insets(20, 0, 5, 5));
         displayTrackingCode = new Label();
+        displayTrackingCode.setStyle("-fx-font-color: #662d91;-fx-font-size: 32;");
         GridPane.setMargin(displayTrackingCode, new Insets(0, 0, 5, 5));
         displayRecipient = new Label();
+        displayRecipient.setStyle("-fx-font-color: #662d91;-fx-font-size: 20;");
         GridPane.setMargin(displayRecipient, new Insets(0, 0, 5, 5));
         displayRegion = new Label();
+        displayRegion.setStyle("-fx-font-color: #662d91;-fx-font-size: 20;");
         GridPane.setMargin(displayRegion, new Insets(0, 0, 5, 5));
         displayStatus = new Label();
+        displayStatus.setStyle("-fx-font-color: #662d91;-fx-font-size: 20;");
         GridPane.setMargin(displayStatus, new Insets(0, 0, 5, 5));
         displayDimensions = new Label();
+        displayDimensions.setStyle("-fx-font-color: #662d91;-fx-font-size: 20;");
+        GridPane.setMargin(displayStatus, new Insets(0, 0, 5, 5));
 
         displayInfo.add(displayTrackingCode, 2, 1);
+        displayInfo.setColumnSpan(displayTrackingCode, 2);
         displayInfo.add(displayLabel, 2, 2);
+        displayInfo.setColumnSpan(displayLabel, 2);
         displayInfo.add(displayRecipient, 2, 3);
         displayInfo.add(displayRegion, 2, 4);
         displayInfo.add(displayDimensions, 2, 5);
         displayInfo.add(displayStatus, 2, 6);
         displayInfo.add(statusIcon, 2, 7);
-        displayInfo.add(displayParcelItems, 0, 0, 2, 8);
+        displayInfo.add(goBack, 2, 8);
+        displayInfo.add(displayParcelItems, 0, 0, 2, 9);
 
 
         displayInfo.getColumnConstraints().addAll(
@@ -812,8 +830,6 @@ public class JohnnyMovesGui extends Application
             new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
         );
         displayCodeMenu.setCenter(displayInfo);
-
-
         displayParcelScene = new Scene(displayCodeMenu, 700, 500);
     }
 
@@ -1013,6 +1029,7 @@ public class JohnnyMovesGui extends Application
         attachHandlerToScene(checkoutScene, handler);
         attachHandlerToPane(addItemRoot, handler);
         attachHandlerToPane(receiptPane, handler);
+        attachHandlerToScene(displayParcelScene, handler);
     }
 
     public void addMouseListener(EventHandler<MouseEvent> handler)
