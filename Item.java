@@ -92,6 +92,6 @@ public abstract class Item
   @Override
   public String toString()
   {
-    return String.format("%s (%f' x %f' x %f; @ %f kg)", getItemType(), width, getHeight(), length, getWeight());
+    return String.format("%s (%.2f' x %.2f' x %.2f; @ %.2f kg)", getItemType(), width, getHeight(), length, getWeight());
   }
 }
