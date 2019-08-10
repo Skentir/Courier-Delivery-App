@@ -87,9 +87,9 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 break;
             case "items-insurance":
                 ButtonType type = gui.openInsuranceDialog();
-                insuredValue = gui.getInsurance();
+                String insuredText = gui.getInsurance();
                 if (type.getButtonData() == ButtonData.APPLY)
-                    insured = insuredValue.equals("items-insured");
+                    insured = insuredText.equals("items-insured");
                 break;
             case "items-checkout":
                 if (this.recipient == null)
@@ -134,7 +134,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU);
                   Parcel buff = new Parcel(recipient, items);
-                  buff.setInsurance(insuredValue);
+                  buff.setInsurance(insured);
                   buff.setParcelType(parcelType);
                   //Display info
                   gui.checkoutRecipientLabel.setText(recipient.getName());
