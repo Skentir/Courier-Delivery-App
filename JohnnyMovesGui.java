@@ -574,7 +574,7 @@ public class JohnnyMovesGui extends Application
         {
             switch (btype.getButtonData())
             {
-            case OK_DONE:
+            case APPLY:
                 return daySpinner.getValue() * 86400 + hourSpinner.getValue() * 3600 + minuteSpinner.getValue() * 60 + secondsSpinner.getValue();
             default:
                 return null;
