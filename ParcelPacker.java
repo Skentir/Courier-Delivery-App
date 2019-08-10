@@ -17,7 +17,7 @@ public class ParcelPacker extends DefaultPacker
    */
   private static final Container[] CONTAINERS = new Container[]
   {
-    new Container(9, 1, 14, 3, Parcel.FLAT, 0),
+    new Container(9, 1, 14, 1, Parcel.FLAT, 0),
     new Container(12, 3, 18, 3, Parcel.FLAT, 1),
     new Container(12, 10, 5, 1000, Parcel.BOX, 0),
     new Container(14, 11, 7, 1000, Parcel.BOX, 1),
