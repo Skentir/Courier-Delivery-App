@@ -297,7 +297,6 @@ public class JohnnyMovesGui extends Application
             {
             case OK_DONE:
                 return new Recipient(recipientField.getText(), regionComboBox.getValue());
-            case CANCEL_CLOSE:
             default:
                 return null;
             }
@@ -943,10 +942,34 @@ public class JohnnyMovesGui extends Application
         return result.orElse(null);
     }
 
+    public Recipient openRecipientDialog(Recipient recipient)
+    {
+        if (recipient != null)
+        {
+            recipientField.setText(recipient.getName());
+            regionComboBox.setValue(recipient.getRegion());
+        }
+        else
+        {
+            recipientField.setText("");
+            regionComboBox.setValue("");
+        }
+        return openRecipientDialog();
+    }
+
     public ButtonType openInsuranceDialog()
     {
         Optional<ButtonType> result = insuranceDialog.showAndWait();
         return result.orElse(ButtonType.CANCEL);
+    }
+
+    public ButtonType openInsuranceDialog(boolean value)
+    {
+        if (value)
+            insureGroup.selectToggle(insuredButton);
+        else
+            insureGroup.selectToggle(notInsuredButton);
+        return openInsuranceDialog();
     }
 
     public Item openAddItemDialog()

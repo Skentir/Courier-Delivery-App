@@ -58,9 +58,9 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
 
             // send packing
             case "items-recipient":
-                recipient = gui.openRecipientDialog();
-                if (recipient != null)
-                    this.recipient = recipient;
+                Recipient r = gui.openRecipientDialog(this.recipient);
+                if (r != null)
+                    this.recipient = r;
                 break;
             case "items-edit": gui.setScene(JohnnyMovesGui.ITEMS); break;
             case "items-type":
@@ -84,16 +84,11 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 }
                 break;
             case "items-insurance":
-                ButtonType type = gui.openInsuranceDialog();
+                ButtonType type = gui.openInsuranceDialog(insuredValue);
                 String insured  = gui.getInsurance();
 
                 if (type.getButtonData() == ButtonData.APPLY)
-                {
-                    if (insured.equals("items-insured"))
-                        insuredValue = true;
-                    else
-                        insuredValue = false;
-                }
+                    insuredValue = insured.equals("items-insured");
                 break;
             case "items-checkout":
                 gui.setScene(JohnnyMovesGui.CHECKOUT);
