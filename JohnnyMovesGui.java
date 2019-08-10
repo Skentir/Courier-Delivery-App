@@ -803,7 +803,7 @@ public class JohnnyMovesGui extends Application
         displayStatus.setStyle("-fx-font-color: #662d91;-fx-font-size: 20;");
         GridPane.setMargin(displayStatus, new Insets(0, 0, 5, 5));
         displayDimensions = new Label();
-        displayDimensions.setStyle("-fx-font-color: #662d91;-fx-font-size: 20;");
+        displayDimensions.setStyle("-fx-font-color: #662d91;-fx-font-size: 16;");
         GridPane.setMargin(displayStatus, new Insets(0, 0, 5, 5));
 
         displayInfo.add(displayTrackingCode, 2, 1);

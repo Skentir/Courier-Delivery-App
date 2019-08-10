@@ -218,7 +218,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                               gui.statusIcon.setImage(new Image("ImageAssets/In-Transit.png", 150, 150, true, true));
                             else
                               gui.statusIcon.setImage(new Image("ImageAssets/Delivered.png", 150, 150, true, true));
-                              gui.displayDimensions.setText(parcels.get(i).getDimensions().toString());
+                              gui.displayDimensions.setText(parcels.get(i).getDimensions().toString().substring(1, parcels.get(i).getDimensions().toString().length()-1));
                           }
                         }
                     }
