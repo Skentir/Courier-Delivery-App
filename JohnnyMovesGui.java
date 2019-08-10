@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Optional;
 import java.util.List;
+import packer.*;
 
 public class JohnnyMovesGui extends Application
 {
@@ -42,10 +43,13 @@ public class JohnnyMovesGui extends Application
     Color bg = Color.rgb(250,248,247);
     TextField enterCode = new TextField();
     TextField recipientField = new TextField();
+    ImageView containerAssets[] = new ImageView[6];
+    ImageView statusIcon = new ImageView();
     ComboBox<String> regionComboBox = new ComboBox<>();
     ToggleGroup insureGroup = new ToggleGroup();
     RadioButton selectedRadioBtn;
     ListView<Item> itemsList = new ListView<>();
+    ListView<Container> containerChoice = new ListView<>();
     Label itemNameLabel = new Label();
     Label dimensionsLabel = new Label();
     Label weightLabel = new Label();
@@ -70,6 +74,7 @@ public class JohnnyMovesGui extends Application
     Label displayRecipient= new Label();
     Label displayRegion = new Label();
     Label displayStatus = new Label();
+    Label displayDimensions = new Label();
 
     RadioButton insuredButton = new RadioButton("Yes, insure");
     RadioButton notInsuredButton = new RadioButton("No, don't insure");
@@ -412,18 +417,7 @@ public class JohnnyMovesGui extends Application
         checkoutPane.setPadding(new Insets(20, 10, 20, 10));
         checkoutPane.setAlignment(Pos.CENTER);
         GridPane containerChoice = new GridPane();
-        //containerChoice.setPadding(new Insets(5,0,5,0));
-        //containerChoice.setVgap(4);
-        //containerChoice.setHgap(4);
-        //containerChoice.setPrefWrapLength(255);
-        /*
-        ImageView containerAssets[] = new ImageView[6];
-        for (int i=0; i<6; i++)
-        {
-          containerAssets[i] = new ImageView(new Image("ImageAssets/Container"+(i+1)+".png", 80, 80, true, true));
-          containerChoice.getChildren().add(containerAssets[i]);
-        }
-        */
+        
         flat1Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container1.png", 80, 80, true, true)));
         flat1Button.setToggleGroup(parcelGroup);
         flat2Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container2.png", 80, 80, true, true)));
@@ -466,6 +460,7 @@ public class JohnnyMovesGui extends Application
 
         Button checkoutButton = new Button();
         checkoutButton.setText("Checkout");
+        checkoutButton.setGraphic(new ImageView(new Image("ImageAssets/Checkout.png")));
         checkoutButton.setId("checkout-checkout");
         checkoutButton.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: #8fe1a2;");
         checkoutButton.setMaxWidth(170);
@@ -736,7 +731,7 @@ public class JohnnyMovesGui extends Application
         displayCodeTop.setBackground(new Background(new BackgroundFill(Color.rgb(40, 40, 40), CornerRadii.EMPTY, Insets.EMPTY)));
         displayCodeMenu.setTop(displayCodeTop);
         displayCodeMenu.setId("track-return");
-
+        statusIcon = new ImageView(new Image("ImageAssets/Preparing.png"));
         displayParcelItems = new ListView<>();
         GridPane.setHalignment(displayInfo, HPos.CENTER);
         GridPane.setFillWidth(displayInfo, true);
@@ -745,21 +740,24 @@ public class JohnnyMovesGui extends Application
         Label displayLabel = new Label();
         displayLabel.setText("Parcel Details");
         GridPane.setMargin(displayLabel, new Insets(20, 0, 5, 5));
-        Label displayTrackingCode = new Label();
+        displayTrackingCode = new Label();
         GridPane.setMargin(displayTrackingCode, new Insets(0, 0, 5, 5));
-        Label displayRecipient = new Label();
+        displayRecipient = new Label();
         GridPane.setMargin(displayRecipient, new Insets(0, 0, 5, 5));
-        Label displayRegion = new Label();
+        displayRegion = new Label();
         GridPane.setMargin(displayRegion, new Insets(0, 0, 5, 5));
-        Label displayStatus = new Label();
+        displayStatus = new Label();
         GridPane.setMargin(displayStatus, new Insets(0, 0, 5, 5));
-
-        displayInfo.add(displayParcelItems, 0, 0, 2, 8);
+        displayDimensions = new Label();
+//gui.displayTrackedItems(parcels.get(i).getItems());
         displayInfo.add(displayTrackingCode, 2, 1);
         displayInfo.add(displayLabel, 2, 2);
         displayInfo.add(displayRecipient, 2, 3);
         displayInfo.add(displayRegion, 2, 4);
-        displayInfo.add(displayStatus, 3, 1);
+        displayInfo.add(displayDimensions, 2, 5);
+        displayInfo.add(displayStatus, 2, 6);
+        displayInfo.add(statusIcon, 2, 7);
+        displayInfo.add(displayParcelItems, 0, 0, 2, 8);
 
 
         displayInfo.getColumnConstraints().addAll(
@@ -781,6 +779,15 @@ public class JohnnyMovesGui extends Application
         else
             itemsList.getItems().setAll(items);
     }
+
+    public void displayTrackedItems(List<Item> items)
+    {
+        if (items == null)
+            displayParcelItems.getItems().clear();
+        else
+            displayParcelItems.getItems().setAll(items);
+    }
+
 
     public void updateCheckoutInfo(Recipient recipient, boolean insured, List<Item> items)
     {
@@ -812,6 +819,11 @@ public class JohnnyMovesGui extends Application
     public Item getSelectedItem()
     {
         return itemsList.getSelectionModel().getSelectedItem();
+    }
+
+    public Container getSelectedContainer()
+    {
+      return containerChoice.getSelectionModel().getSelectedContainer();
     }
 
     public void updateItemDetails(Item item)
@@ -928,6 +940,12 @@ public class JohnnyMovesGui extends Application
     public void addMouseListener(EventHandler<MouseEvent> handler)
     {
         itemsList.setOnMouseClicked(handler);
+        containerAssets[0].setOnMouseClicked(handler);
+        containerAssets[1].setOnMouseClicked(handler);
+        containerAssets[2].setOnMouseClicked(handler);
+        containerAssets[3].setOnMouseClicked(handler);
+        containerAssets[4].setOnMouseClicked(handler);
+        containerAssets[5].setOnMouseClicked(handler);
     }
 
     public void openProductPane()
@@ -961,6 +979,15 @@ public class JohnnyMovesGui extends Application
                 openDocumentPane();
             else
                 closeItemPane();
+        }
+    }
+
+    public void updateContainerChoice()
+    {
+        int selected = containerChoice.getItemAtPosition(getSelectedContainer());
+        if (selected <= 6 && selected >= 0) // ImageNames are relative to position in Container
+        {
+          //  containerChoice.getChildren().add();
         }
     }
 
