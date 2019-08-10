@@ -41,32 +41,33 @@ public class Parcel
   };
 
   /**
+   * Constructs a new parcel.
+   *
+   * @param name who will receive the parcel
+   * @param region in what region is the recipient located
+   * @param insured is the parcel insured?
+   */
+  public Parcel(String name, String region, ArrayList<Item> items)
+  {
+    recipient = new Recipient(name, region);
+    shipDate = new Date();
+    this.region = region;
+    this.items = new ArrayList<>();
+    this.items = items;
+  }
+
+  /**
    * Constructs a new parcel that is not insured.
    *
    * @param recipient who will receive the parcel
    * @param region in what region is the recipient located
    */
-  public Parcel(Recipient recipient)
+  public Parcel(Recipient recipient, ArrayList<Item>items)
   {
-    if (recipient != null)
-      this.recipient = recipient;
-  }
-
-  /**
-   * Constructs a new parcel.
-   *
-   * @param recipient who will receive the parcel
-   * @param region in what region is the recipient located
-   * @param insured is the parcel insured?
-   */
-  public Parcel(Recipient recipient, ArrayList<Item> items)
-  {
-    if (recipient != null)
-      this.recipient = recipient;
-
     shipDate = new Date();
-    this.items = new ArrayList<>();
-    this.items = items;
+    this.recipient = recipient;
+    this.region = recipient.getRegion();
+    this.items = new ArrayList<>(items);
   }
 
   /**
@@ -255,7 +256,7 @@ public class Parcel
    *
    * @return the destination region
    */
-  public String getRegion()
+  public String getParcelRegion()
   {
     return region;
   }
