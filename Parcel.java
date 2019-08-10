@@ -242,23 +242,7 @@ public class Parcel
    */
   public double getPrice()
   {
-    double basePrice = getBasePrice();
-
-    double insurance = this.insured ? items.size() * 5.0 : 0.0;
-    double service = 0.0;
-
-    double weight = getWeight();
-
-    if (region.equalsIgnoreCase("METRO MANILA"))
-      service = 50.0;
-    else if (region.equalsIgnoreCase("LUZON"))
-      service = 100.0;
-    else if (region.equalsIgnoreCase("VISAYAS"))
-      service = Math.max(1000.0, Math.max(0.1 * weight, 0.1 * dimensions.getVolume()));
-    else if (region.equalsIgnoreCase("MINDANAO"))
-      service = Math.max(3000.0, Math.max(0.25 * weight, 0.25 * dimensions.getVolume()));
-
-    return basePrice + insurance + service;
+      return generateReceipt().getPrice();
   }
 
   /**

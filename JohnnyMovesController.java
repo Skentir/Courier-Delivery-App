@@ -124,7 +124,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                             dummy.setParcelType(selsize);
                         }
                         gui.updateCheckoutInfo(dummy);
-                        gui.checkoutPriceLabel.setText("Php " + Double.toString(dummy.getPrice()));
+                        gui.checkoutPriceLabel.setText("Php " + String.format("%.2f", dummy.getPrice()));
                     }
                     else
                     {
@@ -194,6 +194,11 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                       buff.setTrackingCode(generateCode(buff));
                       parcels.add(buff);
                       gui.generateReceiptDialog(buff);
+                      items.clear();
+                      recipient = null;
+                      insuredValue = false;
+                      gui.updateItems(null);
+                      gui.updateCheckoutInfo(null);
                       gui.setScene(JohnnyMovesGui.MAIN_MENU);
 
                   }
