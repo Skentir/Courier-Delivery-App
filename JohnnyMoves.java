@@ -23,22 +23,6 @@ public class JohnnyMoves
   }
 
   /**
-   * Gets a list of all the containers that would fit all the items. One of
-   * these containers would end up being the size of the parcel.
-   *
-   * @param parcel the parcel
-   * @param items all the items to be packed
-   *
-   * @return an array of all the containers that can fit the items
-   */
-  public Container[] compute(Parcel parcel, List<Item> items)
-  {
-    ParcelPacker packer = new ParcelPacker();
-    Item[] itemsArr = items.toArray(new Item[0]);
-    return packer.pack(parcel, itemsArr).toArray(new Container[0]);
-  }
-
-  /**
    * Runs the interface for creating an irregular product.
    *
    * @return a new irregularly shaped product

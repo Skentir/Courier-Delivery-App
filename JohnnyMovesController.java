@@ -8,8 +8,10 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import java.text.SimpleDateFormat;
+import javafx.scene.image.*;
 import javafx.scene.Node;
 import java.util.*;
+import packer.*;
 
 public class JohnnyMovesController implements EventHandler<ActionEvent>
 {
@@ -102,9 +104,18 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 if (recipient != null && items != null)
                 {
                   Parcel dummy = new Parcel(recipient, items);
-                  dummy.setParcelType(parcelType);
                   dummy.setInsurance(insuredValue);
-                  gui.checkoutPriceLabel.setText("Php " + Double.toString(dummy.getPrice()));
+                  // Get List of possible box sizes and update the list
+                  Container[] sizes =  compute(dummy, items);
+                  if (sizes.length != 0)
+                  {
+                    containerChoice.updateContainerChoice();
+                    // Assign the type and compute for the price
+                    Container selectedBox = gui.getSelectedContainer();
+                    dummy.setParcelType(selectedBox.getType());
+                    gui.checkoutPriceLabel.setText("Php " + Double.toString(dummy.getPrice()));
+                  } else
+                      gui.checkoutPriceLabel.setText("Oops! We can't fit your items in any of our containers. :(");
                 }
                 else
                 {
@@ -178,8 +189,21 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                         }
 
                         for (int i=0; i < parcels.size(); i++)
+                        {
                           if (parcels.get(i).getTrackingCode().equalsIgnoreCase(code))
-                            status = parcels.get(i).getStatus(date);
+                          {
+                            gui.displayTrackingCode.setText(code);
+                            gui.displayRecipient.setText(parcels.get(i).getRecipient().getName());
+                            gui.displayRegion.setText(parcels.get(i).getRecipient().getRegion());
+                            gui.displayStatus.setText(parcels.get(i).getStatus(date));
+                            if (parcels.get(i).getStatus(date).equals("Shipping"))
+                              gui.statusIcon.setImage(new Image("ImageAssets/In-Transit.png"));
+                            else
+                              gui.statusIcon.setImage(new Image("ImageAssets/Delivered.png"));
+                            gui.displayDimensions.setText(parcels.get(i).getDimensions().toString());
+                            gui.displayTrackedItems(parcels.get(i).getItems());
+                          }
+                        }
                     }
                     else
                     {
@@ -223,6 +247,21 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
       return false;
     }
 
+    /**
+     * Gets a list of all the containers that would fit all the items. One of
+     * these containers would end up being the size of the parcel.
+     *
+     * @param parcel the parcel
+     * @param items all the items to be packed
+     *
+     * @return an array of all the containers that can fit the items
+     */
+    public Container[] compute(Parcel parcel, List<Item> items)
+    {
+      ParcelPacker packer = new ParcelPacker();
+      Item[] itemsArr = items.toArray(new Item[0]);
+      return packer.pack(parcel, itemsArr).toArray(new Container[0]);
+    }
 
       /**
        * Generates a tracking code for the parcel.
