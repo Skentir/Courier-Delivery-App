@@ -1,3 +1,7 @@
+/**
+* @author Kirsten Sison and Marc Tiburcio
+* CCPROG3 S12A - Nathalie Lim Cheng
+*/
 import java.util.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

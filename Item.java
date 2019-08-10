@@ -1,4 +1,8 @@
 /**
+* @author Kirsten Sison and Marc Tiburcio
+* CCPROG3 S12A - Nathalie Lim Cheng
+*/
+/**
  * Class to represent an item that can be placed inside a parcel.
  */
 public abstract class Item

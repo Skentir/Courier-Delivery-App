@@ -1,4 +1,8 @@
 /**
+* @author Kirsten Sison and Marc Tiburcio
+* CCPROG3 S12A - Nathalie Lim Cheng
+*/
+/**
  * Represents a document of any size and of any number of pages.
  */
 public class Document extends Item
