@@ -32,12 +32,6 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
     {
         this.gui = gui;
         gui.addActionListener(this);
-        gui.addMouseListener(event ->
-        {
-            Item item = gui.getSelectedItem();
-            gui.updateItemDetails(item);
-            event.consume();
-        });
         parcels = new ArrayList<>();
         items = new ArrayList<>();
     }
@@ -113,7 +107,6 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                         Container selectedBox = gui.getSelectedContainer();
                         dummy.setParcelType(selectedBox.getType());
                         gui.checkoutPriceLabel.setText("Php " + Double.toString(dummy.getPrice()));
-                        gui.generateReceiptDialog();
                     }
                     else
                     {
@@ -151,6 +144,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "recipient-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "recipient-submit": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
+                case "checkout-copy": gui.copyTrackingToClipboard(); break;
                 case "checkout-checkout":
                     String selectedSize = gui.getSelectedSize();
 
@@ -173,14 +167,14 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                       case "toggle-box4": parcelSize = "BOX3"; break;
                       default: parcelSize = null; break;
                       }
+                      System.out.println(parcelSize);
                       System.out.println("Recipient exists");
                       Parcel buff = new Parcel(recipient, items);
                       buff.setInsurance(insuredValue);
                       buff.setParcelType(parcelSize);
+                      buff.setTrackingCode(generateCode(buff));
                       parcels.add(buff);
-                      buff.setTrackingCode(generateCode(p));
-                      // TODO Display a dialog box containing code and lets user copy it
-                      double price = buff.getPrice();
+                      gui.generateReceiptDialog(buff);
                       gui.setScene(JohnnyMovesGui.MAIN_MENU);
                   }
                  break;
@@ -224,26 +218,25 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                     }
                     else
                     {
-
-                    alert = new Alert(AlertType.WARNING, "Invalid Input. Try Again.");
+                        alert = new Alert(AlertType.WARNING, "Invalid Input. Try Again.");
+                        alert.setTitle("Error");
+                        alert.setContentText("A correct tracking code contains 15 characters.\nSample Code: FLT0821VIS0301");
+                        alert.showAndWait();
+                        break;
+                    }
+                }
+                else
+                {
+                    System.out.println("Entered nothing :( ");
+                    alert = new Alert(AlertType.WARNING, "Please enter a code. Try Again.");
                     alert.setTitle("Error");
                     alert.setContentText("A correct tracking code contains 15 characters.\nSample Code: FLT0821VIS0301");
                     alert.showAndWait();
                     break;
-                  }
-              }
-              else
-              {
-                System.out.println("Entered nothing :( ");
-                alert = new Alert(AlertType.WARNING, "Please enter a code. Try Again.");
-                alert.setTitle("Error");
-                alert.setContentText("A correct tracking code contains 15 characters.\nSample Code: FLT0821VIS0301");
-                alert.showAndWait();
-                break;
-              }
+                }
             case "track-return":
-              gui.setScene(JohnnyMovesGui.DISPLAY_CODE);
-              break;
+                gui.setScene(JohnnyMovesGui.DISPLAY_CODE);
+                break;
             }
         }
     }

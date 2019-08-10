@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
+import javafx.scene.input.*;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -96,6 +97,10 @@ public class JohnnyMovesGui extends Application
     Spinner<Integer> hourSpinner = new Spinner<Integer>();
     Spinner<Integer> minuteSpinner = new Spinner<Integer>();
     Spinner<Integer> secondsSpinner = new Spinner<Integer>();
+
+    GridPane receiptPane;
+    Label trackingCodeLabel = new Label();
+    Label arrivalDateLabel = new Label();
 
     Dialog<Recipient> recipientDialog;
     Dialog<Item> addItemDialog;
@@ -339,12 +344,15 @@ public class JohnnyMovesGui extends Application
 
         itemsList = new ListView<>();
         itemsList.setId("items-list");
+        itemsList.getSelectionModel().selectedItemProperty().addListener((ob, o, n) ->
+        {
+            updateItemDetails(n);
+        });
         GridPane.setFillWidth(itemsList, true);
         GridPane.setMargin(itemsList, new Insets(20, 20, 5, 10));
 
         Label itemNameLabel = new Label();
         GridPane.setMargin(itemNameLabel, new Insets(20, 0, 0, 0));
-        itemNameLabel.setText("The quick brown fox jumps over the lazy dog.");
         Label dimensionsNameLabel = new Label();
         GridPane.setMargin(dimensionsNameLabel, new Insets(10, 10, 0, 5));
         GridPane.setMargin(dimensionsLabel, new Insets(10, 0, 0, 5));
@@ -421,10 +429,10 @@ public class JohnnyMovesGui extends Application
 
         flat1Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container1.png", 80, 80, true, true)));
         flat1Button.setToggleGroup(parcelGroup);
-        flat1Button.setId("toggle-box1");
+        flat1Button.setId("toggle-flat1");
         flat2Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container2.png", 80, 80, true, true)));
         flat2Button.setToggleGroup(parcelGroup);
-        flat2Button.setId("toggle-box2");
+        flat2Button.setId("toggle-flat2");
         box1Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container3.png", 80, 80, true, true)));
         box1Button.setToggleGroup(parcelGroup);
         box1Button.setId("toggle-box1");
@@ -608,17 +616,28 @@ public class JohnnyMovesGui extends Application
         /* --------------------------------- */
         generateReceiptDialog = new Dialog<>();
         generateReceiptDialog.setTitle("Transaction Summary");
-        GridPane receiptPane = new GridPane();
+        receiptPane = new GridPane();
         receiptPane.setAlignment(Pos.CENTER);
 
         Button copyTracking = new Button("Copy to clipboard");
+        copyTracking.setId("checkout-copy");
 
         generateReceiptDialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
 
         Label recieptTitleLabel = new Label();
-        recieptTitleLabel.setText(" TRANSACTION  ");
+        recieptTitleLabel.setText("TRANSACTION");
 
+        Label yourTracking = new Label();
+        yourTracking.setText("Your tracking code is:");
+        Label yourArrival = new Label();
+        yourArrival.setText("Your parcel will arrive on:");
 
+        receiptPane.add(recieptTitleLabel, 0, 0);
+        receiptPane.add(yourTracking, 0, 1);
+        receiptPane.add(trackingCodeLabel, 0, 2);
+        receiptPane.add(yourArrival, 0, 3);
+        receiptPane.add(arrivalDateLabel, 0, 4);
+        receiptPane.add(copyTracking, 0, 5);
 
         generateReceiptDialog.getDialogPane().setContent(receiptPane);
 
@@ -763,8 +782,7 @@ public class JohnnyMovesGui extends Application
         GridPane.setFillWidth(displayInfo, true);
         GridPane.setMargin(displayInfo, new Insets(20, 20, 20, 10));
 
-        Label displayLabel = new Label();
-        displayLabel.setText("Parcel Details");
+        Label displayLabel = new Label("Parcel Details");
         GridPane.setMargin(displayLabel, new Insets(20, 0, 5, 5));
         displayTrackingCode = new Label();
         GridPane.setMargin(displayTrackingCode, new Insets(0, 0, 5, 5));
@@ -775,7 +793,7 @@ public class JohnnyMovesGui extends Application
         displayStatus = new Label();
         GridPane.setMargin(displayStatus, new Insets(0, 0, 5, 5));
         displayDimensions = new Label();
-//gui.displayTrackedItems(parcels.get(i).getItems());
+
         displayInfo.add(displayTrackingCode, 2, 1);
         displayInfo.add(displayLabel, 2, 2);
         displayInfo.add(displayRecipient, 2, 3);
@@ -798,6 +816,14 @@ public class JohnnyMovesGui extends Application
         displayParcelScene = new Scene(displayCodeMenu, 700, 500);
     }
 
+    public void copyTrackingToClipboard()
+    {
+        Clipboard cb = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(trackingCodeLabel.getText());
+        cb.setContent(content);
+    }
+
     public void updateItems(List<Item> items)
     {
         if (items == null)
@@ -816,7 +842,6 @@ public class JohnnyMovesGui extends Application
 
     public void updateContainerChoice(Container[] sizes)
     {
-        // TODO: enable or disable buttons depending on parcel size
         flat1Button.setDisable(true);
         flat2Button.setDisable(true);
         box1Button.setDisable(true);
@@ -991,6 +1016,7 @@ public class JohnnyMovesGui extends Application
         attachHandlerToScene(itemsScene, handler);
         attachHandlerToScene(checkoutScene, handler);
         attachHandlerToPane(addItemRoot, handler);
+        attachHandlerToPane(receiptPane, handler);
     }
 
     public void addMouseListener(EventHandler<MouseEvent> handler)
@@ -1061,9 +1087,11 @@ public class JohnnyMovesGui extends Application
         return openRecipientDialog();
     }
 
-    public ButtonType generateReceiptDialog()
+    public ButtonType generateReceiptDialog(Parcel parcel)
     {
-        Optional<ButtonType> result = insuranceDialog.showAndWait();
+        trackingCodeLabel.setText(parcel.getTrackingCode());
+
+        Optional<ButtonType> result = generateReceiptDialog.showAndWait();
         return result.orElse(ButtonType.CANCEL);
     }
 
