@@ -153,6 +153,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                     System.out.println("No recipient exists");
                     alert = new Alert(AlertType.WARNING, "Missing Details. Fill up all fields.", ButtonType.OK);
                     result = alert.showAndWait();
+
                   }
                   else
                   {
@@ -176,6 +177,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                       parcels.add(buff);
                       gui.generateReceiptDialog(buff);
                       gui.setScene(JohnnyMovesGui.MAIN_MENU);
+
                   }
                  break;
                 case "track-main": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
@@ -207,12 +209,12 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                             gui.displayRecipient.setText(parcels.get(i).getRecipient().getName());
                             gui.displayRegion.setText(parcels.get(i).getRecipient().getRegion());
                             gui.displayStatus.setText(parcels.get(i).getStatus(date));
-                            if (parcels.get(i).getStatus(date).equals("Shipping"))
-                              gui.statusIcon.setImage(new Image("ImageAssets/In-Transit.png"));
-                            else
-                              gui.statusIcon.setImage(new Image("ImageAssets/Delivered.png"));
-                            gui.displayDimensions.setText(parcels.get(i).getDimensions().toString());
                             gui.displayTrackedItems(parcels.get(i).getItems());
+                            if (parcels.get(i).getStatus(date).equals("Shipping"))
+                              gui.statusIcon.setImage(new Image("ImageAssets/In-Transit.png", 150, 150, true, true));
+                            else
+                              gui.statusIcon.setImage(new Image("ImageAssets/Delivered.png", 150, 150, true, true));
+                              gui.displayDimensions.setText(parcels.get(i).getDimensions().toString());
                           }
                         }
                     }
