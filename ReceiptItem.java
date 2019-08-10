@@ -62,13 +62,16 @@ public class ReceiptItem implements ReceiptEntry
 
     public static ReceiptItem chargeForInsurance(int itemCount)
     {
+        if (itemCount <= 0)
+            return null;
         return new ReceiptItem("Insurance", itemCount * 5);
     }
 
-    public static ReceiptItem chargeForParcel(String parcelType, Dimension dimensions)
+    public static ReceiptItem chargeForParcel(String parcelType)
     {
         if (parcelType != null && parcelType.contains("FLT"))
         {
+            Dimension dimensions = Parcel.fromType(parcelType);
             return new ReceiptItem(String.format("Flat parcel, %s", dimensions.getVolume() < 200.0 ? "small" : "big"),
                 dimensions.getVolume() < 200.0 ? 30.0 : 50.0);
         }

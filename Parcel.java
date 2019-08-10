@@ -208,7 +208,7 @@ public class Parcel
 
     ReceiptEntry parcel = null;
     if (parcelType != null)
-        parcel = ReceiptItem.chargeForParcel(parcelType, fromType(parcelType));
+        parcel = ReceiptItem.chargeForParcel(parcelType);
     ReceiptEntry region = null;
     if (parcelType != null)
         region = ReceiptItem.chargeForRegion(recipient.getRegion(), getWeight(), fromType(parcelType).getVolume());
@@ -220,7 +220,7 @@ public class Parcel
     return new Receipt(recipient, entries);
   }
 
-  private Dimension fromType(String parcelType)
+  public static Dimension fromType(String parcelType)
   {
       switch (parcelType)
       {
