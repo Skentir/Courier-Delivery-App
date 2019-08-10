@@ -5,6 +5,11 @@ public class Recipient
 
     public Recipient(String name, String region)
     {
+        if (name == null)
+            throw new IllegalArgumentException("name is null");
+        if (region == null)
+            throw new IllegalArgumentException("region is null");
+
         this.name = name;
         this.region = region;
     }
