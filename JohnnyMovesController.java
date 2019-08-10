@@ -23,6 +23,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
     private String parcelType = "FLT";
     private String generatedCode;
     private String status;
+    private String parcelSize;
 
     // DO NOT DECLARE A TEMPORARY PARCEL FIELD HERE
     private boolean insured;
@@ -82,6 +83,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                     items.clear();
                     gui.updateItemDetails(null);
                     gui.updateItems(null);
+                    gui.updateCheckoutInfo(null, false, null);
                     gui.setScene(JohnnyMovesGui.MAIN_MENU);
                 }
                 break;
@@ -95,27 +97,35 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
             case "items-checkout":
                 gui.setScene(JohnnyMovesGui.CHECKOUT);
                 gui.updateCheckoutInfo(recipient, insuredValue, items);
+                parcelSize = null;
 
                 if (recipient != null && items != null)
                 {
-                  Parcel dummy = new Parcel(recipient, items);
-                  dummy.setInsurance(insuredValue);
-                  // Get List of possible box sizes and update the list
-                  Container[] sizes =  compute(dummy, items);
-                  if (sizes.length != 0)
-                  {
-                    containerChoice.updateContainerChoice();
-                    // Assign the type and compute for the price
-                    Container selectedBox = gui.getSelectedContainer();
-                    dummy.setParcelType(selectedBox.getType());
-                    gui.checkoutPriceLabel.setText("Php " + Double.toString(dummy.getPrice()));
-                  } else
-                      gui.checkoutPriceLabel.setText("Oops! We can't fit your items in any of our containers. :(");
+                    Parcel dummy = new Parcel(recipient, items);
+                    dummy.setInsurance(insuredValue);
+                    // Get List of possible box sizes and update the list
+                    Container[] sizes = compute(dummy, items);
+
+                    if (sizes.length != 0)
+                    {
+                        gui.updateContainerChoice(sizes);
+                        // Assign the type and compute for the price
+                        Container selectedBox = gui.getSelectedContainer();
+                        dummy.setParcelType(selectedBox.getType());
+                        gui.checkoutPriceLabel.setText("Php " + Double.toString(dummy.getPrice()));
+                        gui.generateReceiptDialog();
+                    }
+                    else
+                    {
+                        Alert noFit = new Alert(AlertType.ERROR, "Oops! We can't fit your items in any of our containers. :(", ButtonType.OK);
+                        noFit.showAndWait();
+                        gui.setScene(JohnnyMovesGui.SENDING);
+                    }
                 }
                 else
                 {
-                  gui.checkoutItemCountLabel.setText("Empty");
-                  gui.checkoutPriceLabel.setText("Php " + 0.00);
+                    gui.checkoutItemCountLabel.setText("Empty");
+                    gui.checkoutPriceLabel.setText("Php " + 0.00);
                 }
                 break;
             case "items-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
@@ -142,7 +152,9 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "recipient-submit": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "checkout-checkout":
-                  if (recipient == null || recipient.getName().length() != 0 )
+                    String selectedSize = gui.getSelectedSize();
+
+                  if (selectedSize == null || this.recipient == null || this.recipient.getName().length() == 0 )
                   {
                     System.out.println("No recipient exists");
                     alert = new Alert(AlertType.WARNING, "Missing Details. Fill up all fields.", ButtonType.OK);
@@ -150,15 +162,25 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                   }
                   else
                   {
+                      String parcelSize;
+                      switch (selectedSize)
+                      {
+                      case "toggle-flat1": parcelSize = "FLT0"; break;
+                      case "toggle-flat2": parcelSize = "FLT1"; break;
+                      case "toggle-box1": parcelSize = "BOX0"; break;
+                      case "toggle-box2": parcelSize = "BOX1"; break;
+                      case "toggle-box3": parcelSize = "BOX2"; break;
+                      case "toggle-box4": parcelSize = "BOX3"; break;
+                      default: parcelSize = null; break;
+                      }
                       System.out.println("Recipient exists");
                       Parcel buff = new Parcel(recipient, items);
                       buff.setInsurance(insuredValue);
-                      buff.setParcelType(parcelType);
+                      buff.setParcelType(parcelSize);
                       parcels.add(buff);
-                      Parcel p = parcels.get(parcels.size()-1);
-                      p.setTrackingCode(generateCode(p));
+                      buff.setTrackingCode(generateCode(p));
                       // TODO Display a dialog box containing code and lets user copy it
-                      p.getPrice();
+                      double price = buff.getPrice();
                       gui.setScene(JohnnyMovesGui.MAIN_MENU);
                   }
                  break;

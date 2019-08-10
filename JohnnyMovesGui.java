@@ -100,6 +100,7 @@ public class JohnnyMovesGui extends Application
     Dialog<Recipient> recipientDialog;
     Dialog<Item> addItemDialog;
     Dialog<ButtonType> insuranceDialog;
+    Dialog<ButtonType> generateReceiptDialog;
     Dialog<Integer> adjustTimeDialog;
 
     /*
@@ -417,19 +418,25 @@ public class JohnnyMovesGui extends Application
         checkoutPane.setPadding(new Insets(20, 10, 20, 10));
         checkoutPane.setAlignment(Pos.CENTER);
         GridPane containerChoice = new GridPane();
-        
+
         flat1Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container1.png", 80, 80, true, true)));
         flat1Button.setToggleGroup(parcelGroup);
+        flat1Button.setId("toggle-box1");
         flat2Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container2.png", 80, 80, true, true)));
         flat2Button.setToggleGroup(parcelGroup);
+        flat2Button.setId("toggle-box2");
         box1Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container3.png", 80, 80, true, true)));
         box1Button.setToggleGroup(parcelGroup);
+        box1Button.setId("toggle-box1");
         box2Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container4.png", 80, 80, true, true)));
         box2Button.setToggleGroup(parcelGroup);
+        box2Button.setId("toggle-box2");
         box3Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container5.png", 80, 80, true, true)));
         box3Button.setToggleGroup(parcelGroup);
+        box3Button.setId("toggle-box3");
         box4Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container6.png", 80, 80, true, true)));
         box4Button.setToggleGroup(parcelGroup);
+        box4Button.setId("toggle-box4");
 
         containerChoice.add(flat1Button, 0, 0);
         containerChoice.add(flat2Button, 1, 0);
@@ -595,6 +602,25 @@ public class JohnnyMovesGui extends Application
         insurancePane.add(notInsuredButton, 0, 2, 2, 1);
 
         insuranceDialog.getDialogPane().setContent(insurancePane);
+
+        /* --------------------------------- */
+        /*          GENERATE A RECEIPT       */
+        /* --------------------------------- */
+        generateReceiptDialog = new Dialog<>();
+        generateReceiptDialog.setTitle("Transaction Summary");
+        GridPane receiptPane = new GridPane();
+        receiptPane.setAlignment(Pos.CENTER);
+
+        Button copyTracking = new Button("Copy to clipboard");
+
+        generateReceiptDialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+
+        Label recieptTitleLabel = new Label();
+        recieptTitleLabel.setText(" TRANSACTION  ");
+
+
+
+        generateReceiptDialog.getDialogPane().setContent(receiptPane);
 
         /* ---------------------------- */
         /* INITIALIZE DIALOG - ADD ITEM */
@@ -788,6 +814,31 @@ public class JohnnyMovesGui extends Application
             displayParcelItems.getItems().setAll(items);
     }
 
+    public void updateContainerChoice(Container[] sizes)
+    {
+        // TODO: enable or disable buttons depending on parcel size
+        flat1Button.setDisable(true);
+        flat2Button.setDisable(true);
+        box1Button.setDisable(true);
+        box2Button.setDisable(true);
+        box3Button.setDisable(true);
+        box4Button.setDisable(true);
+        System.out.println("called !");
+        for (int i = 0; i < sizes.length; i++)
+        {
+            Container c = sizes[i];
+            System.out.println(c.getType());
+            switch (c.getType())
+            {
+            case "FLT0": flat1Button.setDisable(false); break;
+            case "FLT1": flat2Button.setDisable(false); break;
+            case "BOX0": box1Button.setDisable(false); break;
+            case "BOX1": box2Button.setDisable(false); break;
+            case "BOX2": box3Button.setDisable(false); break;
+            case "BOX3": box4Button.setDisable(false); break;
+            }
+        }
+    }
 
     public void updateCheckoutInfo(Recipient recipient, boolean insured, List<Item> items)
     {
@@ -823,7 +874,7 @@ public class JohnnyMovesGui extends Application
 
     public Container getSelectedContainer()
     {
-      return containerChoice.getSelectionModel().getSelectedContainer();
+      return containerChoice.getSelectionModel().getSelectedItem();
     }
 
     public void updateItemDetails(Item item)
@@ -905,6 +956,11 @@ public class JohnnyMovesGui extends Application
                 Button button = (Button)node;
                 button.setOnAction(handler);
             }
+            else if (node instanceof ToggleButton)
+            {
+                ToggleButton button = (ToggleButton)node;
+                button.setOnAction(handler);
+            }
             else if (node instanceof Pane)
             {
                 attachHandlerToPane((Pane)node, handler);
@@ -940,12 +996,6 @@ public class JohnnyMovesGui extends Application
     public void addMouseListener(EventHandler<MouseEvent> handler)
     {
         itemsList.setOnMouseClicked(handler);
-        containerAssets[0].setOnMouseClicked(handler);
-        containerAssets[1].setOnMouseClicked(handler);
-        containerAssets[2].setOnMouseClicked(handler);
-        containerAssets[3].setOnMouseClicked(handler);
-        containerAssets[4].setOnMouseClicked(handler);
-        containerAssets[5].setOnMouseClicked(handler);
     }
 
     public void openProductPane()
@@ -982,13 +1032,12 @@ public class JohnnyMovesGui extends Application
         }
     }
 
-    public void updateContainerChoice()
+    public String getSelectedSize()
     {
-        int selected = containerChoice.getItemAtPosition(getSelectedContainer());
-        if (selected <= 6 && selected >= 0) // ImageNames are relative to position in Container
-        {
-          //  containerChoice.getChildren().add();
-        }
+        Toggle t = parcelGroup.getSelectedToggle();
+        if (t instanceof ToggleButton)
+            return ((ToggleButton)t).getId();
+        return null;
     }
 
     public Recipient openRecipientDialog()
@@ -1010,6 +1059,12 @@ public class JohnnyMovesGui extends Application
             regionComboBox.setValue("");
         }
         return openRecipientDialog();
+    }
+
+    public ButtonType generateReceiptDialog()
+    {
+        Optional<ButtonType> result = insuranceDialog.showAndWait();
+        return result.orElse(ButtonType.CANCEL);
     }
 
     public ButtonType openInsuranceDialog()

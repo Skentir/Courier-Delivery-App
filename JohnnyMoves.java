@@ -21,6 +21,12 @@ public class JohnnyMoves
     this.sc = new Scanner(System.in);
     this.parcels = new ArrayList<>();
   }
+ public Container[] compute(Parcel parcel, List<Item> items)
+ {
+   ParcelPacker packer = new ParcelPacker();
+   Item[] itemsArr = items.toArray(new Item[0]);
+   return packer.pack(parcel, itemsArr).toArray(new Container[0]);
+ }
 
   /**
    * Runs the interface for creating an irregular product.
