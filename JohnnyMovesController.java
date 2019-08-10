@@ -102,6 +102,8 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 else
                   gui.checkoutRegionLabel.setText(recipient.getRegion());
 
+                //TODO Let user pick a parcel types
+
                 if (recipient != null && items != null)
                 {
                   Parcel dummy = new Parcel(recipient, items);
