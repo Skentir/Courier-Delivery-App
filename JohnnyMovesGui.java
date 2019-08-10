@@ -445,7 +445,6 @@ public class JohnnyMovesGui extends Application
         );
 
         checkoutPane.add(checkoutList, 0, 0, 2, 8);
-        //itemsPane.add(itemNameLabel, 2, 0);
         checkoutPane.add(checkoutRecipientNameLabel, 2, 1);
         checkoutPane.add(checkoutRegionNameLabel, 2, 2);
         checkoutPane.add(checkoutItemCountNameLabel, 2, 3);
