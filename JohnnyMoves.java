@@ -292,7 +292,8 @@ public class JohnnyMoves
     boolean running = true;
     int choice;
     char menu;
-    String recipient = null;
+    Recipient recipient = null;
+    String name = null;
     String region = null;
     boolean insured = false;
     ArrayList<Item> items = new ArrayList<>();
@@ -304,8 +305,9 @@ public class JohnnyMoves
       {
         case 1:
           System.out.print("Who will receive the parcel: ");
-          recipient = sc.nextLine();
+          name = sc.nextLine();
           region = optionValue("Which region is the recipient located?", Parcel.REGIONS);
+          recipient = new Recipient(name, region);
           break;
         case 2:
           insured = yesOrNo("Should the parcel be insured?");
@@ -314,7 +316,7 @@ public class JohnnyMoves
           itemMenu(items);
           break;
         case 4:
-          Parcel parcel = new Parcel(recipient, region, insured);
+          Parcel parcel = new Parcel(recipient, items);
           Container[] validContainers = compute(parcel, items);
           if (validContainers.length != 0)
           {

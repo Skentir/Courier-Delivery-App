@@ -13,16 +13,19 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
 {
     private JohnnyMovesGui gui;
     private ArrayList<Parcel> parcels;
-    String name;
-    String region;
-    String insuredValue;
+    private ArrayList<Item> items;
+    private Recipient recipient, dummyPerson;
+    private boolean insuredValue;
+    private String parcelType;
+    private String generatedCode;
 
     public JohnnyMovesController(JohnnyMovesGui gui)
     {
         this.gui = gui;
         gui.addActionListener(this);
         parcels = new ArrayList<>();
-        parcels.add(new Parcel("TEMP_Name", "  VISAYAS")); // remove later hahaha
+        dummyPerson = new Recipient("JohnnyMoves", "LUZON");
+        parcels.add(new Parcel(dummyPerson, items)); // remove later hahaha
     }
 
     @Override
@@ -43,9 +46,10 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
             case "main-send": gui.setScene(JohnnyMovesGui.SENDING); break;
             case "main-track": gui.setScene(JohnnyMovesGui.TRACKING); break;
             case "items-recipient":
-                Recipient recipient = gui.openRecipientDialog();
-                name = gui.getRecipient();
-                region = gui.getRegion();
+                recipient = gui.openRecipientDialog();
+                //name = gui.getRecipient();
+                //region = gui.getRegion();
+                System.out.println("NAMe is "+ recipient.getName());
                 break;
             case "items-edit": gui.setScene(JohnnyMovesGui.ITEMS); break;
             case "items-type":
@@ -53,18 +57,27 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 break;
             case "items-insurance":
                 ButtonType type = gui.openInsuranceDialog();
-                insuredValue = gui.getInsurance();
+                String insured  = gui.getInsurance();
                 //TODO: Create ArrayList of Parcels
 
                 p.setTrackingCode(generateCode(p));
 
-                if (insuredValue.equals("Yes, insure"))
-                    p.setInsurance(true);
+                if (insured.equals("Yes, insure"))
+                    insuredValue = true;
                 else
-                    p.setInsurance(false);
+                    insuredValue = false;
                 break;
             case "items-checkout": gui.setScene(JohnnyMovesGui.CHECKOUT);
-                parcels.add(new Parcel(name, region));
+                if (recipient != null)
+                {
+
+                }
+                else
+                {
+                  alert = new Alert(AlertType.WARNING, "No recipient and region. Please go to recipient menu.");
+                  result = alert.showAndWait();
+                }
+
             break;
             case "items-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
             case "items-add":
@@ -82,7 +95,22 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "recipient-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "recipient-submit": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
-                case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
+                case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU);
+                  Parcel buff = new Parcel(recipient, items);
+                  buff.setInsurance(insuredValue);
+                  buff.setParcelType(parcelType);
+                  //Display info
+                  gui.checkoutRecipientLabel.setText(recipient.getName());
+                  gui.checkoutRegionLabel.setText(recipient.getRegion());
+                  gui.checkoutItemCountLabel.setText(Integer.toString(items.size()));
+                  gui.checkoutPriceLabel.setText("Php " + Double.toString(buff.getBasePrice()));
+                  //Add the parcel
+                  parcels.add(buff);
+                  p.setTrackingCode(generateCode(p));
+                  // Display a dialog box containing code
+                  // Display a dialogue box
+                  p.getBasePrice();
+                 break;
                 case "track-main": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
                 case "track-submit":
                   String code = gui.getCodeInput();
