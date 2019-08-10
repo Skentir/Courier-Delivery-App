@@ -4,6 +4,7 @@ import javafx.event.EventTarget;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import java.text.SimpleDateFormat;
@@ -78,6 +79,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 if (close)
                 {
                     items.clear();
+                    gui.updateItemDetails(null);
                     gui.updateItems(null);
                     gui.setScene(JohnnyMovesGui.MAIN_MENU);
                 }
@@ -85,18 +87,26 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
             case "items-insurance":
                 ButtonType type = gui.openInsuranceDialog();
                 insuredValue = gui.getInsurance();
-                //TODO: Create ArrayList of Parcels
-
-                p.setTrackingCode(generateCode(p));
-
-                if (insuredValue.equals("Yes, insure"))
-                    p.setInsurance(true);
-                else
-                    p.setInsurance(false);
+                if (type.getButtonData() == ButtonData.APPLY)
+                    insured = insuredValue.equals("items-insured");
                 break;
             case "items-checkout":
-                gui.setScene(JohnnyMovesGui.CHECKOUT);
-                parcels.add(new Parcel(name, region));
+                if (this.recipient == null)
+                {
+                    Alert noRecipient = new Alert(AlertType.ERROR, "Please give the parcel a recipient", ButtonType.OK);
+                    noRecipient.showAndWait();
+                }
+                else if (items.size() == 0)
+                {
+                    Alert zeroItems = new Alert(AlertType.ERROR, "Please put at least one item", ButtonType.OK);
+                    zeroItems.showAndWait();
+                }
+                else
+                {
+                    gui.updateCheckoutInfo(this.recipient, insured, items);
+                    // TODO: price computation
+                    gui.setScene(JohnnyMovesGui.CHECKOUT);
+                }
                 break;
             case "items-add":
                 Item item = gui.openAddItemDialog();
@@ -111,14 +121,16 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.YES)
                 {
-                    // TODO: remove the item
                     items.remove(gui.getSelectedItem());
                     gui.updateItems(items);
+                    gui.updateItemDetails(gui.getSelectedItem());
                 }
                 break;
             case "items-done": gui.setScene(JohnnyMovesGui.SENDING); break;
             case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
             case "checkout-checkout":
+                // TODO: add new parcel
+                parcels.add(new Parcel(name, region));
                 gui.setScene(JohnnyMovesGui.MAIN_MENU);
                 break;
             case "track-main": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;

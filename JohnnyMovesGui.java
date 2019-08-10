@@ -54,6 +54,7 @@ public class JohnnyMovesGui extends Application
     ListView<Item> checkoutList = new ListView<>();
     Label checkoutRecipientLabel = new Label();
     Label checkoutRegionLabel = new Label();
+    Label checkoutInsuredLabel = new Label();
     Label checkoutItemCountLabel = new Label();
     Label checkoutPriceLabel = new Label();
 
@@ -412,6 +413,9 @@ public class JohnnyMovesGui extends Application
         Label checkoutRegionNameLabel = new Label();
         checkoutRegionNameLabel.setText("Region:");
         GridPane.setMargin(checkoutRegionNameLabel, new Insets(0, 0, 5, 5));
+        Label checkoutInsuredNameLabel = new Label();
+        checkoutInsuredNameLabel.setText("Insured:");
+        GridPane.setMargin(checkoutInsuredNameLabel, new Insets(0, 0, 5, 5));
         Label checkoutItemCountNameLabel = new Label();
         checkoutItemCountNameLabel.setText("# of items:");
         GridPane.setMargin(checkoutItemCountNameLabel, new Insets(0, 0, 5, 5));
@@ -448,12 +452,14 @@ public class JohnnyMovesGui extends Application
         //itemsPane.add(itemNameLabel, 2, 0);
         checkoutPane.add(checkoutRecipientNameLabel, 2, 1);
         checkoutPane.add(checkoutRegionNameLabel, 2, 2);
-        checkoutPane.add(checkoutItemCountNameLabel, 2, 3);
-        checkoutPane.add(checkoutPriceNameLabel, 2, 4);
+        checkoutPane.add(checkoutInsuredNameLabel, 2, 3);
+        checkoutPane.add(checkoutItemCountNameLabel, 2, 4);
+        checkoutPane.add(checkoutPriceNameLabel, 2, 5);
         checkoutPane.add(checkoutRecipientLabel, 3, 1);
         checkoutPane.add(checkoutRegionLabel, 3, 2);
-        checkoutPane.add(checkoutItemCountLabel, 3, 3);
-        checkoutPane.add(checkoutPriceLabel, 3, 4);
+        checkoutPane.add(checkoutInsuredLabel, 3, 3);
+        checkoutPane.add(checkoutItemCountLabel, 3, 4);
+        checkoutPane.add(checkoutPriceLabel, 3, 5);
         checkoutPane.add(checkoutButton, 2, 7);
         checkoutPane.add(cancelCheckoutButton, 3, 7);
 
@@ -540,6 +546,8 @@ public class JohnnyMovesGui extends Application
         Label insuranceLabel = new Label();
         insuranceLabel.setText("Do you want the parcel insured?");
 
+        insuredButton.setId("items-insured");
+        notInsuredButton.setId("items-notinsured");
         insuredButton.setToggleGroup(insureGroup);
         notInsuredButton.setToggleGroup(insureGroup);
 
@@ -730,6 +738,33 @@ public class JohnnyMovesGui extends Application
             itemsList.getItems().setAll(items);
     }
 
+    public void updateCheckoutInfo(Recipient recipient, boolean insured, List<Item> items)
+    {
+        if (items == null)
+        {
+            checkoutList.getItems().clear();
+            checkoutItemCountLabel.setText("");
+        }
+        else
+        {
+            checkoutList.getItems().setAll(items);
+            checkoutItemCountLabel.setText(Integer.toString(items.size()));
+        }
+
+        if (recipient == null)
+        {
+            checkoutRecipientLabel.setText("");
+            checkoutRegionLabel.setText("");
+            checkoutInsuredLabel.setText("");
+        }
+        else
+        {
+            checkoutRecipientLabel.setText(recipient.getName());
+            checkoutRegionLabel.setText(recipient.getRegion());
+            checkoutInsuredLabel.setText(insured ? "Yes" : "No");
+        }
+    }
+
     public Item getSelectedItem()
     {
         return itemsList.getSelectionModel().getSelectedItem();
@@ -798,7 +833,7 @@ public class JohnnyMovesGui extends Application
     {
       selectedRadioBtn = (RadioButton) insureGroup.getSelectedToggle();
       System.out.println("Insurance choice is " + selectedRadioBtn.getText());
-      return selectedRadioBtn.getText();
+      return selectedRadioBtn.getId();
     }
 
     private void attachHandlerToPane(Pane pane, EventHandler<ActionEvent> handler)
