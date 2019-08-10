@@ -316,7 +316,7 @@ public class JohnnyMoves
           itemMenu(items);
           break;
         case 4:
-          Parcel parcel = new Parcel(recipient, items);
+          Parcel parcel = new Parcel(name, region, items);
           Container[] validContainers = compute(parcel, items);
           if (validContainers.length != 0)
           {
@@ -522,7 +522,7 @@ public class JohnnyMoves
     System.out.print("Tracking Code: ");
     System.out.println (parcel.getTrackingCode());
     System.out.printf("Recipient: %s\n", parcel.getRecipient());
-    System.out.printf("Region: %s\n", parcel.getRegion());
+    System.out.printf("Region: %s\n", parcel.getParcelRegion());
     System.out.printf("Status: %s\n", parcel.getStatus(getDate()));
     System.out.print("Items shipped:\n");
     parcel.displayItems();

@@ -15,9 +15,9 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
     private JohnnyMovesGui gui;
     private ArrayList<Parcel> parcels;
     private ArrayList<Item> items;
-    private Recipient recipient, dummyPerson;
+    private Recipient recipient;
     private boolean insuredValue;
-    private String parcelType;
+    private String parcelType = "FLT";
     private String generatedCode;
     private String status;
 
@@ -35,8 +35,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
             event.consume();
         });
         parcels = new ArrayList<>();
-        dummyPerson = new Recipient("JohnnyMoves", "LUZON");
-        parcels.add(new Parcel(dummyPerson, items)); // remove later hahaha
+
     }
 
     @Override
@@ -47,7 +46,6 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
         if (target instanceof Node)
         {
             Node node = (Node)target;
-            Parcel p = parcels.get(parcels.size()-1);
             Alert alert;
             Optional<ButtonType> result;
             switch (node.getId())
@@ -86,9 +84,6 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
             case "items-insurance":
                 ButtonType type = gui.openInsuranceDialog();
                 String insured  = gui.getInsurance();
-                //TODO: Create ArrayList of Parcels
-
-                p.setTrackingCode(generateCode(p));
 
                 if (insured.equals("Yes, insure"))
                     insuredValue = true;
@@ -97,6 +92,29 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 break;
             case "items-checkout":
                 gui.setScene(JohnnyMovesGui.CHECKOUT);
+
+                if (recipient == null || recipient.getName().length() == 0)
+                  gui.checkoutRecipientLabel.setText("Empty");
+                else
+                  gui.checkoutRecipientLabel.setText(recipient.getName());
+                if (recipient == null)
+                  gui.checkoutRegionLabel.setText("Nowhere");
+                else
+                  gui.checkoutRegionLabel.setText(recipient.getRegion());
+
+                if (recipient != null && items != null)
+                {
+                  Parcel dummy = new Parcel(recipient, items);
+                  dummy.setParcelType(parcelType);
+                  dummy.setInsurance(insuredValue);
+                  gui.checkoutItemCountLabel.setText(Integer.toString(items.size()));
+                  gui.checkoutPriceLabel.setText("Php " + Double.toString(dummy.getBasePrice()));
+                }
+                else
+                {
+                  gui.checkoutItemCountLabel.setText("Empty");
+                  gui.checkoutPriceLabel.setText("Php " + 0.00);
+                }
                 break;
             case "items-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
             case "items-add":
@@ -121,21 +139,26 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 case "recipient-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "recipient-submit": gui.setScene(JohnnyMovesGui.SENDING); break;
                 case "checkout-cancel": gui.setScene(JohnnyMovesGui.SENDING); break;
-                case "checkout-checkout": gui.setScene(JohnnyMovesGui.MAIN_MENU);
-                  Parcel buff = new Parcel(recipient, items);
-                  buff.setInsurance(insuredValue);
-                  buff.setParcelType(parcelType);
-                  //Display info
-                  gui.checkoutRecipientLabel.setText(recipient.getName());
-                  gui.checkoutRegionLabel.setText(recipient.getRegion());
-                  gui.checkoutItemCountLabel.setText(Integer.toString(items.size()));
-                  gui.checkoutPriceLabel.setText("Php " + Double.toString(buff.getBasePrice()));
-                  //Add the parcel
-                  parcels.add(buff);
-                  p.setTrackingCode(generateCode(p));
-                  // Display a dialog box containing code
-                  // Display a dialogue box
-                  p.getBasePrice();
+                case "checkout-checkout":
+                  if (recipient == null || recipient.getName().length() != 0 )
+                  {
+                    System.out.println("No recipient exists");
+                    alert = new Alert(AlertType.WARNING, "Missing Details. Fill up all fields.", ButtonType.OK);
+                    result = alert.showAndWait();
+                  }
+                  else
+                  {
+                      System.out.println("Recipient exists");
+                      Parcel buff = new Parcel(recipient, items);
+                      buff.setInsurance(insuredValue);
+                      buff.setParcelType(parcelType);
+                      parcels.add(buff);
+                      Parcel p = parcels.get(parcels.size()-1);
+                      p.setTrackingCode(generateCode(p));
+                      // TODO Display a dialog box containing code and lets user copy it
+                      p.getBasePrice();
+                      gui.setScene(JohnnyMovesGui.MAIN_MENU);
+                  }
                  break;
                 case "track-main": gui.setScene(JohnnyMovesGui.MAIN_MENU); break;
                 case "track-submit":
@@ -157,18 +180,20 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                           int time = tmpTime;
                           date = new Date(new Date().getTime() + time * 1000L);
                         }
-                        //    Parcel p = parcels.get(parcels.size()-1);
+
                         for (int i=0; i < parcels.size(); i++)
                           if (parcels.get(i).getTrackingCode().equalsIgnoreCase(code))
                             status = parcels.get(i).getStatus(date);
+                    }
+                    else
+                    {
 
-                } else
-
-                  alert = new Alert(AlertType.WARNING, "Invalid Input. Try Again.");
-                  alert.setTitle("Error");
-                  alert.setContentText("A correct tracking code contains 15 characters.\nSample Code: FLT0821VIS0301");
-                  alert.showAndWait();
-                  break;
+                    alert = new Alert(AlertType.WARNING, "Invalid Input. Try Again.");
+                    alert.setTitle("Error");
+                    alert.setContentText("A correct tracking code contains 15 characters.\nSample Code: FLT0821VIS0301");
+                    alert.showAndWait();
+                    break;
+                  }
               }
               else
               {
