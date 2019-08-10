@@ -4,12 +4,21 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Represents a receipt for a transaction.
+ */
 public class Receipt
 {
     private Recipient recipient;
     private Date dateGenerated;
     private List<ReceiptEntry> entries;
 
+    /**
+     * Creates a receipt object.
+     *
+     * @param recipient the recipient of this receipt.
+     * @param entries the entries to be shown in the receipt.
+     */
     public Receipt(Recipient recipient, Collection<ReceiptEntry> entries)
     {
         this.recipient = recipient;
@@ -17,6 +26,12 @@ public class Receipt
         this.entries = new ArrayList<>(entries);
     }
 
+    /**
+     * Creates a receipt object.
+     *
+     * @param recipient the recipient of this receipt.
+     * @param entries the entries to be shown in the receipt.
+     */
     public Receipt(Recipient recipient, ReceiptEntry... entries)
     {
         this.recipient = recipient;
@@ -24,6 +39,11 @@ public class Receipt
         this.entries = Arrays.asList(entries);
     }
 
+    /**
+     * Gets the generation time of the receipt.
+     *
+     * @return time the receipt was generated.
+     */
     public Date getDateGenerated()
     {
         return dateGenerated;
