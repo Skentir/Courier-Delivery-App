@@ -57,6 +57,13 @@ public class JohnnyMovesGui extends Application
     Label checkoutInsuredLabel = new Label();
     Label checkoutItemCountLabel = new Label();
     Label checkoutPriceLabel = new Label();
+    ToggleGroup parcelGroup = new ToggleGroup();
+    ToggleButton flat1Button;
+    ToggleButton flat2Button;
+    ToggleButton box1Button;
+    ToggleButton box2Button;
+    ToggleButton box3Button;
+    ToggleButton box4Button;
 
     ListView<Item> displayParcelItems = new ListView<>();
     Label displayTrackingCode = new Label();
@@ -402,67 +409,88 @@ public class JohnnyMovesGui extends Application
         checkTop.setBackground(new Background(new BackgroundFill(Color.rgb(40, 40, 40), CornerRadii.EMPTY, Insets.EMPTY)));
         checkoutMenu.setTop(checkTop);
 
+        checkoutPane.setPadding(new Insets(20, 10, 20, 10));
         checkoutPane.setAlignment(Pos.CENTER);
-        FlowPane containerChoice = new FlowPane();
-        containerChoice.setPadding(new Insets(5,0,5,0));
-        containerChoice.setVgap(4);
-        containerChoice.setHgap(4);
-        containerChoice.setPrefWrapLength(255);
+        GridPane containerChoice = new GridPane();
+        //containerChoice.setPadding(new Insets(5,0,5,0));
+        //containerChoice.setVgap(4);
+        //containerChoice.setHgap(4);
+        //containerChoice.setPrefWrapLength(255);
+        /*
         ImageView containerAssets[] = new ImageView[6];
         for (int i=0; i<6; i++)
         {
           containerAssets[i] = new ImageView(new Image("ImageAssets/Container"+(i+1)+".png", 80, 80, true, true));
           containerChoice.getChildren().add(containerAssets[i]);
         }
+        */
+        flat1Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container1.png", 80, 80, true, true)));
+        flat1Button.setToggleGroup(parcelGroup);
+        flat2Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container2.png", 80, 80, true, true)));
+        flat2Button.setToggleGroup(parcelGroup);
+        box1Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container3.png", 80, 80, true, true)));
+        box1Button.setToggleGroup(parcelGroup);
+        box2Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container4.png", 80, 80, true, true)));
+        box2Button.setToggleGroup(parcelGroup);
+        box3Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container5.png", 80, 80, true, true)));
+        box3Button.setToggleGroup(parcelGroup);
+        box4Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container6.png", 80, 80, true, true)));
+        box4Button.setToggleGroup(parcelGroup);
+
+        containerChoice.add(flat1Button, 0, 0);
+        containerChoice.add(flat2Button, 1, 0);
+        containerChoice.add(box1Button, 2, 0);
+        containerChoice.add(box2Button, 0, 1);
+        containerChoice.add(box3Button, 1, 1);
+        containerChoice.add(box4Button, 2, 1);
+        GridPane.setMargin(containerChoice, new Insets(10, 0, 5, 0));
 
         checkoutList = new ListView<>();
-        GridPane.setHalignment(checkoutList, HPos.CENTER);
-        GridPane.setFillWidth(checkoutList, true);
-        GridPane.setMargin(checkoutList, new Insets(20, 20, 20, 10));
+        GridPane.setMargin(checkoutList, new Insets(0, 20, 10, 0));
 
         Label checkoutRecipientNameLabel = new Label("Recipient:");
-        GridPane.setMargin(checkoutRecipientNameLabel, new Insets(10, 0, 0, 5));
-        GridPane.setMargin(checkoutRecipientLabel, new Insets(10, 0, 0, 5));
+        GridPane.setMargin(checkoutRecipientNameLabel, new Insets(0, 0, 10, 0));
+        GridPane.setMargin(checkoutRecipientLabel, new Insets(0, 0, 10, 0));
         Label checkoutRegionNameLabel = new Label("Region:");
-        GridPane.setMargin(checkoutRegionNameLabel, new Insets(10, 0, 0, 5));
-        GridPane.setMargin(checkoutRegionLabel, new Insets(10, 0, 0, 5));
+        GridPane.setMargin(checkoutRegionNameLabel, new Insets(0, 0, 10, 0));
+        GridPane.setMargin(checkoutRegionLabel, new Insets(0, 0, 10, 0));
         Label checkoutInsuredNameLabel = new Label("Insured:");
-        GridPane.setMargin(checkoutInsuredNameLabel, new Insets(10, 0, 0, 5));
-        GridPane.setMargin(checkoutInsuredLabel, new Insets(10, 0, 0, 5));
+        GridPane.setMargin(checkoutInsuredNameLabel, new Insets(0, 0, 10, 0));
+        GridPane.setMargin(checkoutInsuredLabel, new Insets(0, 0, 10, 0));
         Label checkoutItemCountNameLabel = new Label("# of items:");
-        GridPane.setMargin(checkoutItemCountNameLabel, new Insets(10, 0, 0, 5));
-        GridPane.setMargin(checkoutItemCountLabel, new Insets(10, 0, 0, 5));
+        GridPane.setMargin(checkoutItemCountNameLabel, new Insets(0, 0, 10, 0));
+        GridPane.setMargin(checkoutItemCountLabel, new Insets(0, 0, 10, 0));
         Label checkoutPriceNameLabel = new Label("Price:");
-        GridPane.setMargin(checkoutPriceNameLabel, new Insets(10, 0, 0, 5));
-        GridPane.setMargin(checkoutPriceLabel, new Insets(10, 0, 0, 5));
+        GridPane.setMargin(checkoutPriceNameLabel, new Insets(0, 0, 10, 0));
+        GridPane.setMargin(checkoutPriceLabel, new Insets(0, 0, 10, 0));
 
         Button checkoutButton = new Button();
         checkoutButton.setText("Checkout");
         checkoutButton.setId("checkout-checkout");
         checkoutButton.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: #8fe1a2;");
-        checkoutButton.setMaxWidth(145);
+        checkoutButton.setMaxWidth(170);
         GridPane.setValignment(checkoutButton, VPos.BOTTOM);
         GridPane.setFillWidth(checkoutButton, true);
-        GridPane.setMargin(checkoutButton, new Insets(0, 10, 20, 20));
+        GridPane.setMargin(checkoutButton, new Insets(0, 0, 5, 0));
 
         Button cancelCheckoutButton = new Button();
         cancelCheckoutButton.setText("Cancel");
         cancelCheckoutButton.setId("checkout-cancel");
         cancelCheckoutButton.setStyle("-fx-background-color:#8fe1a2; -fx-text-fill: darkslateblue;");
-        cancelCheckoutButton.setMaxWidth(145);
+        cancelCheckoutButton.setMaxWidth(170);
         GridPane.setValignment(cancelCheckoutButton, VPos.BOTTOM);
         GridPane.setFillWidth(cancelCheckoutButton, true);
-        GridPane.setMargin(cancelCheckoutButton, new Insets(0, 10, 20, 20));
+        GridPane.setMargin(cancelCheckoutButton, new Insets(0, 0, 5, 0));
 
         checkoutPane.getColumnConstraints().addAll(
-            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
-            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
-            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
-            new ColumnConstraints(175.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
+            new ColumnConstraints(160.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(160.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(190.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(190.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
         );
 
         checkoutPane.add(checkoutList, 0, 0, 2, 8);
-        checkoutPane.add(containerChoice, 0, 0,3,2);
+        checkoutPane.add(containerChoice, 0, 8, 2, 4);
         checkoutPane.add(checkoutRecipientNameLabel, 2, 1);
         checkoutPane.add(checkoutRegionNameLabel, 2, 2);
         checkoutPane.add(checkoutInsuredNameLabel, 2, 3);
@@ -473,8 +501,8 @@ public class JohnnyMovesGui extends Application
         checkoutPane.add(checkoutInsuredLabel, 3, 3);
         checkoutPane.add(checkoutItemCountLabel, 3, 4);
         checkoutPane.add(checkoutPriceLabel, 3, 5);
-        checkoutPane.add(checkoutButton, 2, 7);
-        checkoutPane.add(cancelCheckoutButton, 3, 7);
+        checkoutPane.add(checkoutButton, 2, 11);
+        checkoutPane.add(cancelCheckoutButton, 3, 11);
 
         checkoutMenu.setCenter(checkoutPane);
         checkoutScene = new Scene(checkoutMenu, 700, 500);
