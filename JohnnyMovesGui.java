@@ -401,6 +401,18 @@ public class JohnnyMovesGui extends Application
         checkoutMenu.setTop(checkTop);
 
         checkoutPane.setAlignment(Pos.CENTER);
+        FlowPane containerChoice = new FlowPane();
+        containerChoice.setPadding(new Insets(5,0,5,0));
+        containerChoice.setVgap(4);
+        containerChoice.setHgap(4);
+        containerChoice.setPrefWrapLength(255);
+      //  flow.setStyle();
+        ImageView containerAssets[] = new ImageView[6];
+        for (int i=0; i<6; i++)
+        {
+          containerAssets[i] = new ImageView(new Image("Container"+i+".png"));
+          containerChoice.getChildren().add(containerAssets[i]);
+        }
 
         checkoutList = new ListView<>();
         GridPane.setHalignment(checkoutList, HPos.CENTER);
@@ -449,6 +461,7 @@ public class JohnnyMovesGui extends Application
         );
 
         checkoutPane.add(checkoutList, 0, 0, 2, 8);
+        checkoutPane.add(containerChoice, 0, 0,3,2);
         checkoutPane.add(checkoutRecipientNameLabel, 2, 1);
         checkoutPane.add(checkoutRegionNameLabel, 2, 2);
         checkoutPane.add(checkoutInsuredNameLabel, 2, 3);

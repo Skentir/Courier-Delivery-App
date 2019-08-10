@@ -97,25 +97,14 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                 break;
             case "items-checkout":
                 gui.setScene(JohnnyMovesGui.CHECKOUT);
-
-                if (recipient == null || recipient.getName().length() == 0)
-                  gui.checkoutRecipientLabel.setText("Empty");
-                else
-                  gui.checkoutRecipientLabel.setText(recipient.getName());
-                if (recipient == null)
-                  gui.checkoutRegionLabel.setText("Nowhere");
-                else
-                  gui.checkoutRegionLabel.setText(recipient.getRegion());
-
-                //TODO Let user pick a parcel types
+                gui.updateCheckoutInfo(recipient, insuredValue, items);
 
                 if (recipient != null && items != null)
                 {
                   Parcel dummy = new Parcel(recipient, items);
                   dummy.setParcelType(parcelType);
                   dummy.setInsurance(insuredValue);
-                  gui.checkoutItemCountLabel.setText(Integer.toString(items.size()));
-                  gui.checkoutPriceLabel.setText("Php " + Double.toString(dummy.getBasePrice()));
+                  gui.checkoutPriceLabel.setText("Php " + Double.toString(dummy.getPrice()));
                 }
                 else
                 {
@@ -163,7 +152,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                       Parcel p = parcels.get(parcels.size()-1);
                       p.setTrackingCode(generateCode(p));
                       // TODO Display a dialog box containing code and lets user copy it
-                      p.getBasePrice();
+                      p.getPrice();
                       gui.setScene(JohnnyMovesGui.MAIN_MENU);
                   }
                  break;
