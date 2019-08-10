@@ -791,7 +791,7 @@ public class JohnnyMovesGui extends Application
     {
         if (item != null)
         {
-            dimensionsLabel.setText(String.format("%.2f' x %.2f' x %.2f'", item.getWidth(), item.getHeight(), item.getLength()));
+            dimensionsLabel.setText(String.format("%.2f\" x %.2f\" x %.2f\"", item.getWidth(), item.getHeight(), item.getLength()));
             weightLabel.setText(String.format("%.2f kg", item.getWeight()));
             typeLabel.setText(item.getItemType());
         }
