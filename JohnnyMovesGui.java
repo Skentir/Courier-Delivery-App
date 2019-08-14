@@ -93,6 +93,9 @@ public class JohnnyMovesGui extends Application
     TextField productHeightField = new TextField();
     TextField productLengthField = new TextField();
     TextField productWeightField = new TextField();
+    GridPane sphereGroup;
+    TextField sphereDiameterField = new TextField();
+    TextField sphereWeightField = new TextField();
     GridPane documentGroup;
     TextField documentWidthField = new TextField();
     TextField documentLengthField = new TextField();
@@ -694,6 +697,12 @@ public class JohnnyMovesGui extends Application
                     productHeightField.clear();
                     productWeightField.clear();
                     return new IrregularProduct(null, irregProdLength, irregProdWidth, irregProdHeight, irregProdWeight);
+                case "SPHERICAL PRODUCT":
+                    double diameter = Double.parseDouble(sphereDiameterField.getText());
+                    double sphereWeight = Double.parseDouble(sphereWeightField.getText());
+                    sphereDiameterField.clear();
+                    sphereWeightField.clear();
+                    return new SphericalProd(diameter, sphereWeight);
                 case "DOCUMENT":
                     double docLength = Double.parseDouble(documentLengthField.getText());
                     double docWidth = Double.parseDouble(documentWidthField.getText());
@@ -712,7 +721,7 @@ public class JohnnyMovesGui extends Application
 
         Label itemTypeLabel = new Label("Type");
         itemTypes.setId("items-type");
-        itemTypes.getItems().addAll("REGULAR PRODUCT", "IRREGULAR PRODUCT", "DOCUMENT");
+        itemTypes.getItems().addAll("REGULAR PRODUCT", "IRREGULAR PRODUCT", "SPHERICAL PRODUCT", "DOCUMENT");
         productGroup = new GridPane();
         Label productWidthLabel = new Label("Width");
         Label productHeightLabel = new Label("Height");
@@ -734,6 +743,18 @@ public class JohnnyMovesGui extends Application
         GridPane.setMargin(productWeightLabel, new Insets(10, 0, 0, 0));
         productGroup.add(productWeightField, 1, 3);
         GridPane.setMargin(productWeightField, new Insets(10, 0, 0, 5));
+
+        sphereGroup = new GridPane();
+        Label sphereDiameterLabel = new Label("Diameter");
+        Label sphereWeightLabel = new Label("Weight");
+        sphereGroup.add(sphereDiameterLabel, 0, 0);
+        GridPane.setMargin(sphereDiameterLabel, new Insets(10, 0, 0, 0));
+        sphereGroup.add(sphereDiameterField, 1, 0);
+        GridPane.setMargin(sphereDiameterField, new Insets(10, 0, 0, 5));
+        sphereGroup.add(sphereWeightLabel, 0, 1);
+        GridPane.setMargin(sphereWeightLabel, new Insets(10, 0, 0, 0));
+        sphereGroup.add(sphereWeightField, 1, 1);
+        GridPane.setMargin(sphereWeightField, new Insets(10, 0, 0, 5));
 
         documentGroup = new GridPane();
         Label documentWidthLabel = new Label("Width");
@@ -757,11 +778,15 @@ public class JohnnyMovesGui extends Application
             new ColumnConstraints(240.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
         );
 
-        documentGroup.getColumnConstraints().addAll(
+        sphereGroup.getColumnConstraints().addAll(
             new ColumnConstraints(60.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
             new ColumnConstraints(240.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
         );
 
+        documentGroup.getColumnConstraints().addAll(
+            new ColumnConstraints(60.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE),
+            new ColumnConstraints(240.0, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE)
+        );
 
         addItemPane.add(itemTypeLabel, 0, 0);
         addItemPane.add(itemTypes, 1, 0);
@@ -1043,14 +1068,21 @@ public class JohnnyMovesGui extends Application
 
     public void openProductPane()
     {
-        addItemRoot.getChildren().removeAll(documentGroup, productGroup);
+        addItemRoot.getChildren().removeAll(documentGroup, sphereGroup, productGroup);
         addItemRoot.add(productGroup, 0, 1, 2, 1);
         addItemDialog.setHeight(320.0);
     }
 
+    public void openSpherePane()
+    {
+        addItemRoot.getChildren().removeAll(documentGroup, sphereGroup, productGroup);
+        addItemRoot.add(sphereGroup, 0, 1, 2, 1);
+        addItemDialog.setHeight(230.0);
+    }
+
     public void openDocumentPane()
     {
-        addItemRoot.getChildren().remove(productGroup);
+        addItemRoot.getChildren().removeAll(documentGroup, sphereGroup, productGroup);
         addItemRoot.add(documentGroup, 0, 1, 2, 1);
         addItemDialog.setHeight(270.0);
     }
@@ -1066,8 +1098,10 @@ public class JohnnyMovesGui extends Application
         String selected = itemTypes.getValue();
         if (selected != null)
         {
-            if (selected.contains("PRODUCT"))
+            if (selected.contains("REGULAR"))
                 openProductPane();
+            else if (selected.contains("SPHERICAL"))
+                openSpherePane();
             else if (selected.contains("DOCUMENT"))
                 openDocumentPane();
             else
