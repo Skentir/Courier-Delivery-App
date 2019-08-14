@@ -75,9 +75,17 @@ public class ReceiptItem implements ReceiptEntry
     {
         if (parcelType != null && parcelType.contains("FLT"))
         {
-            Dimension dimensions = Parcel.fromType(parcelType);
-            return new ReceiptItem(String.format("Flat parcel, %s", dimensions.getVolume() < 200.0 ? "small" : "big"),
-                dimensions.getVolume() < 200.0 ? 30.0 : 50.0);
+            //Dimension dimensions = Parcel.fromType(parcelType);
+            //return new ReceiptItem(String.format("Flat parcel, %s", dimensions.getVolume() < 200.0 ? "small" : "big"),
+            //    dimensions.getVolume() < 200.0 ? 30.0 : 50.0);
+
+            switch (parcelType.charAt(3))
+            {
+            case '0': return new ReceiptItem("Flat parcel, medium", 30.0);
+            case '1': return new ReceiptItem("Flat parcel, big", 50.0);
+            case '2': return new ReceiptItem("Flat parcel, small", 20.0);
+            default: return null;
+            }
         }
         else
         {
