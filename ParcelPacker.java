@@ -23,6 +23,7 @@ public class ParcelPacker extends DefaultPacker
   {
     new Container(9, 1, 14, 1, Parcel.FLAT, 0),
     new Container(12, 3, 18, 3, Parcel.FLAT, 1),
+    new Container(4, 3, 6, 3, Parcel.FLAT, 2),
     new Container(12, 10, 5, 1000, Parcel.BOX, 0),
     new Container(14, 11, 7, 1000, Parcel.BOX, 1),
     new Container(18, 12, 9, 1000, Parcel.BOX, 2),

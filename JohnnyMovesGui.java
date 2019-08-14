@@ -70,6 +70,7 @@ public class JohnnyMovesGui extends Application
     ToggleGroup parcelGroup = new ToggleGroup();
     ToggleButton flat1Button;
     ToggleButton flat2Button;
+    ToggleButton flat3Button;
     ToggleButton box1Button;
     ToggleButton box2Button;
     ToggleButton box3Button;
@@ -441,6 +442,9 @@ public class JohnnyMovesGui extends Application
         flat2Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container2.png", 80, 80, true, true)));
         flat2Button.setToggleGroup(parcelGroup);
         flat2Button.setId("toggle-flat2");
+        flat3Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container7.png", 80, 80, true, true)));
+        flat3Button.setToggleGroup(parcelGroup);
+        flat3Button.setId("toggle-flat3");
         box1Button = new ToggleButton("", new ImageView(new Image("ImageAssets/Container3.png", 80, 80, true, true)));
         box1Button.setToggleGroup(parcelGroup);
         box1Button.setId("toggle-box1");
@@ -456,6 +460,7 @@ public class JohnnyMovesGui extends Application
 
         containerChoice.add(flat1Button, 0, 0);
         containerChoice.add(flat2Button, 1, 0);
+        containerChoice.add(flat3Button, 1, 2);
         containerChoice.add(box1Button, 2, 0);
         containerChoice.add(box2Button, 0, 1);
         containerChoice.add(box3Button, 1, 1);
@@ -477,10 +482,7 @@ public class JohnnyMovesGui extends Application
         Label checkoutItemCountNameLabel = new Label("# of items:");
         GridPane.setMargin(checkoutItemCountNameLabel, new Insets(0, 0, 10, 0));
         GridPane.setMargin(checkoutItemCountLabel, new Insets(0, 0, 10, 0));
-        Label checkoutPriceNameLabel = new Label("Price:");
-        GridPane.setMargin(checkoutPriceNameLabel, new Insets(0, 0, 10, 0));
-        GridPane.setMargin(checkoutPriceLabel, new Insets(0, 0, 10, 0));
-
+    
         Button checkoutButton = new Button();
         checkoutButton.setText("Checkout");
         checkoutButton.setGraphic(new ImageView(new Image("ImageAssets/Checkout.png")));
@@ -513,12 +515,12 @@ public class JohnnyMovesGui extends Application
         checkoutPane.add(checkoutRegionNameLabel, 2, 2);
         checkoutPane.add(checkoutInsuredNameLabel, 2, 3);
         checkoutPane.add(checkoutItemCountNameLabel, 2, 4);
-        checkoutPane.add(checkoutPriceNameLabel, 2, 5);
+
         checkoutPane.add(checkoutRecipientLabel, 3, 1);
         checkoutPane.add(checkoutRegionLabel, 3, 2);
         checkoutPane.add(checkoutInsuredLabel, 3, 3);
         checkoutPane.add(checkoutItemCountLabel, 3, 4);
-        checkoutPane.add(checkoutPriceLabel, 3, 5);
+
         checkoutPane.add(checkoutButton, 2, 11);
         checkoutPane.add(cancelCheckoutButton, 3, 11);
 
@@ -886,6 +888,7 @@ public class JohnnyMovesGui extends Application
     {
         flat1Button.setDisable(true);
         flat2Button.setDisable(true);
+        flat3Button.setDisable(true);
         box1Button.setDisable(true);
         box2Button.setDisable(true);
         box3Button.setDisable(true);
@@ -899,6 +902,7 @@ public class JohnnyMovesGui extends Application
             {
             case "FLT0": flat1Button.setDisable(false); break;
             case "FLT1": flat2Button.setDisable(false); break;
+            case "FLT2": flat3Button.setDisable(false); break;
             case "BOX0": box1Button.setDisable(false); break;
             case "BOX1": box2Button.setDisable(false); break;
             case "BOX2": box3Button.setDisable(false); break;
