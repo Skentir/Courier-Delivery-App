@@ -67,6 +67,7 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
             case "main-track": gui.setScene(JohnnyMovesGui.TRACKING); break;
             case "toggle-flat1": gui.updateCheckoutInfo(makeParcel("FLT0")); break;
             case "toggle-flat2": gui.updateCheckoutInfo(makeParcel("FLT1")); break;
+            case "toggle-flat3": gui.updateCheckoutInfo(makeParcel("FLT2")); break;
             case "toggle-box1": gui.updateCheckoutInfo(makeParcel("BOX0")); break;
             case "toggle-box2": gui.updateCheckoutInfo(makeParcel("BOX1")); break;
             case "toggle-box3": gui.updateCheckoutInfo(makeParcel("BOX2")); break;
@@ -184,13 +185,14 @@ public class JohnnyMovesController implements EventHandler<ActionEvent>
                       {
                       case "toggle-flat1": parcelSize = "FLT0"; break;
                       case "toggle-flat2": parcelSize = "FLT1"; break;
+                      case "toggle-flat3": parcelSize = "FLT2"; break;
                       case "toggle-box1": parcelSize = "BOX0"; break;
                       case "toggle-box2": parcelSize = "BOX1"; break;
                       case "toggle-box3": parcelSize = "BOX2"; break;
                       case "toggle-box4": parcelSize = "BOX3"; break;
                       default: parcelSize = null; break;
                       }
-                      System.out.println(parcelSize);
+                      System.out.println("Selected: " + parcelSize);
                       System.out.println("Recipient exists");
                       Parcel buff = new Parcel(recipient, items);
                       buff.setInsurance(insuredValue);

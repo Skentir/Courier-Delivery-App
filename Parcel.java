@@ -162,6 +162,8 @@ public class Parcel
           return 30.0;
         else if (sizeType == 1)
           return 50.0;
+        else if (sizeType == 2)
+          return 20.0;
         else
           return 0.0;
       default:
@@ -230,6 +232,7 @@ public class Parcel
       {
           case "FLT0": return new Dimension(9,14,1);
           case "FLT1": return new Dimension(12,18,3);
+          case "FLT2": return new Dimension(4, 6, 3);
           case "BOX0": return new Dimension(12,10,5);
           case "BOX1": return new Dimension(14,11,7);
           case "BOX2": return new Dimension(18,12,9);
